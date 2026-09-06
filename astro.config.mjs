@@ -48,6 +48,19 @@ export default defineConfig({
 					],
 				},
 				{
+					label: 'Git — всё-всё-всё',
+					items: [
+						{ label: 'Обзор раздела', slug: '00-git' },
+						{ label: 'Git под капотом: объекты и .git', slug: '00-git/internals' },
+						{ label: 'Рабочий цикл: add, commit, staging', slug: '00-git/staging-commit' },
+						{ label: 'Ветвление и HEAD', slug: '00-git/branching' },
+						{ label: 'Merge и rebase глубоко', slug: '00-git/merge-rebase' },
+						{ label: 'Удалённые репозитории и PR', slug: '00-git/remote' },
+						{ label: 'Стратегии ветвления', slug: '00-git/workflows' },
+						{ label: 'Продвинутый Git', slug: '00-git/advanced' },
+					],
+				},
+				{
 					label: 'JS Core',
 					items: [
 						{ label: 'Обзор раздела', slug: '01-js-core' },
