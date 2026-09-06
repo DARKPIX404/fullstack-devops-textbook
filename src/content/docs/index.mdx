@@ -1,0 +1,65 @@
+---
+title: "Путь от JavaScript к Fullstack-разработчику и DevOps-инженеру — Глубокое издание"
+description: "Учебник v2.0: 80+ глав с разбором «под капотом», продакшен-практиками, типичными ошибками и вопросами на собеседование."
+template: splash
+hero:
+  title: "Fullstack DevOps — Учебник v2.0"
+  tagline: Глубокое издание. Каждая тема роадмапа разобрана как глава книги — механика работы, продакшен-сценарии, грабли, собеседования, практика. 13 разделов, 80+ глав.
+  actions:
+    - text: Начать с введения
+      link: /fullstack-devops-textbook/intro/philosophy/
+      icon: right-arrow
+    - text: План действий
+      link: /fullstack-devops-textbook/intro/action-plan/
+      icon: document
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Чем v2 отличается от краткой версии
+
+<CardGrid stagger>
+	<Card title="Разбор под капотом" icon="information">
+		Не «что такое замыкание», а как устроен Lexical Environment и как V8 хранит переменные. Не «как пользоваться Docker», а как устроены слои образов и кэш BuildKit.
+	</Card>
+	<Card title="Продакшен-сценарии" icon="rocket">
+		Каждая глава опирается на реальные задачи: race conditions в эффектах, deadlocks в PostgreSQL, утечки памяти в долгоживущем Node.js-процессе.
+	</Card>
+	<Card title="Типичные ошибки и грабли" icon="warning">
+		Отдельный раздел в каждой главе: антипаттерны, заблуждения, баги, которые бьются в проде, — с примерами «плохо/хорошо».
+	</Card>
+	<Card title="Вопросы на собеседовании" icon="approve-check">
+		5–8 вопросов с разбором ответов в конце каждой главы — от Junior до Senior уровня.
+	</Card>
+	<Card title="Практика с критериями" icon="pencil">
+		Мини-проекты и задания с проверяемым результатом: предскажи порядок вывода Event Loop, настрой CI-пайплайн, спроектируй лидерборд на Redis.
+	</Card>
+	<Card title="Что почитать" icon="open-book">
+		Ссылки на первоисточники в каждой главе: спецификации, официальная документация, Arch Wiki, DDIA.
+	</Card>
+</CardGrid>
+
+## Структура учебника
+
+1. **JS Core** — контексты, замыкания, прототипы, Event Loop, Promise, память.
+2. **TypeScript** — система типов, дженерики, условные и mapped-типы, branded types.
+3. **React** — рендеринг, хуки в деталях, состояние, формы, роутер, тесты.
+4. **Next.js** — стратегии рендеринга, RSC, кэширование, Server Actions, Edge.
+5. **Стили, a11y, Performance** — Tailwind, Radix, современный CSS, Core Web Vitals.
+6. **Node.js** — libuv, стримы, многопоточность, ESM, продакшен-эксплуатация.
+7. **NestJS и API** — DI-контейнер, жизненный цикл запроса, REST, GraphQL, gRPC.
+8. **Данные** — PostgreSQL (моделирование, индексы, транзакции), ORM, Redis.
+9. **Безопасность и тестирование** — JWT/OAuth, OWASP, пирамида тестов, Playwright.
+10. **Linux и Docker** — bash, systemd, сети, контейнеры под капотом.
+11. **Kubernetes и CI/CD** — манифесты, Helm, GitHub Actions, GitOps.
+12. **IaC, деплой, наблюдаемость** — Terraform, Ansible, Nginx/TLS, логи/метрики/трейсы.
+13. **Облака, System Design, AI** — AWS, масштабирование, паттерны устойчивости.
+
+:::tip[Золотое правило]
+Теория мертва без практики. Каждая изученная глава должна найти отражение в pet-проекте или opensource-контрибуции. Выполняй раздел **Практика** — не переходи дальше, пока результат не работает.
+:::
+
+:::note[Окружение]
+Все примеры ориентированы на **Arch Linux**. Инструментарий — в [приложении](/fullstack-devops-textbook/appendix/tooling/).
+:::

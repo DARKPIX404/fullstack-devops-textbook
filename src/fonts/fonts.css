@@ -1,0 +1,16 @@
+/* Шрифты подключаются локально системными пакетами (ttf-jetbrains-mono-nerd).
+   Если шрифт не установлен — сработают системные моноширинные. */
+
+@font-face {
+	font-family: 'JetBrains Mono';
+	src: local('JetBrains Mono'), local('JetBrainsMono-Regular');
+	font-weight: 400;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'JetBrains Mono';
+	src: local('JetBrains Mono Bold'), local('JetBrainsMono-Bold');
+	font-weight: 700;
+	font-display: swap;
+}

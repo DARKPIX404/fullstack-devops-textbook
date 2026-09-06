@@ -1,0 +1,264 @@
+/* ==========================================================================
+   Fullstack DevOps Textbook — тёмная dev-тема
+   Стиль: терминал/IDE, акцентный цвет — «мятный» как в современных dev-тулзах
+   ========================================================================== */
+
+:root {
+	--sl-color-white: #ffffff;
+	--sl-color-gray-1: #e7edf3;
+	--sl-color-gray-2: #b7c3cf;
+	--sl-color-gray-3: #8b98a8;
+	--sl-color-gray-4: #5c6a7a;
+	--sl-color-gray-5: #3a4450;
+	--sl-color-gray-6: #242b34;
+	--sl-color-black: #13161b;
+
+	--sl-color-accent-high: #7ee0c3;
+	--sl-color-accent: #34d399;
+	--sl-color-accent-low: #0e3f2e;
+	--sl-color-accent-subtle: #12241d;
+
+	--brand-gradient: linear-gradient(135deg, #34d399 0%, #22d3ee 100%);
+
+	--sl-text-body: 16px;
+	--sl-text-code: 0.875em;
+}
+
+/* Дефолт — тёмная тема, светлая только по явному выбору */
+:root[data-theme='light'] {
+	--sl-color-white: #13161b;
+	--sl-color-gray-1: #242b34;
+	--sl-color-gray-2: #3a4450;
+	--sl-color-gray-3: #5c6a7a;
+	--sl-color-gray-4: #8b98a8;
+	--sl-color-gray-5: #b7c3cf;
+	--sl-color-gray-6: #e7edf3;
+	--sl-color-black: #f7f9fb;
+}
+
+/* --------------------------------------------------------------------------
+   Типографика и база
+   -------------------------------------------------------------------------- */
+
+body {
+	font-family: 'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif;
+	letter-spacing: 0.01em;
+}
+
+h1, h2, h3, h4 {
+	font-weight: 700;
+	letter-spacing: -0.02em;
+}
+
+.sl-markdown-content h2 {
+	padding-top: 1.25rem;
+	border-top: 1px solid var(--sl-color-gray-6);
+	margin-top: 2.5rem;
+}
+
+.sl-markdown-content h2:first-of-type {
+	border-top: none;
+	margin-top: 1rem;
+}
+
+code, kbd, samp, pre {
+	font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Стрелки → в заголовках переопределяем на «#»-якоря как в dev-доках */
+.sl-markdown-content .heading-wrapper {
+	position: relative;
+}
+
+/* --------------------------------------------------------------------------
+   Сайдбар
+   -------------------------------------------------------------------------- */
+
+.sidebar-pane {
+	border-right: 1px solid var(--sl-color-gray-6);
+	background: color-mix(in srgb, var(--sl-color-black) 70%, transparent);
+}
+
+.sidebar-content .top-level > li > details > summary,
+.sidebar-content .top-level > li > a {
+	font-weight: 600;
+	text-transform: uppercase;
+	font-size: 0.72rem;
+	letter-spacing: 0.08em;
+	color: var(--sl-color-gray-3);
+}
+
+.sidebar-content .top-level > li > a:hover,
+.sidebar-content .top-level > li > details > summary:hover {
+	color: var(--sl-color-accent);
+}
+
+.sidebar-content li a[aria-current='page'] {
+	background: var(--sl-color-accent-subtle);
+	border-left: 2px solid var(--sl-color-accent);
+	color: var(--sl-color-accent-high);
+}
+
+/* --------------------------------------------------------------------------
+   Шапка
+   -------------------------------------------------------------------------- */
+
+.site-title {
+	font-weight: 800;
+	letter-spacing: -0.02em;
+}
+
+.site-title span {
+	background: var(--brand-gradient);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+header.header {
+	border-bottom: 1px solid var(--sl-color-gray-6);
+	background: color-mix(in srgb, var(--sl-color-black) 80%, transparent);
+	backdrop-filter: blur(12px);
+}
+
+/* --------------------------------------------------------------------------
+   Блоки кода — «терминальный» вид
+   -------------------------------------------------------------------------- */
+
+.expressive-code {
+	border: 1px solid var(--sl-color-gray-6);
+	border-radius: 8px;
+	box-shadow: 0 4px 24px -8px rgb(0 0 0 / 0.45);
+}
+
+.expressive-code .frame {
+	border-radius: 8px;
+}
+
+/* Инлайн-код */
+.sl-markdown-content code:not(pre code) {
+	background: var(--sl-color-accent-subtle);
+	border: 1px solid var(--sl-color-accent-low);
+	border-radius: 4px;
+	padding: 0.1em 0.35em;
+	color: var(--sl-color-accent-high);
+	font-size: 0.85em;
+}
+
+/* --------------------------------------------------------------------------
+   Карточки-заметки (starlight-asides)
+   -------------------------------------------------------------------------- */
+
+.sl-markdown-content .aside {
+	border-radius: 8px;
+	border-width: 1px;
+}
+
+/* --------------------------------------------------------------------------
+   Таблицы
+   -------------------------------------------------------------------------- */
+
+.sl-markdown-content table {
+	border: 1px solid var(--sl-color-gray-6);
+	border-radius: 8px;
+	border-collapse: separate;
+	border-spacing: 0;
+	overflow: hidden;
+	display: block;
+	overflow-x: auto;
+}
+
+.sl-markdown-content th {
+	background: var(--sl-color-gray-6);
+	font-weight: 600;
+	text-align: left;
+}
+
+.sl-markdown-content th, .sl-markdown-content td {
+	padding: 0.6rem 1rem;
+	border-bottom: 1px solid var(--sl-color-gray-6);
+}
+
+.sl-markdown-content tr:last-child td {
+	border-bottom: none;
+}
+
+/* --------------------------------------------------------------------------
+   Ссылки
+   -------------------------------------------------------------------------- */
+
+.sl-markdown-content a {
+	text-decoration-color: color-mix(in srgb, var(--sl-color-accent) 45%, transparent);
+	text-underline-offset: 3px;
+}
+
+.sl-markdown-content a:hover {
+	color: var(--sl-color-accent-high);
+	text-decoration-color: var(--sl-color-accent);
+}
+
+/* --------------------------------------------------------------------------
+   Hero на главной (splash-шаблон Starlight)
+   -------------------------------------------------------------------------- */
+
+.hero {
+	border: 1px solid var(--sl-color-gray-6);
+	border-radius: 16px;
+	background:
+		radial-gradient(1200px 400px at 0% 0%, var(--sl-color-accent-subtle), transparent 60%),
+		radial-gradient(800px 300px at 100% 100%, rgb(34 211 238 / 0.08), transparent 60%);
+	padding: clamp(1.5rem, 4vw, 3rem);
+	margin-block: 1rem 2rem;
+}
+
+.hero h1#_top {
+	font-size: clamp(2rem, 5vw, 3.25rem);
+	line-height: 1.1;
+	letter-spacing: -0.03em;
+	background: var(--brand-gradient);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+.hero .tagline {
+	font-size: clamp(1rem, 2vw, 1.2rem);
+	color: var(--sl-color-gray-2);
+	max-width: 48ch;
+}
+
+.hero .actions {
+	margin-top: 1.5rem;
+}
+
+.hero .actions a {
+	border-radius: 8px;
+	font-weight: 600;
+}
+
+/* Заголовок-приманка в контенте, если splash-hero не используется */
+.hero .title {
+	font-size: clamp(2rem, 5vw, 3.25rem);
+	line-height: 1.1;
+	background: var(--brand-gradient);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+/* --------------------------------------------------------------------------
+   Подвал
+   -------------------------------------------------------------------------- */
+
+footer.meta {
+	border-top: 1px solid var(--sl-color-gray-6);
+}
+
+/* --------------------------------------------------------------------------
+   Скроллбар
+   -------------------------------------------------------------------------- */
+
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--sl-color-gray-5) transparent;
+}
