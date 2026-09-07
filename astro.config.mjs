@@ -85,6 +85,28 @@ export default defineConfig({
 					],
 				},
 				{
+					label: 'CSS Core',
+					items: [
+						{ label: 'Обзор раздела', slug: '02-css-core' },
+						{ label: 'Каскад, специфичность, бокс-модель', slug: '02-css-core/fundamentals' },
+						{ label: 'Flexbox в деталях', slug: '02-css-core/flexbox' },
+						{ label: 'CSS Grid в деталях', slug: '02-css-core/grid' },
+						{ label: 'Позиционирование и stacking contexts', slug: '02-css-core/positioning' },
+						{ label: 'Анимации и адаптивная вёрстка', slug: '02-css-core/animations-responsive' },
+					],
+				},
+				{
+					label: 'CSS-фреймворки и инструменты',
+					items: [
+						{ label: 'Обзор раздела', slug: '02-css-frameworks' },
+						{ label: 'Препроцессоры: Sass и PostCSS', slug: '02-css-frameworks/preprocessors' },
+						{ label: 'Bootstrap 5 глубоко', slug: '02-css-frameworks/bootstrap' },
+						{ label: 'Utility-first: UnoCSS, daisyUI', slug: '02-css-frameworks/utility-alternatives' },
+						{ label: 'CSS-in-JS: styled-components, Linaria', slug: '02-css-frameworks/css-in-js' },
+						{ label: 'Компонентные библиотеки: MUI, Chakra, Mantine', slug: '02-css-frameworks/component-libraries' },
+					],
+				},
+				{
 					label: 'React',
 					items: [
 						{ label: 'Обзор раздела', slug: '03-react' },

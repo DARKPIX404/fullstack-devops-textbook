@@ -76,7 +76,15 @@ code, kbd, samp, pre {
 
 .sidebar-pane {
 	border-right: 1px solid var(--sl-color-gray-6);
-	background: color-mix(in srgb, var(--sl-color-black) 70%, transparent);
+	background: var(--sl-color-black);
+}
+
+/* Мобильное бургер-меню: непрозрачный фон и тень, чтобы текст читался поверх контента */
+@media (max-width: 49.999rem) {
+	#starlight__sidebar {
+		background: var(--sl-color-black);
+		box-shadow: 12px 0 48px rgba(0, 0, 0, 0.55);
+	}
 }
 
 .sidebar-content .top-level > li > details > summary,
