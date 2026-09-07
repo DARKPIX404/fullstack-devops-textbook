@@ -232,8 +232,9 @@ export default defineConfig({
 				{
 					label: 'Приложения',
 					items: [
-						{ label: 'Инструментарий на Arch Linux', slug: 'appendix/tooling' },
+						{ label: 'Инструментарий для Arch Linux', slug: 'appendix/tooling' },
 						{ label: 'Литература и ресурсы', slug: 'appendix/resources' },
+						{ label: 'Углубление: первоисточники и лабораторные', slug: 'appendix/deep-dive' },
 					],
 				},
 			],
