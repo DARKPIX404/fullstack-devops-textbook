@@ -79,7 +79,7 @@ app/
 
 ## Динамические сегменты и generateMetadata
 
-Квадратные скобки — параметр URL. Параметры приходят асинхронно (в Next.js 15+ это `Promise`), и маршрут может быть статически сгенерирован для конкретного набора значений через `generateStaticParams` (см. [стратегии рендеринга](/fullstack-devops-textbook/04-nextjs/rendering-strategies/)).
+Квадратные скобки — параметр URL. Параметры приходят асинхронно (в Next.js 15+ это `Promise`), и маршрут может быть статически сгенерирован для конкретного набора значений через `generateStaticParams` (см. [стратегии рендеринга](/04-nextjs/rendering-strategies/)).
 
 ```tsx
 // app/blog/[slug]/page.tsx
@@ -213,7 +213,7 @@ export async function POST(request: NextRequest) {
 
 - **Нужен HTML/UI** → `page.tsx`. Никогда не отдавай HTML из route handler.
 - **Нужен API для внешних систем** (вебхуки, мобильное приложение, cron) → `route.ts`.
-- **Мутация из своего UI** → Server Action (см. [следующую главу](/fullstack-devops-textbook/04-nextjs/server-actions/)), а не ручной fetch к route handler. Экшен даёт типизацию, ревалидацию и прогрессивное улучшение бесплатно.
+- **Мутация из своего UI** → Server Action (см. [следующую главу](/04-nextjs/server-actions/)), а не ручной fetch к route handler. Экшен даёт типизацию, ревалидацию и прогрессивное улучшение бесплатно.
 
 :::caution[Публичные API и CORS]
 Route handler по умолчанию обслуживает тот же origin. Для внешних клиентов добавляй `OPTIONS` с CORS-заголовками вручную — Next.js не делает это автоматически, в отличие от некоторых бэкенд-фреймворков.

@@ -17,17 +17,17 @@ description: "Карта раздела: от проектирования сх�
 
 Главы выстроены от фундамента к продакшену, каждая опирается на предыдущую:
 
-1. **[Моделирование данных в PostgreSQL](/fullstack-devops-textbook/08-data/postgres-modeling/)** — типы данных и их компромиссы (`numeric` против `float`, `timestamptz` против `timestamp`), нормализация от 1НФ до 3НФ на полных примерах схем, когда денормализация оправдана, суррогатные ключи, внешние ключи и ограничения `CHECK`/`UNIQUE`. В конце — ER-проектирование pet-проекта и миграции схемы.
+1. **[Моделирование данных в PostgreSQL](/08-data/postgres-modeling/)** — типы данных и их компромиссы (`numeric` против `float`, `timestamptz` против `timestamp`), нормализация от 1НФ до 3НФ на полных примерах схем, когда денормализация оправдана, суррогатные ключи, внешние ключи и ограничения `CHECK`/`UNIQUE`. В конце — ER-проектирование pet-проекта и миграции схемы.
 
-2. **[Индексы в PostgreSQL](/fullstack-devops-textbook/08-data/postgres-indexes/)** — как устроен B-Tree под капотом и когда он не работает, составные индексы и правило leftmost prefix, покрывающие индексы через `INCLUDE`, GIN для `jsonb` и полнотекста, частичные индексы, разбор плана через `EXPLAIN ANALYZE`, а также `VACUUM`, autovacuum и bloat — то, о чём молчат туториалы.
+2. **[Индексы в PostgreSQL](/08-data/postgres-indexes/)** — как устроен B-Tree под капотом и когда он не работает, составные индексы и правило leftmost prefix, покрывающие индексы через `INCLUDE`, GIN для `jsonb` и полнотекста, частичные индексы, разбор плана через `EXPLAIN ANALYZE`, а также `VACUUM`, autovacuum и bloat — то, о чём молчат туториалы.
 
-3. **[Транзакции и блокировки](/fullstack-devops-textbook/08-data/postgres-transactions/)** — ACID под капотом: WAL и MVCC. Все уровни изоляции с воспроизводимыми аномалиями на примерах с двумя сессиями, разница `READ COMMITTED` и `REPEATABLE READ` в PostgreSQL, `SERIALIZABLE` и SSI, блокировки строк и таблиц, чтение разбора дедлока, `FOR UPDATE` / `SKIP LOCKED` для очередей, advisory locks.
+3. **[Транзакции и блокировки](/08-data/postgres-transactions/)** — ACID под капотом: WAL и MVCC. Все уровни изоляции с воспроизводимыми аномалиями на примерах с двумя сессиями, разница `READ COMMITTED` и `REPEATABLE READ` в PostgreSQL, `SERIALIZABLE` и SSI, блокировки строк и таблиц, чтение разбора дедлока, `FOR UPDATE` / `SKIP LOCKED` для очередей, advisory locks.
 
-4. **[Prisma, Drizzle и пулинг соединений](/fullstack-devops-textbook/08-data/orm-prisma-drizzle/)** — Prisma: схема, генерация клиента, миграции и drift, проблема N+1, interactive transactions, ограничения ORM. Drizzle: SQL-like синтаксис и миграции. Дальше — pooling: почему `max_connections` — это ловушка, PgBouncer в режимах `session` и `transaction`, интеграция с Prisma, сиды.
+4. **[Prisma, Drizzle и пулинг соединений](/08-data/orm-prisma-drizzle/)** — Prisma: схема, генерация клиента, миграции и drift, проблема N+1, interactive transactions, ограничения ORM. Drizzle: SQL-like синтаксис и миграции. Дальше — pooling: почему `max_connections` — это ловушка, PgBouncer в режимах `session` и `transaction`, интеграция с Prisma, сиды.
 
-5. **[Кэш-паттерны в Redis](/fullstack-devops-textbook/08-data/redis-patterns/)** — cache-aside с TTL и джиттером, защита от cache stampede через mutex и permValue, write-through и write-behind, стратегии инвалидации, сессии, rate limiting: token bucket на Lua-скриптах и sliding window, кэширование API-ответов, антипаттерны.
+5. **[Кэш-паттерны в Redis](/08-data/redis-patterns/)** — cache-aside с TTL и джиттером, защита от cache stampede через mutex и permValue, write-through и write-behind, стратегии инвалидации, сессии, rate limiting: token bucket на Lua-скриптах и sliding window, кэширование API-ответов, антипаттерны.
 
-6. **[Структуры данных Redis](/fullstack-devops-textbook/08-data/redis-structures/)** — строки, хэши, списки, сеты, Sorted Sets с полными примерами команд, лидерборд на `ZADD`/`ZREVRANGE`/`ZRANGEBYSCORE`, Pub/Sub против Streams (`XADD`/`XREAD`, consumer groups), Redis Streams как очередь, RedisJSON и RediSearch кратко, персистентность RDB против AOF, eviction-политики.
+6. **[Структуры данных Redis](/08-data/redis-structures/)** — строки, хэши, списки, сеты, Sorted Sets с полными примерами команд, лидерборд на `ZADD`/`ZREVRANGE`/`ZRANGEBYSCORE`, Pub/Sub против Streams (`XADD`/`XREAD`, consumer groups), Redis Streams как очередь, RedisJSON и RediSearch кратко, персистентность RDB против AOF, eviction-политики.
 
 ## Связь с pet-проектом
 

@@ -120,7 +120,7 @@ export const config = {
 | Matcher с негативными lookahead'ами | Любые Node API: fs, crypto (нативный), модули с native-кодом |
 
 :::caution[Middleware ≠ авторизация]
-Middleware подходит для «дешёвого» редиректа (нет cookie → на /login). Настоящая проверка прав — внутри Server Actions и серверных компонентов (см. [главу про Server Actions](/fullstack-devops-textbook/04-nextjs/server-actions/)). Middleware легко обойти, и у него нет доступа к твоей БД.
+Middleware подходит для «дешёвого» редиректа (нет cookie → на /login). Настоящая проверка прав — внутри Server Actions и серверных компонентов (см. [главу про Server Actions](/04-nextjs/server-actions/)). Middleware легко обойти, и у него нет доступа к твоей БД.
 :::
 
 ## Edge Runtime: что работает и что нет

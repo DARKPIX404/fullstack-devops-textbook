@@ -187,7 +187,7 @@ export default {
 
 - **`@tailwindcss/typography`** — класс `prose` для длинного текста (статьи, документация, markdown-рендер). Без него будешь вручную стилизовать каждый `h2`, `p`, `ul` внутри контента.
 - **`@tailwindcss/forms`** — сброс дефолтных стилей форм до редактируемых. Без него кастомизация чекбоксов и селектов на разных платформах — боль.
-- **`@tailwindcss/container-queries`** — префиксы `@md:` для container queries (подробно в главе [CSS Modules, PostCSS и современный CSS](/fullstack-devops-textbook/05-styling-perf/css-modern/)).
+- **`@tailwindcss/container-queries`** — префиксы `@md:` для container queries (подробно в главе [CSS Modules, PostCSS и современный CSS](/05-styling-perf/css-modern/)).
 
 Писать свой плагин — тоже нормально: это функция, добавляющая утилиты/компоненты через API `plugin()`.
 
@@ -235,7 +235,7 @@ Arbitrary values — инструмент для редких случаев. Е
 5. **Containment.** `content-visibility: auto` и `contain: layout paint` изолируют поддерево от пересчёта соседей — для длинных списков карточек даёт заметный выигрыш.
 
 :::caution[Миф о «чистом CSS быстрее»]
-Скомпилированный Tailwind-файл из ~10 КБ утилит парсится браузером за миллисекунды. Реальные проблемы перфоманса — JS, шрифты, изображения и сеть. Не оптимизируй CSS ради чисел в DevTools, если瓶颈 в другом — смотри главу [Core Web Vitals](/fullstack-devops-textbook/05-styling-perf/web-vitals/).
+Скомпилированный Tailwind-файл из ~10 КБ утилит парсится браузером за миллисекунды. Реальные проблемы перфоманса — JS, шрифты, изображения и сеть. Не оптимизируй CSS ради чисел в DevTools, если瓶颈 в другом — смотри главу [Core Web Vitals](/05-styling-perf/web-vitals/).
 :::
 
 ## Типичные ошибки и грабли

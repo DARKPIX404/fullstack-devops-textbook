@@ -417,12 +417,12 @@ export default {
 ```
 
 :::tip[PostCSS в Vite уже встроен]
-Vite прогоняет CSS через PostCSS автоматически, если видит `postcss.config.js` — отдельно подключать не надо. Tailwind сам поставляется как PostCSS-плагин (`@tailwindcss/postcss`), поэтому конфиг Tailwind-проекта — это и есть postcss.config.js. Подробности пайплайна — в главе [CSS Modules, PostCSS и современный CSS](/fullstack-devops-textbook/05-styling-perf/css-modern/).
+Vite прогоняет CSS через PostCSS автоматически, если видит `postcss.config.js` — отдельно подключать не надо. Tailwind сам поставляется как PostCSS-плагин (`@tailwindcss/postcss`), поэтому конфиг Tailwind-проекта — это и есть postcss.config.js. Подробности пайплайна — в главе [CSS Modules, PostCSS и современный CSS](/05-styling-perf/css-modern/).
 :::
 
 ### Кастомный плагин: анатомия
 
-Плагин — функция, возвращающая объект с обработчиками AST-узлов. Пример: плагин, который выкидывает все `outline: none` из продакшен-бандла (ловушка для доступности, см. [a11y](/fullstack-devops-textbook/05-styling-perf/a11y/)):
+Плагин — функция, возвращающая объект с обработчиками AST-узлов. Пример: плагин, который выкидывает все `outline: none` из продакшен-бандла (ловушка для доступности, см. [a11y](/05-styling-perf/a11y/)):
 
 ```js
 // postcss.config.js
@@ -447,10 +447,10 @@ AST-узлы: `Rule` (селектор), `Declaration` (свойство: зна
 
 ## Связь с соседними темами
 
-- **CSS Modules и современный CSS** — PostCSS-пайплайн там же: [css-modern](/fullstack-devops-textbook/05-styling-perf/css-modern/). CSS Custom Properties и `@layer` — нативная замена половине Sass.
-- **Tailwind глубоко** — Tailwind сам плагин PostCSS; сравнение «Sass-миксины против утилит» — там: [tailwind-deep](/fullstack-devops-textbook/05-styling-perf/tailwind-deep/).
+- **CSS Modules и современный CSS** — PostCSS-пайплайн там же: [css-modern](/05-styling-perf/css-modern/). CSS Custom Properties и `@layer` — нативная замена половине Sass.
+- **Tailwind глубоко** — Tailwind сам плагин PostCSS; сравнение «Sass-миксины против утилит» — там: [tailwind-deep](/05-styling-perf/tailwind-deep/).
 - **Bootstrap** — следующая глава: вся кастомизация Bootstrap 5 строится на Sass-переменных, и ты сразу применишь `@use`/`@forward`.
-- **Core Web Vitals** — размер скомпилированного CSS напрямую влияет на рендеринг: [web-vitals](/fullstack-devops-textbook/05-styling-perf/web-vitals/).
+- **Core Web Vitals** — размер скомпилированного CSS напрямую влияет на рендеринг: [web-vitals](/05-styling-perf/web-vitals/).
 
 ## Типичные ошибки и грабли
 

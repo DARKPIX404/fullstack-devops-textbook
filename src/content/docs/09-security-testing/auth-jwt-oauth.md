@@ -137,7 +137,7 @@ await redis.set(`bl:${accessJti}`, '1', 'EX', payload.exp - Math.floor(Date.now(
 | `httpOnly cookie` | JS не читает — украсть сложнее | подвержен, нужен SameSite + защита |
 
 :::caution[CSRF-проблема cookie]
-Если auth-cookie шлётся автоматически, чужой сайт может формой/запросом инициировать действие от имени пользователя. Поэтому cookie всегда с `SameSite=Lax` (или `Strict`), а для изменяющих запросов с cross-site сценариями — CSRF-токен или проверка заголовка `Origin`. Разбор — в главе [Веб-безопасность](/fullstack-devops-textbook/09-security-testing/web-security/).
+Если auth-cookie шлётся автоматически, чужой сайт может формой/запросом инициировать действие от имени пользователя. Поэтому cookie всегда с `SameSite=Lax` (или `Strict`), а для изменяющих запросов с cross-site сценариями — CSRF-токен или проверка заголовка `Origin`. Разбор — в главе [Веб-безопасность](/09-security-testing/web-security/).
 :::
 
 Практичная схема: **access в памяти приложения** (переменная модуля, теряется при перезагрузке страницы — не страшно, берём новый по refresh), **refresh в httpOnly + Secure + SameSite cookie**. Никогда не клади access в localStorage — любой XSS превращается в угон сессии.

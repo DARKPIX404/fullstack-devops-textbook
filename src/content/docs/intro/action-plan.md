@@ -12,7 +12,7 @@ description: "Итеративный план от фундамента до д�
 Задача — стоячая уверенность в JavaScript и TypeScript. Без неё фреймворки превращаются в магию, а отладку — в кошмар.
 
 - [ ] Установи и настрой Arch Linux (если ещё нет): i3wm/Hyprland или GNOME/KDE — по вкусу.
-- [ ] Настрой окружение: zsh/fish, tmux, Neovim или VS Code, шрифты Nerd Font, темы. Список — в [Приложении: инструментарий](/fullstack-devops-textbook/appendix/tooling/).
+- [ ] Настрой окружение: zsh/fish, tmux, Neovim или VS Code, шрифты Nerd Font, темы. Список — в [Приложении: инструментарий](/appendix/tooling/).
 - [ ] Повтори Advanced JS: замыкания, прототипы, Event Loop, микро-/макрозадачи, `Promise`/`async/await`, ES Modules.
 - [ ] Пройди TypeScript в strict-режиме: дженерики, утилитарные типы, `satisfies`, брендированные типы.
 - [ ] Решай задачи на [Type Challenges](https://github.com/type-challenges/type-challenges) — уровень easy и medium.
@@ -79,5 +79,5 @@ description: "Итеративный план от фундамента до д�
 ## Что почитать
 
 - [roadmap.sh](https://roadmap.sh) — сверяйся с картами Frontend, Backend и DevOps.
-- [Инструментарий разработчика на Arch Linux](/fullstack-devops-textbook/appendix/tooling/) — софт для этапа «Фундамент».
-- [Литература и ресурсы](/fullstack-devops-textbook/appendix/resources/) — книги и первоисточники под каждый этап.
+- [Инструментарий разработчика на Arch Linux](/appendix/tooling/) — софт для этапа «Фундамент».
+- [Литература и ресурсы](/appendix/resources/) — книги и первоисточники под каждый этап.

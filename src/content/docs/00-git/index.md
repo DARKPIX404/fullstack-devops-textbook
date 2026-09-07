@@ -19,19 +19,19 @@ Git — это не «облако с кнопками», а **файловая 
 
 Раздел идёт от внутренностей к практике: сначала фундамент (объекты, ссылки, индекс), потом ежедневный рабочий цикл, затем ветвление и слияния, после — работа с сервером и командные стратегии. Не перескакивай главы: термины накапливаются.
 
-**1. [Git под капотом: объекты, хэши, refs, индекс](/fullstack-devops-textbook/00-git/internals/)** — фундамент раздела. Content-addressable storage, четыре типа объектов (blob, tree, commit, tag), вычисление SHA-1, содержимое `.git/objects`, packfiles и `git gc`, refs (HEAD, ветки, теги, remote-refs), формат index-файла. После главы ты откроешь `.git/` руками и найдёшь любой коммит.
+**1. [Git под капотом: объекты, хэши, refs, индекс](/00-git/internals/)** — фундамент раздела. Content-addressable storage, четыре типа объектов (blob, tree, commit, tag), вычисление SHA-1, содержимое `.git/objects`, packfiles и `git gc`, refs (HEAD, ветки, теги, remote-refs), формат index-файла. После главы ты откроешь `.git/` руками и найдёшь любой коммит.
 
-**2. [Рабочий цикл: staging, commit, diff, status](/fullstack-devops-textbook/00-git/staging-commit/)** — три области Git (рабочая директория → staging → репозиторий) и весь путь изменения между ними. `git add` в деталях и построчный режим `-p`, `.gitignore` во всех правилах с примерами, `git commit --amend`, философия атомарных коммитов, conventional commits, чтение `git status` и `git diff` (staged/unstaged) без единой непонятной строки.
+**2. [Рабочий цикл: staging, commit, diff, status](/00-git/staging-commit/)** — три области Git (рабочая директория → staging → репозиторий) и весь путь изменения между ними. `git add` в деталях и построчный режим `-p`, `.gitignore` во всех правилах с примерами, `git commit --amend`, философия атомарных коммитов, conventional commits, чтение `git status` и `git diff` (staged/unstaged) без единой непонятной строки.
 
-**3. [Ветвление: указатели, HEAD, switch и чтение истории](/fullstack-devops-textbook/00-git/branching/)** — ветка как указатель на коммит (да, это 41-байтовый файл), HEAD как «указатель на указатель», detached HEAD: схема, опасности и спасение, разница `switch`/`restore`/старый `checkout`, управление ветками и навигация по истории: `git log --oneline --graph --all` и чтение ASCII-графов.
+**3. [Ветвление: указатели, HEAD, switch и чтение истории](/00-git/branching/)** — ветка как указатель на коммит (да, это 41-байтовый файл), HEAD как «указатель на указатель», detached HEAD: схема, опасности и спасение, разница `switch`/`restore`/старый `checkout`, управление ветками и навигация по истории: `git log --oneline --graph --all` и чтение ASCII-графов.
 
-**4. [Слияние и перебазирование глубоко](/fullstack-devops-textbook/00-git/merge-rebase/)** — fast-forward против three-way merge с пошаговыми схемами, конфликты: чтение conflict-markers, `--ours/--theirs`, rerere, `--abort`; механика rebase как «пересадки коммитов», интерактивный rebase (pick/squash/fixup/reword/drop/reorder), golden rule of rebase, `cherry-pick`, `revert` против `reset` (soft/mixed/hard) и `reflog` как спасательный круг.
+**4. [Слияние и перебазирование глубоко](/00-git/merge-rebase/)** — fast-forward против three-way merge с пошаговыми схемами, конфликты: чтение conflict-markers, `--ours/--theirs`, rerere, `--abort`; механика rebase как «пересадки коммитов», интерактивный rebase (pick/squash/fixup/reword/drop/reorder), golden rule of rebase, `cherry-pick`, `revert` против `reset` (soft/mixed/hard) и `reflog` как спасательный круг.
 
-**5. [Удалённые репозитории и PR](/fullstack-devops-textbook/00-git/remote/)** — устройство распределённой части Git: что реально скачивает `clone`, чем `fetch` отличается от `pull`, почему отказывает `push` (non-fast-forward), tracking-ветки и upstream, форк-воркфлоу, цикл code review и релизы через теги.
+**5. [Удалённые репозитории и PR](/00-git/remote/)** — устройство распределённой части Git: что реально скачивает `clone`, чем `fetch` отличается от `pull`, почему отказывает `push` (non-fast-forward), tracking-ветки и upstream, форк-воркфлоу, цикл code review и релизы через теги.
 
-**6. [Стратегии ветвления](/fullstack-devops-textbook/00-git/workflows/)** — Git Flow, GitHub Flow и Trunk-Based Development: как двигаются ветки, чем стратегии отличаются по размеру команды и релизному циклу, environment-ветки против feature flags.
+**6. [Стратегии ветвления](/00-git/workflows/)** — Git Flow, GitHub Flow и Trunk-Based Development: как двигаются ветки, чем стратегии отличаются по размеру команды и релизному циклу, environment-ветки против feature flags.
 
-**7. [Продвинутый Git](/fullstack-devops-textbook/00-git/advanced/)** — инструменты инженера, который живёт в Git: `stash` как стек, `worktree`, бинарный поиск багов через `bisect`, хирургия истории `rebase --onto`, submodules и LFS, хуки и husky, подпись коммитов и защита секретов.
+**7. [Продвинутый Git](/00-git/advanced/)** — инструменты инженера, который живёт в Git: `stash` как стек, `worktree`, бинарный поиск багов через `bisect`, хирургия истории `rebase --onto`, submodules и LFS, хуки и husky, подпись коммитов и защита секретов.
 
 ## Как работать с разделом
 

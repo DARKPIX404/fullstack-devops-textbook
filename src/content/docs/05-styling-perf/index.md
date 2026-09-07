@@ -9,23 +9,23 @@ description: "Карта раздела: глубокий Tailwind, Radix/Shadcn
 
 ## Карта раздела
 
-### [Tailwind CSS глубоко](/fullstack-devops-textbook/05-styling-perf/tailwind-deep/)
+### [Tailwind CSS глубоко](/05-styling-perf/tailwind-deep/)
 
 Глава про утилитарный CSS как инженерную дисциплину. Разбираем, чем Tailwind решает «войны специфичности» эпохи BEM, как устроено content-сканирование и JIT-компиляция, когда использовать `@apply`, а когда он вреден, как выносить дизайн-токены в `theme.extend` и какие плагины реально нужны (typography, forms, container-queries). Отдельный блок — CSS-перфоманс: размер бандла, сложность селекторов, контainment и то, что на самом деле тормозит стилизацию в браузере.
 
-### [Radix UI и Shadcn](/fullstack-devops-textbook/05-styling-perf/radix-shadcn/)
+### [Radix UI и Shadcn](/05-styling-perf/radix-shadcn/)
 
 Две технологии, которые часто путают. Radix — это доступные нестилизованные примитивы: они знают про клавиатуру, фокус и ARIA, но не знают про цвета. Shadcn — это способ доставки кода компонентов в твой репозиторий через CLI, а не npm-пакет. Разбираем composition pattern с `asChild`, управление состоянием диалогов, `cn()`-хелпер, варианты через `cva` и то, как кастомизировать тему через CSS-переменные, не теряя обновлений.
 
-### [CSS Modules, PostCSS и современный CSS](/fullstack-devops-textbook/05-styling-perf/css-modern/)
+### [CSS Modules, PostCSS и современный CSS](/05-styling-perf/css-modern/)
 
 Не весь код живёт в Tailwind-проектах: legacy на CSS Modules, сторонние виджеты, email-вёрстка. Глава про изоляцию классов через CSS Modules (`composes`, `:global`), пайплайн PostCSS (автопрефиксер, nesting) и современные возможности CSS: custom properties, селектор `:has()`, Container Queries, `subgrid` и `@layer` для явного управления каскадом.
 
-### [Доступность (a11y)](/fullstack-devops-textbook/05-styling-perf/a11y/)
+### [Доступность (a11y)](/05-styling-perf/a11y/)
 
 Доступность — это не «добавить aria-label и забыть». Разбираем семантические лендмарки, навигацию с клавиатуры, focus-visible и focus-trap, первое правило ARIA, живые регионы для динамики, доступные формы и автоматизированное тестирование через axe-core. Отдельно — базовая работа со скринридерами NVDA и VoiceOver: что слушать, чтобы услышать то же, что слышит пользователь.
 
-### [Core Web Vitals и оптимизация](/fullstack-devops-textbook/05-styling-perf/web-vitals/)
+### [Core Web Vitals и оптимизация](/05-styling-perf/web-vitals/)
 
 Финальная глава раздела — про метрики, которые видит и Google, и пользователь. LCP: что именно считается «самым большим элементом» и как поднять приоритет загрузки. INP: long tasks, разбиение вычислений, воркеры и почему transition-анимации не спасают от блокировки главного потока. CLS: размеры медиа, шрифты и динамический контент. Лабораторные метрики против полевых, код-сплиттинг, resource hints и бюджеты производительности, которые ломают CI при регрессии.
 

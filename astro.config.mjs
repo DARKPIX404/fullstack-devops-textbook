@@ -4,8 +4,7 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://darkpix404.github.io',
-	base: '/fullstack-devops-textbook',
+	site: 'https://book.darkpix.ru',
 	trailingSlash: 'always',
 	integrations: [
 		starlight({

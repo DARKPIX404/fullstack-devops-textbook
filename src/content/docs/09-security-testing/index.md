@@ -15,13 +15,13 @@ description: "Как устроен раздел про аутентификац
 
 ## Порядок глав
 
-1. **[Аутентификация в деталях: JWT, OAuth 2.0, пароли](/fullstack-devops-textbook/09-security-testing/auth-jwt-oauth/)** — фундамент. JWT изнутри, атаки и защита, access/refresh стратегия с ротацией, хранение токенов на клиенте, все гранты OAuth 2.0, OIDC, хеширование паролей. Без этой главы остальные главы про безопасность повисают в воздухе: ты не сможешь правильно настроить CSRF-защиту, пока не понимаешь, почему токены в httpOnly cookie создают CSRF-проблему, которой нет у Bearer-токенов.
+1. **[Аутентификация в деталях: JWT, OAuth 2.0, пароли](/09-security-testing/auth-jwt-oauth/)** — фундамент. JWT изнутри, атаки и защита, access/refresh стратегия с ротацией, хранение токенов на клиенте, все гранты OAuth 2.0, OIDC, хеширование паролей. Без этой главы остальные главы про безопасность повисают в воздухе: ты не сможешь правильно настроить CSRF-защиту, пока не понимаешь, почему токены в httpOnly cookie создают CSRF-проблему, которой нет у Bearer-токенов.
 
-2. **[Веб-безопасность: XSS, CSRF, CORS, OWASP](/fullstack-devops-textbook/09-security-testing/web-security/)** — периметр. Здесь собрано всё, чем ломают веб-приложения извне: инъекции, межсайтовые атаки, неправильные заголовки, масс-ассайнмент и типовые ошибки конфигурации. Глава построена вокруг OWASP Top 10 — каждый пункт разбирается с примерами уязвимого и исправленного кода.
+2. **[Веб-безопасность: XSS, CSRF, CORS, OWASP](/09-security-testing/web-security/)** — периметр. Здесь собрано всё, чем ломают веб-приложения извне: инъекции, межсайтовые атаки, неправильные заголовки, масс-ассайнмент и типовые ошибки конфигурации. Глава построена вокруг OWASP Top 10 — каждый пункт разбирается с примерами уязвимого и исправленного кода.
 
-3. **[Unit и интеграционные тесты](/fullstack-devops-textbook/09-security-testing/testing-unit-integration/)** — первая половина пирамиды. Философия тестирования, AAA-паттерн, полный конфиг Vitest, моки правильной глубины, coverage-пороги и их ограничения, Supertest для HTTP-слоя, Testcontainers с реальными PostgreSQL и Redis, изоляция тестов и фабрики данных.
+3. **[Unit и интеграционные тесты](/09-security-testing/testing-unit-integration/)** — первая половина пирамиды. Философия тестирования, AAA-паттерн, полный конфиг Vitest, моки правильной глубины, coverage-пороги и их ограничения, Supertest для HTTP-слоя, Testcontainers с реальными PostgreSQL и Redis, изоляция тестов и фабрики данных.
 
-4. **[E2E, качество кода и контрактное тестирование](/fullstack-devops-textbook/09-security-testing/testing-e2e-quality/)** — вершина пирамиды и инженерная гигиена. Playwright в деталях: фикстуры, автоожидания, локаторы по ролям, tracing, retries, codegen, storageState для аутентификации. Сравнение с Cypress. Затем — ESLint 9 flat config, Prettier, Husky + lint-staged, conventional commits и Pact для consumer-driven контрактов.
+4. **[E2E, качество кода и контрактное тестирование](/09-security-testing/testing-e2e-quality/)** — вершина пирамиды и инженерная гигиена. Playwright в деталях: фикстуры, автоожидания, локаторы по ролям, tracing, retries, codegen, storageState для аутентификации. Сравнение с Cypress. Затем — ESLint 9 flat config, Prettier, Husky + lint-staged, conventional commits и Pact для consumer-driven контрактов.
 
 ## Как работать с разделом
 
