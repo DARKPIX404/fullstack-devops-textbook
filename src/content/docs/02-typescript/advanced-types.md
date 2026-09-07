@@ -40,7 +40,7 @@ type ToArrayNonDist<T> = [T] extends [unknown] ? T[] : never;
 type C = ToArrayNonDist<string | number>; // (string | number)[]
 ```
 
-Дистрибутивность — поведение по умолчанию именно для голого параметра типа. Внутри более сложных выражений (например, `Array<T> extends ...`) она не работает. Запомни этот факт — половина «магии» в чужих типах объясняется именно распределением по union.
+Дистрибутивность — поведение по умолчанию именно для голого параметра типа. Внутри более сложных выражений (например, `Array<T> extends ...`) она не работает. Запомни этот факт — половина «магии» в чужих типах объясняется именно распределением по union. Официальный разбор — в [TypeScript Handbook: Conditional Types, раздел distributive conditional types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types).
 
 :::note[Реальный пример дистрибутивности]
 Паттерн `T extends unknown ? ...` — способ применить mapped- или условный тип к каждому элементу union по отдельности. То же самое делает встроенный `Exclude<T, U>`: он распределяет `T` и отбрасывает ветки, совместимые с `U`.
@@ -85,7 +85,7 @@ type AllTypes = Server[keyof Server]; // string | number | boolean — union в�
 
 ## Mapped types: цикл по ключам
 
-Mapped-тип перебирает ключи и строит новый объект. Синтаксис — `in` по union ключей:
+Mapped-тип перебирает ключи и строит новый объект. Синтаксис — `in` по union ключей. Вся механика модификаторов и key remapping описана в [TypeScript Handbook: Mapped Types](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html):
 
 ```ts
 type Nullable<T> = { [K in keyof T]: T[K] | null };
@@ -150,7 +150,7 @@ type PublicOnly = Public<Internal>; // { id: number; name: string }
 
 ## Template literal types
 
-Типы-строки, построенные интерполяцией — на уровне типов:
+Типы-строки, построенные интерполяцией — на уровне типов. Строковые утилиты (`Capitalize`, `Uppercase` и друзья) и ограничения интерполяции рассмотрены в [TypeScript Handbook: Template Literal Types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html):
 
 ```ts
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';

@@ -9,7 +9,7 @@ description: "Suspense на сервере и гранулярный стрим�
 
 ## Streaming: Suspense на сервере
 
-Классический SSR — all-or-nothing: сервер собирает весь HTML, и только потом отдаёт его целиком. Streaming меняет модель: сервер отдаёт документ по частям, как только те готовы. Механизм — React Suspense на сервере: компоненты, обёрнутые в `<Suspense>`, рендерятся независимо, и их куски HTML вставляются в поток по мере готовности.
+Классический SSR — all-or-nothing: сервер собирает весь HTML, и только потом отдаёт его целиком. Streaming меняет модель: сервер отдаёт документ по частям, как только те готовы (механика — в [Loading UI and Streaming](https://nextjs.org/docs/app/building-your-application/routing/loading-ui-and-streaming)). Механизм — React Suspense на сервере: компоненты, обёрнутые в `<Suspense>`, рендерятся независимо, и их куски HTML вставляются в поток по мере готовности.
 
 ```tsx
 // app/dashboard/page.tsx
@@ -64,7 +64,7 @@ Streaming работает не только для SSR. Статическая 
 
 ## Middleware: rewrite, redirect, headers
 
-`middleware.ts` в корне (или в `src/`) выполняется **до** того, как запрос попал в роутер приложения. Это точка входа для дешёвых решений:
+`middleware.ts` в корне (или в `src/`) выполняется **до** того, как запрос попал в роутер приложения (см. [документацию по middleware](https://nextjs.org/docs/app/building-your-application/routing/middleware)). Это точка входа для дешёвых решений:
 
 ```ts
 // middleware.ts
@@ -125,7 +125,7 @@ Middleware подходит для «дешёвого» редиректа (не
 
 ## Edge Runtime: что работает и что нет
 
-Middleware всегда исполняется на Edge Runtime — среде, близкой к браузерному V8/Worker: изолированный контекст, холодный старт около нуля, но жёсткие лимиты. Можно опционально перевести на Edge отдельные сегменты приложения:
+Middleware всегда исполняется на Edge Runtime ([обзор рантаймов](https://nextjs.org/docs/app/building-your-application/rendering/edge-and-nodejs-runtimes)) — среде, близкой к браузерному V8/Worker: изолированный контекст, холодный старт около нуля, но жёсткие лимиты. Можно опционально перевести на Edge отдельные сегменты приложения:
 
 ```tsx
 // app/api/geo/route.ts
@@ -145,7 +145,7 @@ export async function GET(request: Request) {
 
 ## next/image: оптимизация изображений
 
-`<Image>` — не просто обёртка над `<img>`, а пайплайн оптимизации: автоматический ресайз под размер экрана, конвертация в WebP/AVIF (при наличии), ленивая загрузка ниже fold, резервирование места под картинку (борьба с CLS), приоритизация LCP-изображений.
+[`<Image>`](https://nextjs.org/docs/app/api-reference/components/image) — не просто обёртка над `<img>`, а пайплайн оптимизации: автоматический ресайз под размер экрана, конвертация в WebP/AVIF (при наличии), ленивая загрузка ниже fold, резервирование места под картинку (борьба с CLS), приоритизация LCP-изображений.
 
 ```tsx
 import Image from 'next/image';
@@ -195,7 +195,7 @@ export default nextConfig;
 
 ## next/font: шрифты без скачков
 
-Шрифты — классический источник CLS и блокировки рендера (FOIT/FOUT). `next/font` решает оба: шрифт скачивается на этапе сборки (self-host), подключается с `font-display: swap` и автоматически встраивается CSS `size-adjust`, чтобы метрики запасного шрифта совпадали с кастомным — скачок текста минимален.
+Шрифты — классический источник CLS и блокировки рендера (FOIT/FOUT). [`next/font`](https://nextjs.org/docs/app/api-reference/components/font) решает оба: шрифт скачивается на этапе сборки (self-host), подключается с `font-display: swap` и автоматически встраивается CSS `size-adjust`, чтобы метрики запасного шрифта совпадали с кастомным — скачок текста минимален.
 
 ```tsx
 // app/layout.tsx

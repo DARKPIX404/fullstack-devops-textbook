@@ -11,10 +11,10 @@ description: "fetch в RSC: поведение по умолчанию, cache/re
 
 ## fetch в RSC: поведение по умолчанию
 
-В серверных компонентах `fetch` — не браузерный fetch. Это обёртка Next.js поверх нативного с дополнительными опциями и кэшированием. Ключевой факт, который нужно запомнить навсегда:
+В серверных компонентах `fetch` — не браузерный fetch. Это [обёртка Next.js](https://nextjs.org/docs/app/api-reference/functions/fetch) поверх нативного с дополнительными опциями и кэшированием. Ключевой факт, который нужно запомнить навсегда:
 
 :::caution[Кэширование по умолчанию — навсегда]
-По умолчанию `fetch` в серверном компоненте кэширует ответ **бессрочно** (`cache: 'force-cache'`). Вызов на этапе сборке — в Data Cache навсегда, в рантайме — тоже без авто-протухания. Если ты не указал опции — данные обновятся только при новом деплое или явной ревалидации.
+По умолчанию `fetch` в серверном компоненте кэширует ответ **бессрочно** (`cache: 'force-cache'`). Вызов на этапе сборке — в Data Cache навсегда, в рантайме — тоже без авто-протухания. Если ты не указал опции — данные обновятся только при новом деплое или явной ревалидации. Карта всех пяти уровней кэша — в [официальном гайде по кэшированию](https://nextjs.org/docs/app/building-your-application/caching).
 :::
 
 ```tsx
@@ -46,7 +46,7 @@ const posts = await fetch('https://api.example.com/posts', {
 
 ## revalidatePath и revalidateTag
 
-Ручная ревалидация из серверного кода — Server Actions, route handlers:
+Ручная ревалидация из серверного кода — Server Actions, route handlers (см. [API-референс `revalidateTag`](https://nextjs.org/docs/app/api-reference/functions/revalidateTag)):
 
 ```ts
 // app/actions.ts
@@ -76,7 +76,7 @@ export async function publishPost(id: string) {
 
 ## Кэширование не-fetch данных: unstable_cache
 
-`fetch` кэшируется сам, а если данные грузятся напрямую из БД через Prisma — их нужно кэшировать вручную:
+`fetch` кэшируется сам, а если данные грузятся напрямую из БД через Prisma — их нужно кэшировать вручную через [`unstable_cache`](https://nextjs.org/docs/app/api-reference/functions/unstable_cache):
 
 ```ts
 // lib/products.ts
@@ -115,7 +115,7 @@ export async function getCategories() {
 | 2 | **Data Cache** | Сервер (персистентный) | Ответы `fetch` (force-cache/revalidate/tags), `unstable_cache` | `revalidateTag`, `revalidatePath`, истечение `revalidate` | От секунд до бессрочно |
 | 3 | **Full Route Cache** | Сервер/CDN | Готовый HTML и RSC payload статических/ISR маршрутов | `revalidatePath`, `revalidateTag` (опосредованно), редeploy | До ревалидации |
 | 4 | **Router Cache** | Браузер | RSC payload для soft-навигации | `router.refresh()`, конец сессии | 5 мин (статика) / 30 сек (динамика) |
-| 5 | **Client Cache (fetch/browser)** | Браузер | Стандартное поведение HTTP-кэша браузера | HTTP-заголовки (`Cache-Control`) | По заголовкам |
+| 5 | **Client Cache (fetch/browser)** | Браузер | Стандартное поведение [HTTP-кэша браузера](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching) | HTTP-заголовки (`Cache-Control`) | По заголовкам |
 
 Пройдём по сценариям:
 

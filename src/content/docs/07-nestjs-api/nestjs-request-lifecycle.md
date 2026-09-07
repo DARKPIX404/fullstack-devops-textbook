@@ -26,7 +26,7 @@ Request
 
 ## Middleware: дедовский слой Express
 
-Middleware — единственный слой, который NestJS не изобретал: это обычные функции `(req, res, next)`. Применяются через `configure(consumer: MiddlewareConsumer)` в модуле, порядок важен:
+Middleware — единственный слой, который NestJS не изобретал: это обычные функции `(req, res, next)` (см. [официальный гайд](https://docs.nestjs.com/middleware)). Применяются через `configure(consumer: MiddlewareConsumer)` в модуле, порядок важен:
 
 ```ts
 // logger.middleware.ts
@@ -62,7 +62,7 @@ export class AppModule implements NestModule {
 
 ## Guards: «можно ли вообще»
 
-Guard отвечает на один вопрос: **пропустить запрос или нет?** Реализует `CanActivate` и возвращает `boolean` (или Promise). Выполняется до pipes и controller — это принципиально.
+Guard ([документация](https://docs.nestjs.com/guards)) отвечает на один вопрос: **пропустить запрос или нет?** Реализует `CanActivate` и возвращает `boolean` (или Promise). Выполняется до pipes и controller — это принципиально.
 
 ```ts
 @Injectable()
@@ -148,7 +148,7 @@ export class AdminController {
 
 ## Pipes: валидация и трансформация входа
 
-Pipe получает входные данные, может их **трансформировать** (строку в число) или **валидировать** (бросить `BadRequestException`). Бывают параметровые (на одном аргументе) и глобальные.
+Pipe ([официальный гайд](https://docs.nestjs.com/pipes)) получает входные данные, может их **трансформировать** (строку в число) или **валидировать** (бросить `BadRequestException`). Бывают параметровые (на одном аргументе) и глобальные.
 
 ### Валидация DTO через class-validator
 
@@ -267,7 +267,7 @@ Pipe гарантирует форму, а не смысл: email валиден
 
 ## Interceptors: обёртка вокруг handler
 
-Interceptor оборачивает выполнение контроллера как `Promise`/`Observable`: до handler и после. Три рабочих сценария.
+Interceptor ([документация](https://docs.nestjs.com/interceptors)) оборачивает выполнение контроллера как `Promise`/`Observable`: до handler и после. Три рабочих сценария.
 
 ### Логирование с длительностью
 
@@ -331,7 +331,7 @@ export class CacheInterceptor implements NestInterceptor {
 
 ## Exception Filters: единый формат ошибок
 
-Без фильтра Nest отдаёт свои дефолтные ответы, а непойманные ошибки превращаются в стектрейс наружу. Фильтр перехватывает всё и приводит к контракту.
+Без фильтра Nest отдаёт свои дефолтные ответы, а непойманные ошибки превращаются в стектрейс наружу. Фильтр ([официальный гайд](https://docs.nestjs.com/exception-filters)) перехватывает всё и приводит к контракту.
 
 ### Иерархия исключений
 

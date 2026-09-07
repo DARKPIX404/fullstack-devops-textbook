@@ -13,19 +13,19 @@ description: "Карта раздела: препроцессоры, Bootstrap, 
 
 ### [Препроцессоры: Sass и PostCSS](/02-css-frameworks/preprocessors/)
 
-Точка входа в историю. Разбираем, зачем вообще появились Sass/SCSS: переменные до CSS Custom Properties, миксины, партиалы, операторы. Честно смотрим, что из этого в 2026 году делает нативный CSS (вложенность, custom properties, `@layer`), а что по-прежнему удобнее в Sass. Отдельно — PostCSS: это не препроцессор, а трансформатор, и именно через него в проект попадают autoprefixer, cssnano и будущий синтаксис CSS через preset-env.
+Точка входа в историю. Разбираем, зачем вообще появились [Sass/SCSS](https://sass-lang.com/documentation/): переменные до CSS Custom Properties, миксины, партиалы, операторы. Честно смотрим, что из этого в 2026 году делает нативный CSS (вложенность, custom properties, `@layer`), а что по-прежнему удобнее в Sass. Отдельно — [PostCSS](https://postcss.org/): это не препроцессор, а трансформатор, и именно через него в проект попадают autoprefixer, cssnano и будущий синтаксис CSS через preset-env.
 
 ### [Bootstrap 5 глубоко](/02-css-frameworks/bootstrap/)
 
-Bootstrap — не «фреймворк для новичков», а феномен, который десять лет задавал дефолт веба. Разбираем его изнутри: сетку с контейнерами и breakpoints, конвенции именования утилит, компоненты на data-атрибутах, кастомизацию через Sass-переменные и color modes. И главное — когда Bootstrap в 2026 году правильный выбор (внутренние админки, прототипы), а когда — красный флаг.
+Bootstrap — не «фреймворк для новичков», а феномен, который десять лет задавал дефолт веба. Разбираем его изнутри: сетку с контейнерами и breakpoints, конвенции именования утилит, компоненты на data-атрибутах, кастомизацию через Sass-переменные и [color modes](https://getbootstrap.com/docs/5.3/customize/color-modes/). И главное — когда Bootstrap в 2026 году правильный выбор (внутренние админки, прототипы), а когда — красный флаг.
 
 ### [Utility-first: UnoCSS, daisyUI](/02-css-frameworks/utility-alternatives/)
 
-Tailwind не одинок. UnoCSS пересобирает утилитарный подход с нуля: on-demand генерация, пресеты, attributify-режим. daisyUI добавляет поверх Tailwind готовые темизируемые компоненты. Плюс короткие истории Tachyons (прадед жанра), WindiCSS (предостережение) и гибридные схемы вроде Tailwind + headless-библиотеки.
+Tailwind не одинок. [UnoCSS](https://uno.antfu.me/) пересобирает утилитарный подход с нуля: on-demand генерация, пресеты, attributify-режим. [daisyUI](https://daisyui.com/docs/) добавляет поверх Tailwind готовые темизируемые компоненты. Плюс короткие истории Tachyons (прадед жанра), WindiCSS (предостережение) и гибридные схемы вроде Tailwind + headless-библиотеки.
 
 ### [CSS-in-JS: styled-components, Linaria](/02-css-frameworks/css-in-js/)
 
-Глава-разбор: что CSS-in-JS решал в 2016-м, как устроены styled-components и Emotion внутри, как Linaria и vanilla-extract вернули стили на этап сборки с типизацией, и почему вместе с приходом Server Components вся категория пошла на спад. Честный разбор без ностальгии: где CSS-in-JS всё ещё уместен, а где сегодня брать его нельзя.
+Глава-разбор: что CSS-in-JS решал в 2016-м, как устроены [styled-components](https://styled-components.com/docs) и Emotion внутри, как Linaria и vanilla-extract вернули стили на этап сборки с типизацией, и почему вместе с приходом Server Components вся категория пошла на спад. Честный разбор без ностальгии: где CSS-in-JS всё ещё уместен, а где сегодня брать его нельзя.
 
 ### [Компонентные библиотеки: MUI, Chakra, Mantine](/02-css-frameworks/component-libraries/)
 

@@ -3,7 +3,7 @@ title: "Роутинг: React Router v6+ и data routers"
 description: "Data routers: createBrowserRouter, loaders, actions, useNavigation, errorElement, вложенные маршруты и интеграция с TanStack Query."
 ---
 
-Роутинг — это не только «показать компонент по URL». В современном React Router это ещё и когда грузить данные, как обрабатывать ошибки загрузки, где ловить исключения и как не превратить каждую страницу в спагетти из `useEffect` с `fetch`. Шестая версия React Router перевернула философию: появились **data routers** — роутеры, у которых маршруты знают про данные. Data loader грузит до рендера, action обрабатывает мутации, а компонент страницы получает готовые данные. Разберём эту модель до конца и покажем, как она сосуществует с TanStack Query.
+Роутинг — это не только «показать компонент по URL». В современном React Router это ещё и когда грузить данные, как обрабатывать ошибки загрузки, где ловить исключения и как не превратить каждую страницу в спагетти из `useEffect` с `fetch`. Шестая версия React Router перевернула философию: появились **[data routers](https://reactrouter.com/start/data/routing)** — роутеры, у которых маршруты знают про данные. Data loader грузит до рендера, action обрабатывает мутации, а компонент страницы получает готовые данные. Разберём эту модель до конца и покажем, как она сосуществует с TanStack Query.
 
 ## От declarative к data router
 
@@ -50,7 +50,7 @@ export function App() {
 
 ## Loaders: данные до рендера
 
-Loader — функция, которая выполняется роутером при навигации на маршрут. Она получает объект с `params`, `request` и должна вернуть данные (или бросить ошибку/`Response`):
+[Loader](https://reactrouter.com/start/data/data-loading) — функция, которая выполняется роутером при навигации на маршрут. Она получает объект с `params`, `request` и должна вернуть данные (или бросить ошибку/`Response`):
 
 ```tsx
 import { LoaderFunctionArgs } from 'react-router-dom';
@@ -101,7 +101,7 @@ export async function productLoader({ params }: LoaderFunctionArgs) {
 
 ## Actions: мутации на уровне маршрута
 
-Action — симметричный loader'у обработчик мутаций: вызывается при `Form`-сабмите или программной `submit()`. Паттерн HTML-форм, но без перезагрузки страницы:
+[Action](https://reactrouter.com/start/data/actions) — симметричный loader'у обработчик мутаций: вызывается при `Form`-сабмите или программной `submit()`. Паттерн HTML-форм, но без перезагрузки страницы:
 
 ```tsx
 import { ActionFunctionArgs, Form, redirect } from 'react-router-dom';
@@ -142,7 +142,7 @@ Action возвращает данные (`useActionData`) или `redirect`. Lo
 
 ## Состояния навигации: useNavigation
 
-Роутер сам отслеживает жизненный цикл навигации. `useNavigation` даёт три ключевых состояния:
+Роутер сам отслеживает жизненный цикл навигации. [`useNavigation`](https://reactrouter.com/api/hooks/useNavigation) даёт три ключевых состояния:
 
 ```tsx
 import { useNavigation } from 'react-router-dom';
@@ -167,7 +167,7 @@ function AppLayout() {
 
 ## errorElement и обработка ошибок
 
-Loader или action бросил исключение или `Response` — роутер ищет ближайший `errorElement` вверх по дереву маршрутов и рендерит его вместо компонента. Ошибка доступна через `useRouteError`:
+Loader или action бросил исключение или `Response` — роутер ищет ближайший [`errorElement`](https://reactrouter.com/docs) вверх по дереву маршрутов и рендерит его вместо компонента. Ошибка доступна через `useRouteError`:
 
 ```tsx
 import { useRouteError, isRouteErrorResponse } from 'react-router-dom';

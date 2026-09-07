@@ -13,7 +13,7 @@ description: "Типы данных и их компромиссы, нормал
 
 ### numeric против float
 
-Главное правило денег: **никогда `float`**. `numeric(12,2)` — точное десятичное, `float8` — двоичная апроксимация.
+Главное правило денег: **никогда `float`**. `numeric(12,2)` — точное десятичное, `float8` — двоичная апроксимация. Компромиссы обоих типов разобраны в [главе документации про числовые типы](https://www.postgresql.org/docs/current/datatype-numeric.html).
 
 ```sql
 SELECT 0.1::float8 + 0.2::float8 = 0.3::float8;  -- false!
@@ -45,7 +45,7 @@ SELECT '2024-05-14 18:00'::timestamptz;  -- та же точка на оси в�
 SELECT '2024-05-14 18:00'::timestamp;    -- просто строка, зона неизвестна
 ```
 
-`timestamp` без tz не хранит часовой пояс — это «18:00, и не знаем где». Когда сервер переедет из Москвы в Амстердам, все записи «поплывут». `timestamptz` хранит UTC и конвертирует в зону сессии для отображения. Всегда `timestamptz`, если у тебя не календарь настенный.
+`timestamp` без tz не хранит часовой пояс — это «18:00, и не знаем где». Когда сервер переедет из Москвы в Амстердам, все записи «поплывут». `timestamptz` хранит UTC и конвертирует в зону сессии для отображения. Всегда `timestamptz`, если у тебя не календарь настенный. Вводная по типам даты и времени — в [документации PostgreSQL](https://www.postgresql.org/docs/current/datatype-datetime.html).
 
 ### Текст и uuid
 
@@ -162,7 +162,7 @@ COMMIT;
 
 ## Генерируемые колонки
 
-PostgreSQL умеет хранить вычисляемые значения — **generated columns**. Два вида: `STORED` (вычисляется при записи, хранится на диске) и `VIRTUAL` (вычисляется при чтении, с PG18). Виртуальные не занимают место, но их нельзя индексировать напрямую.
+PostgreSQL умеет хранить вычисляемые значения — **generated columns**. Два вида: `STORED` (вычисляется при записи, хранится на диске) и `VIRTUAL` (вычисляется при чтении, с PG18). Виртуальные не занимают место, но их нельзя индексировать напрямую. Синтаксис и ограничения — на странице [документации про generated columns](https://www.postgresql.org/docs/current/ddl-generated-columns.html).
 
 ```sql
 CREATE TABLE order_items (
@@ -199,7 +199,7 @@ CREATE TABLE payments (
 CREATE INDEX payments_order_id_idx ON payments (order_id);  -- FK не создаёт индекс автоматически!
 ```
 
-`CHECK` — бизнес-инвариант на уровне БД. `UNIQUE` — и целостность, и индекс. `ON DELETE CASCADE` для дочерних сущностей (комментарии поста), `RESTRICT` для финансовых связей (нельзя удалить заказ с платежами).
+`CHECK` — бизнес-инвариант на уровне БД. `UNIQUE` — и целостность, и индекс. `ON DELETE CASCADE` для дочерних сущностей (комментарии поста), `RESTRICT` для финансовых связей (нельзя удалить заказ с платежами). Полный обзор ограничений — в [главе документации про constraints](https://www.postgresql.org/docs/current/ddl-constraints.html).
 
 ## ER-проектирование pet-проекта
 
@@ -259,7 +259,7 @@ ALTER TABLE users ADD COLUMN role text NOT NULL DEFAULT 'user'
 CREATE INDEX CONCURRENTLY users_role_idx ON users (role) WHERE role != 'user';
 ```
 
-`CREATE INDEX CONCURRENTLY` не берёт блокировку `ACCESS EXCLUSIVE`, позволяя таблице работать. Откат — только новой миграцией, не `DROP TABLE` из консоли.
+`CREATE INDEX CONCURRENTLY` не берёт блокировку `ACCESS EXCLUSIVE`, позволяя таблице работать. Откат — только новой миграцией, не `DROP TABLE` из консоли. Опции команды — на странице [CREATE INDEX](https://www.postgresql.org/docs/current/sql-createindex.html) в документации.
 
 :::tip[Именование миграций]
 `YYYYMMDDHHMM_description.sql` — порядок определяется timestamp, конфликтов при мерже двух веток меньше. Prisma и Drizzle генерируют так же.

@@ -9,7 +9,7 @@ description: "Готовые UI-компоненты для React: Material UI �
 
 ## Material UI (MUI): флагман
 
-MUI — самая популярная React-библиотека (GitHub stars ~90k, npm загрузки ~4 млн в неделю). Реализация Material Design Google, но с v5 перешла с JSS на Emotion и стала гораздо гибче кастомизации.
+MUI — самая популярная React-библиотека (GitHub stars ~90k, npm загрузки ~4 млн в неделю), [документация](https://mui.com/material-ui/getting-started/) — один из самых полных ресурсов по темизации React-компонентов. Реализация Material Design Google, но с v5 перешла с JSS на Emotion и стала гораздо гибче кастомизации.
 
 ```bash
 npm i @mui/material @emotion/react @emotion/styled
@@ -95,12 +95,12 @@ const PillButton = styled(Button)(({ theme }) => ({
 Когда брать MUI: продукт со сложным UI, большая команда, нужна максимальная готовность (DataGrid, Autocomplete, DatePicker через MUI X — платные для продвинутых сценариев). Когда нет: нужен уникальный бренд, независимый от «материального» визуала — кастомизация возможна, но борьба с дефолтами дороже старта на Tailwind.
 
 :::tip[Доступность — главный скрытый актив]
-Все четыре библиотеки вкладываются в a11y: focus-стили, ARIA-атрибуты, клавиатурная навигация в компонентах. Это не «плюс», а снятие обязательства: команда без специального a11y-инженера получает доступный дефолт бесплатно. Проверяй его axe-core в CI — см. [a11y](/05-styling-perf/a11y/).
+Все четыре библиотеки вкладываются в a11y: focus-стили, ARIA-атрибуты, клавиатурная навигация в компонентах. Это не «плюс», а снятие обязательства: команда без специального a11y-инженера получает доступный дефолт бесплатно. Проверяй его [axe-core](https://github.com/dequelabs/axe-core) в CI — см. [a11y](/05-styling-perf/a11y/).
 :::
 
 ## Chakra UI: style props как философия
 
-Chakra UI (2019, Сегун Адебуйи) — библиотека, где стилизация — это пропсы, а не CSS. Каждый компонент принимает стилевые пропсы, смапленные на токены темы.
+[Chakra UI](https://chakra-ui.com/docs) (2019, Сегун Адебуйи) — библиотека, где стилизация — это пропсы, а не CSS. Каждый компонент принимает стилевые пропсы, смапленные на токены темы.
 
 ```bash
 npm i @chakra-ui/react @emotion/react @emotion/styled framer-motion
@@ -168,7 +168,7 @@ MUI X DataGrid Pro/Premium и Date Range Picker — коммерческие л�
 
 ## Mantine: полный набор с хуками
 
-Mantine (2021, Виталий Ртищев) — самый быстрорастущий игрок: ~150+ хуков и компонентов, вплоть до Rich Text Editor, Carousel, Dates, Spotlight (cmd+k-палитра). Философия: «всё, что нужно продукту, в одном пакете».
+[Mantine](https://mantine.dev/) (2021, Виталий Ртищев) — самый быстрорастущий игрок: ~150+ хуков и компонентов, вплоть до Rich Text Editor, Carousel, Dates, Spotlight (cmd+k-палитра). Философия: «всё, что нужно продукту, в одном пакете».
 
 ```bash
 npm i @mantine/core @mantine/hooks dayjs
@@ -227,7 +227,7 @@ export function SearchPanel() {
 
 ## Ant Design: enterprise-стандарт
 
-Ant Design (Ant Group / Alibaba, 2015) — доминирующая библиотека в китайской экосистеме и серьёзный игрок в enterprise по всему миру. Сильнейшая сторона — сложные data-компоненты: Table с виртуализацией, фиксированными колонками, вложенностью; Form с декларативной валидацией; Tree, Transfer, Calendar.
+[Ant Design](https://ant.design/) (Ant Group / Alibaba, 2015) — доминирующая библиотека в китайской экосистеме и серьёзный игрок в enterprise по всему миру. Сильнейшая сторона — сложные data-компоненты: Table с виртуализацией, фиксированными колонками, вложенностью; Form с декларативной валидацией; Tree, Transfer, Calendar.
 
 ```bash
 npm i antd dayjs

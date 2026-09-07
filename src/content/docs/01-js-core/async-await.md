@@ -7,7 +7,7 @@ description: "Как await работает поверх промисов, по�
 
 ## Как await работает под капотом
 
-`async`-функция при вызове **немедленно возвращает промис**. Тело выполняется синхронно до первого `await`, затем функция приостанавливается — управление возвращается вызывающему коду, а продолжение (всё после `await`) ставится в очередь микрозадач и выполнится, когда промис разрешится:
+[`async`-функция](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Statements/async_function) при вызове **немедленно возвращает промис**. Тело выполняется синхронно до первого `await`, затем функция приостанавливается — управление возвращается вызывающему коду, а продолжение (всё после `await`) ставится в очередь микрозадач и выполнится, когда промис разрешится:
 
 ```js
 async function demo() {
@@ -102,7 +102,7 @@ console.log('готово'); // напечатается ДО завершени
 
 ## Отмена операций: AbortController
 
-`fetch`, `addEventListener`, `ReadableStream` и большинство современных асинхронных API принимают `signal` — объект-«флажок отмены». `AbortController` — источник этого сигнала:
+`fetch`, `addEventListener`, `ReadableStream` и большинство современных асинхронных API принимают `signal` — объект-«флажок отмены». [`AbortController`](https://developer.mozilla.org/ru/docs/Web/API/AbortController) — источник этого сигнала:
 
 ```js
 const controller = new AbortController();
@@ -151,7 +151,7 @@ pageLoader().catch((e) => e.name === 'AbortError' || showError(e));
 controller.abort(); // все три fetch отменены разом
 ```
 
-### AbortSignal.timeout — встроенный таймаут
+### [`AbortSignal.timeout`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal/timeout_static) — встроенный таймаут
 
 Современные браузеры и Node 17.3+ имеют встроенный таймаут без ручного `setTimeout`:
 
@@ -163,7 +163,7 @@ const r = await fetch('/api/slow-endpoint', { signal: AbortSignal.timeout(8000) 
 
 ### Комбинирование сигналов
 
-Отменять при «любой из причин» — через `AbortSignal.any` (браузеры, Node 20.3+):
+Отменять при «любой из причин» — через [`AbortSignal.any`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal/any_static) (браузеры, Node 20.3+):
 
 ```js
 const pageLeave = new AbortController();
@@ -208,7 +208,7 @@ setTimeout(() => c.abort(), 100);
 
 ## Top-level await
 
-В ES-модулях `await` разрешён на верхнем уровне — без обёртки в `async`-функцию. Модуль «зависает» в состоянии загрузки, пока все top-level `await` не разрешатся, и экспорты становятся доступны только после:
+В ES-модулях `await` разрешён на верхнем уровне ([top-level await](https://v8.dev/features/top-level-await), v8.dev) — без обёртки в `async`-функцию. Модуль «зависает» в состоянии загрузки, пока все top-level `await` не разрешатся, и экспорты становятся доступны только после:
 
 ```ts
 // config.ts — модуль не считается загруженным, пока конфиг не получен
@@ -265,7 +265,7 @@ for await (const user of fetchUsersInBatches('/api/users')) {
 
 Ключевые свойства:
 
-- `for await...of` работает с async-итерабелями (объект с `[Symbol.asyncIterator]`) и с обычными итерируемыми (массив промисов).
+- [`for await...of`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Statements/for-await...of) работает с async-итерабелями (объект с `[Symbol.asyncIterator]`) и с обычными итерируемыми (массив промисов).
 - `break`/`return` в цикле вызывает `generator.return()` — finally-блоки внутри генератора выполнятся (отмена fetch, закрытие курсора).
 - Async-генераторы — основа streaming-API: чтение файлов/ответов по кускам, подписки на события как потоки.
 

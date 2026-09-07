@@ -23,6 +23,8 @@ workflow (событие: push / PR / schedule / workflow_dispatch)
 - **Step'ы внутри job** исполняются последовательно в одном shell-процессе (рабочая директория сохраняется, env из `run:` не переживает step — используй `$GITHUB_ENV`).
 - Параллельность — только между job'ами (`needs` строит DAG) или внутри matrix.
 
+Полный справочник по структуре workflow — в [Workflow syntax for GitHub Actions](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions).
+
 Передача данных между job'ами:
 
 ```yaml
@@ -76,7 +78,7 @@ jobs:
           provenance: false
 ```
 
-`mode=max` — критично: без него кэшируются только слои финального образа, а промежуточные (с установкой зависимостей) теряются, и каждый прогон ставит зависимости заново. После включения обоих типичный прогон падает с 8-10 до 2-4 минут.
+`mode=max` — критично: без него кэшируются только слои финального образа, а промежуточные (с установкой зависимостей) теряются, и каждый прогон ставит зависимости заново. После включения обоих типичный прогон падает с 8-10 до 2-4 минут. Механика ключей, восстановления и eviction описана в [документации по кэшированию](https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows).
 
 :::tip[Кэш vs артефакт]
 Кэш — оптимизация (может отсутствовать, ключи меняются, eviction). Артефакт — гарантированный результат job'а для следующих (`upload-artifact`/`download-artifact`). Сборку из кэша продлеваем, собранные бинарники передаём артефактом.
@@ -106,7 +108,7 @@ jobs:
       - run: npm ci && npm test
 ```
 
-Приёмы: `fail-fast: false` — видеть ВСЕ падающие версии, а не первую; `include`/`exclude` — точечная настройка декартова произведения. Не раздувай матрицу сверх необходимого: каждая комбинация — полный прогон.
+Приёмы: `fail-fast: false` — видеть ВСЕ падающие версии, а не первую; `include`/`exclude` — точечная настройка декартова произведения. Не раздувай матрицу сверх необходимого: каждая комбинация — полный прогон. Синтаксис и примеры — в [документации по matrix](https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs).
 
 ## Переиспользование: reusable workflows и composite actions
 
@@ -154,7 +156,7 @@ jobs:
       registry-token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-Пингуй версию (`@main` → `@v1.2.0` или SHA) — reusable workflow имеет тот же риск supply-chain, что и action: внешний код исполняется с твоими секретами.
+Пингуй версию (`@main` → `@v1.2.0` или SHA) — reusable workflow имеет тот же риск supply-chain, что и action: внешний код исполняется с твоими секретами. Ограничения и передача секретов — в [документации по reusing workflows](https://docs.github.com/en/actions/using-workflows/reusing-workflows).
 
 ## Окружения, секреты и защита продакшена
 
@@ -173,7 +175,7 @@ jobs:
       - run: kubectl -n pet set image deploy/api api=${{ needs.build.outputs.image }}
 ```
 
-В настройках репозитория (Settings → Environments → prod): **required reviewers** — деплой ждёт ручного approve; **deployment branch policy** — только из `main`; **environment secrets** — `PROD_KUBECONFIG` не виден job'ам без `environment: prod`. Дополнительно: protection rules на ветку `main` (обязательный PR + зелёный CI) — прямой push в прод невозможен в принципе.
+В настройках репозитория (Settings → Environments → prod): **required reviewers** — деплой ждёт ручного approve; **deployment branch policy** — только из `main`; **environment secrets** — `PROD_KUBECONFIG` не виден job'ам без `environment: prod`. Дополнительно: protection rules на ветку `main` (обязательный PR + зелёный CI) — прямой push в прод невозможен в принципе. Настройка окружений и protection rules — в [документации по environments](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment).
 
 **OIDC в облако — вместо долгоживущих ключей.** Классика: AWS access key в секретах живёт месяцами и утекает в логи. OIDC: GitHub выпускает краткоживущий JWT на время прогона, AWS (IAM role с trust policy на конкретный репозиторий и ветку) принимает его и выдаёт временные credentials:
 
@@ -184,7 +186,7 @@ jobs:
           aws-region: eu-central-1
 ```
 
-Роль в AWS ограничена: только конкретный репозиторий, только ветка `main`, только нужные действия (ECR push). Утечка секрета невозможна по определению — секрета нет. Тот же механизм работает для GCP Workload Identity и Azure.
+Роль в AWS ограничена: только конкретный репозиторий, только ветка `main`, только нужные действия (ECR push). Утечка секрета невозможна по определению — секрета нет. Тот же механизм работает для GCP Workload Identity и Azure. Настройка trust policy и claims — в [документации по OpenID Connect](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect).
 
 ## Монорепозиторий: path-filters и concurrency
 

@@ -40,7 +40,7 @@ kubectl -n monitoring port-forward svc/monitoring-kube-prometheus-prometheus 909
 
 ## Как Prometheus находит цели: ServiceMonitor и PodMonitor
 
-Prometheus не знает про твои приложения. В vanilla-варианте ты правишь `scrape_configs` — в K8s этим управляют CRD: **ServiceMonitor** говорит «собирай метрики с подов за этим Service», **PodMonitor** — «с этих подов напрямую» (stateful-приложения без Service, агенты). Оператор видит монитор, находит подходящие эндпоинты и переписывает конфиг Prometheus:
+Prometheus не знает про твои приложения. В vanilla-варианте ты правишь `scrape_configs` — в K8s этим управляют CRD: **ServiceMonitor** говорит «собирай метрики с подов за этим Service», **PodMonitor** — «с этих подов напрямую» (stateful-приложения без Service, агенты). Оператор видит монитор, находит подходящие эндпоинты и переписывает конфиг Prometheus — поля обоих CRD описаны в [API-референсе Prometheus Operator](https://prometheus-operator.dev/docs/api-reference/api/):
 
 ```yaml
 apiVersion: monitoring.coreos.com/v1
@@ -83,7 +83,7 @@ helm upgrade --install loki grafana/loki-stack \
   --set grafana.enabled=false            # Grafana уже есть из kube-prometheus-stack
 ```
 
-**Promtail** (DaemonSet на каждой ноде) хватает stdout/stderr всех контейнеров с ноды, добавляет лейблы из Kubernetes API и пушит в Loki. Поэтому правило «пиши логи в stdout» из главы про Docker здесь становится железным: никаких файлов внутри контейнера — их никто не прочитает после перезапуска пода.
+**Promtail** (DaemonSet на каждой ноде) хватает stdout/stderr всех контейнеров с ноды, добавляет лейблы из Kubernetes API и пушит в Loki. Поэтому правило «пиши логи в stdout» из главы про Docker здесь становится железным: никаких файлов внутри контейнера — их никто не прочитает после перезапуска пода. Архитектурные варианты сбора логов (node-level, sidecar, агенты) разобраны в [документации Kubernetes по логированию](https://kubernetes.io/docs/concepts/cluster-administration/logging/).
 
 Подключение Loki как datasource в Grafana (через values kube-prometheus-stack):
 
@@ -208,7 +208,7 @@ histogram_quantile(0.95,
 
 ## События кластера: kubectl get events
 
-Самый бедный родственник наблюдаемости и самый недооценённый. Каждое решение кластера фиксируется событием: почему под не запланировался, почему PVC не приаттачился, кто и когда перезапустил контейнер:
+Самый бедный родственник наблюдаемости и самый недооценённый. Каждое решение кластера фиксируется событием: почему под не запланировался, почему PVC не приаттачился, кто и когда перезапустил контейнер. Схема объекта Event — в [Kubernetes API reference](https://kubernetes.io/docs/reference/kubernetes-api/cluster-resources/event-v1/):
 
 ```bash
 # Лента событий namespace в реальном времени
@@ -256,4 +256,4 @@ kubectl describe deployment api -n pet | tail -n 20
 - [Prometheus: alerting rules](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) и [Alertmanager configuration](https://prometheus.io/docs/alerting/latest/configuration/)
 - [Grafana Loki](https://grafana.com/docs/loki/latest/) и [LogQL](https://grafana.com/docs/loki/latest/logql/) — синтаксис запросов
 - [Kubernetes metrics reference](https://kubernetes.io/docs/reference/instrumentation/metrics/) — метрики control plane
-- [awesome-prometheus-alerts](https://awesome-prometheus-alerts.grep.to/) — готовая библиотека правил для K8s, etcd, Postgres
+- [awesome-prometheus-alerts](https://samber.github.io/awesome-prometheus-alerts/) — готовая библиотека правил для K8s, etcd, Postgres

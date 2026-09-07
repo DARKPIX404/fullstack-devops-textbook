@@ -55,7 +55,7 @@ export function ConfirmDialog() {
 
 ### Composition pattern и asChild
 
-Ключевая идиома Radix — сборка из частей в JSX. А когда нужно встроить свою обёртку (Link из роутера как триггер), есть `asChild`: Radix передаст всё поведение и пропсы на твой единственный дочерний элемент.
+Ключевая идиома Radix — сборка из частей в JSX. А когда нужно встроить свою обёртку (Link из роутера как триггер), есть `asChild`: Radix передаст всё поведение и пропсы на твой единственный дочерний элемент. Механика подробно разобрана в [гайде по composition](https://www.radix-ui.com/primitives/docs/guides/composition) в документации.
 
 ```tsx
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
@@ -141,7 +141,7 @@ export function Toaster() {
 
 ### Portal, z-index и стек оверлеев
 
-Все «всплывающие» примитивы (Dialog, Popover, DropdownMenu, Toast) рендерятся через `Portal` — подписку в `document.body` вне твоего дерева компонентов. Это решает две проблемы разом: `overflow: hidden` и `transform` на предке больше не ломают позиционирование (они создают новый containing block для `position: absolute`), и оверлей не втягивается в `z-index`-войны внутри страницы.
+Все «всплывающие» примитивы (Dialog, Popover, DropdownMenu, Toast) рендерятся через [`Portal`](https://www.radix-ui.com/primitives/docs/utilities/portal) — подписку в `document.body` вне твоего дерева компонентов. Это решает две проблемы разом: `overflow: hidden` и `transform` на предке больше не ломают позиционирование (они создают новый containing block для `position: absolute`), и оверлей не втягивается в `z-index`-войны внутри страницы.
 
 Но портал не отменяет конфликты между самими оверлеями: диалог поверх дропдауна, тост поверх диалога. Рабочая стратегия — слои с именами из твоей системы: Radix расставляет `data-*`-атрибуты состояний, а shadcn-проекты заводят токены з-индексов в конфиге Tailwind (`z-overlay: 40, z-modal: 50, z-popover: 60, z-toast: 70`). Правило: никаких магических `z-[9999]` — они выигрывают сегодняшний спор и ломают завтрашний дропдаун.
 

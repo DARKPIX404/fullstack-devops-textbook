@@ -39,7 +39,7 @@ TTL — компромисс: чем длиннее, тем реже бьём в
 
 Популярный ключ истёк, пришло 500 запросов. Все промахиваются, все идут в БД. БД падает. Решения:
 
-**Mutex (lock)**: один запрос берёт лок, остальные ждут или получают stale-данные.
+**Mutex (lock)**: один запрос берёт лок через [`SET` с флагами `NX EX`](https://redis.io/docs/latest/commands/set/), остальные ждут или получают stale-данные.
 
 ```ts
 async function getUserStampedeSafe(id: string) {
@@ -122,14 +122,14 @@ async function incrementViewCount(postId: string) {
 await db.users.update(id, data);
 await redis.publish('cache:invalidate', JSON.stringify({ type: 'user', id }));
 
-// Подписчик в другом процессе
+// Подписчик в другом процессе (механика Pub/Sub — в [документации Redis](https://redis.io/docs/latest/develop/interact/pubsub/))
 subscriber.subscribe('cache:invalidate', (msg) => {
   const { type, id } = JSON.parse(msg);
   if (type === 'user') redis.del(`user:${id}`);
 });
 ```
 
-Для распределённых систем — Redis Streams или брокер вместо Pub/Sub (гарантии доставки). Кэш-теги: при обновлении продукта инвалидируем `product:{id}`, `category:{catId}:products`, `search:*`. Сложно, но решает проблему каскадной инвалидации.
+Для распределённых систем — [Redis Streams](https://redis.io/docs/latest/develop/data-types/streams/) или брокер вместо Pub/Sub (гарантии доставки). Кэш-теги: при обновлении продукта инвалидируем `product:{id}`, `category:{catId}:products`, `search:*`. Сложно, но решает проблему каскадной инвалидации.
 
 :::caution[Инвалидация по тегам не бесплатна]
 Нужна обратная индексация: `tag:product:1 → [key1, key2, ...]`. Каждая запись обновляет индекс. Для высоконагруженных систем — отдельная статья боли.
@@ -153,7 +153,7 @@ req.user = session ? JSON.parse(session) : null;
 await redis.del(`sess:${sid}`);
 ```
 
-В отличие от хранения в памяти процесса: переживает рестарт, работает с несколькими репликами, TTL сам чистит протухшие.
+В отличие от хранения в памяти процесса: переживает рестарт, работает с несколькими репликами, TTL сам чистит протухшие. Описание типа данных «строка» с TTL — в [документации Redis](https://redis.io/docs/latest/develop/data-types/strings/).
 
 ## Rate limiting: от фиксированного окна к token bucket
 
@@ -169,7 +169,7 @@ EXPIRE rl:ip:1.2.3.4 60   # ставим TTL только на первом
 
 ### Sliding window: точно, но дороже
 
-Sorted Set: каждый запрос — элемент с timestamp. Очищаем старше окна, считаем остаток.
+Sorted Set: каждый запрос — элемент с timestamp. Очищаем старше окна, считаем остаток. Sorted Sets как структура разобраны в [документации Redis](https://redis.io/docs/latest/develop/data-types/sorted-sets/).
 
 ```ts
 async function rateLimit(key: string, limit: number, windowSec: number): Promise<boolean> {

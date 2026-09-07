@@ -47,7 +47,7 @@ cat.walk(); // «Мурка передвигается» — тот же мет�
 Метод **не копируется** в каждый объект — он хранится один раз в прототипе. Экономия памяти и возможность обновить поведение всех «наследников» правкой одного прототипа.
 
 :::tip[Дно цепочки)]
-У любого обычного объекта прототипная цепочка выглядит так: `obj → Object.prototype → null`. Поэтому у каждого объекта есть `toString`, `hasOwnProperty` и т.д. — они приходят из `Object.prototype`. `Object.create(null)` создаёт объект без прототипа — чистый словарь, без `toString` и прочих сюрпризов.
+У любого обычного объекта прототипная цепочка выглядит так: `obj → Object.prototype → null`. Поэтому у каждого объекта есть `toString`, `hasOwnProperty` и т.д. — они приходят из `Object.prototype`. [`Object.create(null)`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/create) создаёт объект без прототипа — чистый словарь, без `toString` и прочих сюрпризов.
 :::
 
 ## Как свойства создаются: присваивание vs определение
@@ -73,7 +73,7 @@ ro.x = 1; // TypeError (strict): setter undefined
 
 ## Геттеры и сеттеры
 
-Геттеры/сеттеры — это не поля, а функции доступа, оформленные как свойства. Они живут в прототипе так же, как методы:
+[Геттеры/сеттеры](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get) — это не поля, а функции доступа, оформленные как свойства. Они живут в прототипе так же, как методы:
 
 ```js
 const temperature = {
@@ -96,7 +96,7 @@ console.log(temperature.fahrenheit); // 212
 
 ## class в ES6: что под капотом
 
-Синтаксис `class` — надстройка над прототипами. Разберём эквивалентность:
+Синтаксис [`class`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Classes) — надстройка над прототипами. Разберём эквивалентность:
 
 ```js
 class Animal {
@@ -249,7 +249,7 @@ if (!Array.prototype.toSorted) {
 
 ## instanceof и constructor: как устроены проверки
 
-`instanceof` проверяет, есть ли `Constructor.prototype` в прототипной цепочке объекта — не более:
+[`instanceof`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/instanceof) проверяет, есть ли `Constructor.prototype` в прототипной цепочке объекта — не более:
 
 ```js
 class Animal {}
@@ -278,11 +278,11 @@ console.log(fake instanceof Dog && !(fake instanceof Animal)); // false — це
 
 Для надёжных проверок типов используй `Array.isArray`, `typeof`, `Object.prototype.toString.call` или флаг-поле, а не `instanceof` через границы реалмов.
 
-Ещё одна ловушка — `Object.setPrototypeOf`: он **меняет скрытый класс объекта**, что в V8 приводит к деоптимизации всего кода, работающего с этим объектом. Правило: задавай прототип при создании (`Object.create`, `class extends`), а не переставляй его в горячем коде.
+Ещё одна ловушка — [`Object.setPrototypeOf`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf): он **меняет скрытый класс объекта**, что в V8 приводит к деоптимизации всего кода, работающего с этим объектом. Правило: задавай прототип при создании (`Object.create`, `class extends`), а не переставляй его в горячем коде.
 
 ## Приватные поля # и статика
 
-Приватные поля — настоящая приватность на уровне языка, а не соглашения:
+[Приватные поля](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Classes/Private_properties) — настоящая приватность на уровне языка, а не соглашения:
 
 ```js
 class Wallet {

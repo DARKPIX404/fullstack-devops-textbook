@@ -8,20 +8,20 @@ description: "Карта раздела: от архитектуры Kubernetes 
 Краткая версия учебника дала обзор: Pod, Deployment, Service, Ingress, Helm, пайплайн Lint → Test → Build → Scan → Deploy. Этого хватает, чтобы задеплоить pet-проект в k3s. Но в продакшене важна не радость первого деплоя, а спокойствие сотого: что произойдёт, когда контейнер зависнет, диск переполнится, сертификат истечёт или пайплайн пойдёт не по плану. Раздел построен вокруг этого: каждая глава — не справка по API, а ответ на вопрос «что может сломаться и как система это переживёт».
 
 :::caution[Не единственный источник]
-Главы дают эксплуатационную базу, но Kubernetes усваивается руками и первоисточниками: официальные docs/concepts, легендарная лаба «Kubernetes The Hard Way» и «Kubernetes in Action» Лукши — с полным списком и лабораторными в [«Углубление: первоисточники и лабораторные»](/appendix/deep-dive/).
+Главы дают эксплуатационную базу, но Kubernetes усваивается руками и первоисточниками: официальные [docs/concepts](https://kubernetes.io/docs/concepts/), легендарная лаба «Kubernetes The Hard Way» и «Kubernetes in Action» Лукши — с полным списком и лабораторными в [«Углубление: первоисточники и лабораторные»](/appendix/deep-dive/).
 :::
 
 ## Карта раздела
 
-1. **[Kubernetes: фундамент](/11-k8s-cicd/k8s-fundamentals/)** — то, без чего остальное не имеет смысла. Архитектура control plane и нод: кто принимает решения и кто их исполняет. Pod как атомарная единица и почему ты почти никогда не создаёшь его руками. Полный манифест Deployment с тремя видами проб, requests/limits и QoS-классами, Services, ConfigMap/Secret, PersistentVolume и CronJob для бэкапов. Плюс рабочий набор kubectl — инструмент, которым ты проводишь в кластере половину рабочего дня.
+1. **[Kubernetes: фундамент](/11-k8s-cicd/k8s-fundamentals/)** — то, без чего остальное не имеет смысла. Архитектура control plane и нод: кто принимает решения и кто их исполняет. Pod как атомарная единица и почему ты почти никогда не создаёшь его руками. Полный манифест Deployment с тремя видами проб, requests/limits и QoS-классами, Services, ConfigMap/Secret, PersistentVolume и CronJob для бэкапов. Плюс рабочий набор [kubectl](https://kubernetes.io/docs/reference/kubectl/) — инструмент, которым ты проводишь в кластере половину рабочего дня.
 
-2. **[Kubernetes: продвинутое](/11-k8s-cicd/k8s-advanced/)** — то, что отличает учебный кластер от боевого. Ingress и Ingress Controller, TLS через cert-manager, Helm как полноценный пакетный менеджер (шаблоны, values, зависимости, хуки), StatefulSet для баз данных, NetworkPolicies как сетевой фаервол, RBAC с сервис-аккаунтом для CI, PodDisruptionBudget и горизонтальное автомасштабирование.
+2. **[Kubernetes: продвинутое](/11-k8s-cicd/k8s-advanced/)** — то, что отличает учебный кластер от боевого. Ingress и Ingress Controller, TLS через [cert-manager](https://cert-manager.io/docs/), [Helm](https://helm.sh/docs/) как полноценный пакетный менеджер (шаблоны, values, зависимости, хуки), StatefulSet для баз данных, NetworkPolicies как сетевой фаервол, RBAC с сервис-аккаунтом для CI, PodDisruptionBudget и горизонтальное автомасштабирование.
 
 3. **[Наблюдаемость в Kubernetes](/11-k8s-cicd/k8s-observability/)** — слепой кластер недолговечен. kube-prometheus-stack: метрики control plane, подов и нод; ServiceMonitor и PodMonitor; дашборды Grafana; логи через Loki и Promtail; алертинг через Alertmanager с реальными правилами; и `kubectl get events` — самый недооценённый источник правды.
 
 4. **[GitHub Actions глубоко](/11-k8s-cicd/github-actions/)** — workflow-синтаксис без воды: jobs, steps, выходы и зависимости, кэширование npm-зависимостей и слоёв Docker через buildx, matrix-стратегии, reusable workflows и composite actions, environment protection rules, OIDC в облако вместо долгоживущих ключей, path-filters для монорепозиториев и отмена устаревших прогонов. Финал — полный пайплайн lint-test-build-scan-deploy.
 
-5. **[GitLab CI и GitOps](/11-k8s-cicd/gitlab-ci-gitops/)** — та же дисциплина на другом синтаксисе: `.gitlab-ci.yml` со stages и rules, artifacts против cache, docker:dind против kaniko, runner'ы. Затем главный сюжет раздела: **GitOps**. Почему push-модель деплоя опасна, как ArgoCD переворачивает поток управления, что такое app-of-apps и как CI всего лишь бампает тег образа в инфра-репозитории — а кластер сам приводит себя в нужное состояние.
+5. **[GitLab CI и GitOps](/11-k8s-cicd/gitlab-ci-gitops/)** — та же дисциплина на другом синтаксисе: `.gitlab-ci.yml` со stages и rules, artifacts против cache, docker:dind против kaniko, runner'ы. Затем главный сюжет раздела: **GitOps**. Почему push-модель деплоя опасна, как [ArgoCD](https://argoproj.github.io/argo-cd/) переворачивает поток управления, что такое app-of-apps и как CI всего лишь бампает тег образа в инфра-репозитории — а кластер сам приводит себя в нужное состояние.
 
 ## Связь с соседними разделами
 

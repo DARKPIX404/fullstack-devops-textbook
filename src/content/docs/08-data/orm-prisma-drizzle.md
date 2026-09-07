@@ -3,7 +3,7 @@ title: "Prisma, Drizzle и пулинг соединений"
 description: "Prisma: схема, генерация клиента, миграции и drift, N+1 и include/select, interactive transactions, ограничения ORM. Drizzle: SQL-like синтаксис и миграции. PgBouncer: режимы session и transaction, интеграция с Prisma, сиды."
 ---
 
-ORM — компромисс. Ты отдаёшь контроль над SQL в обмен на типобезопасность, миграции и скорость разработки. Хороший инженер знает, что получает, и — что важнее — что теряет. Эта глава про два доминирующих ORM в экосистеме TypeScript: Prisma (схема-центричный, комфортный) и Drizzle (SQL-like, прозрачный). А также про то, что происходит под ними: пулинг соединений через PgBouncer, без которого твоё приложение умрёт под нагрузкой.
+ORM — компромисс. Ты отдаёшь контроль над SQL в обмен на типобезопасность, миграции и скорость разработки. Хороший инженер знает, что получает, и — что важнее — что теряет. Эта глава про два доминирующих ORM в экосистеме TypeScript: [Prisma](https://www.prisma.io/docs) (схема-центричный, комфортный) и [Drizzle](https://orm.drizzle.team/docs/overview) (SQL-like, прозрачный). А также про то, что происходит под ними: пулинг соединений через PgBouncer, без которого твоё приложение умрёт под нагрузкой.
 
 ## Prisma: схема как источник истины
 
@@ -68,7 +68,7 @@ npx prisma studio                            # GUI для данных
 
 ### Миграции и drift
 
-`migrate dev` генерирует SQL из diff'а `schema.prisma` и применяет его. Но что если схему поменяли руками в БД? Это **drift** — расхождение между схемой в коде и реальной БД.
+`migrate dev` генерирует SQL из diff'а `schema.prisma` и применяет его. Но что если схему поменяли руками в БД? Это **drift** — расхождение между схемой в коде и реальной БД. Инструменты диагностики — в разделе документации [Prisma Migrate](https://www.prisma.io/docs/orm/prisma-migrate).
 
 ```bash
 npx prisma migrate diff \
@@ -197,7 +197,7 @@ await db.transaction(async (tx) => {
 await db.execute(sql`SELECT * FROM orders WHERE attributes @> '{"color":"red"}'`);
 ```
 
-Миграции через `drizzle-kit`:
+Миграции через `drizzle-kit`, генерация SQL из `schema.ts` описана в [документации Drizzle](https://orm.drizzle.team/docs/overview):
 
 ```bash
 npx drizzle-kit generate:pg  # сгенерировать SQL из schema.ts
@@ -222,7 +222,7 @@ npx drizzle-kit push:pg      # применить без файлов мигра
 
 PostgreSQL дорого держит соединение: каждое — отдельный процесс (~10 MB RAM). `max_connections` по умолчанию — 100. Если 50 подов Kubernetes держат по 5 коннектов — 250 процессов, и БД падает по памяти или отказывает в соединении.
 
-Решение — **PgBouncer**: лёгкий прокси перед PostgreSQL. Клиенты коннектятся к нему в большом количестве, а он держит маленький пул реальных серверных соединений.
+Решение — **[PgBouncer](https://www.pgbouncer.org/features.html)**: лёгкий прокси перед PostgreSQL. Клиенты коннектятся к нему в большом количестве, а он держит маленький пул реальных серверных соединений.
 
 ```
 App Pods (200 connections)
@@ -260,7 +260,7 @@ psql -h localhost -p 6432 -U postgres pgbouncer -c "SHOW POOLS;"
 
 ### PgBouncer + Prisma
 
-Prisma по умолчанию использует prepared statements, которые ломаются в transaction-режиме. Решение — добавить `pgbouncer=true` в строку подключения:
+Prisma по умолчанию использует prepared statements, которые ломаются в transaction-режиме. Решение — добавить `pgbouncer=true` в строку подключения (см. [Prisma: PgBouncer и connection pooling](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections)):
 
 ```env
 # .env

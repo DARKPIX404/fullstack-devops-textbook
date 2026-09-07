@@ -3,7 +3,7 @@ title: "Event Loop в браузере"
 description: "Call Stack, очереди микро- и макрозадач, requestAnimationFrame и этапы рендеринга, большая задача «предскажи порядок вывода» и отличия от Node.js."
 ---
 
-Почему `setTimeout(fn, 0)` выполняется ПОСЛЕ `console.log` на следующей строке? Почему `Promise.then` обгоняет таймер? Почему тяжёлый цикл «замерзает» кнопку, хотя обработчик уже повешен? Ответ на все три вопроса — один механизм: **Event Loop**. JS однопоточен, но браузер — нет. Асинхронные операции (таймеры, сеть, события) выполняет окружение, а JS получает результаты через очереди задач.
+Почему `setTimeout(fn, 0)` выполняется ПОСЛЕ `console.log` на следующей строке? Почему `Promise.then` обгоняет таймер? Почему тяжёлый цикл «замерзает» кнопку, хотя обработчик уже повешен? Ответ на все три вопроса — один механизм: [**Event Loop**](https://developer.mozilla.org/ru/docs/Web/JavaScript/EventLoop). JS однопоточен, но браузер — нет. Асинхронные операции (таймеры, сеть, события) выполняет окружение, а JS получает результаты через очереди задач.
 
 В краткой версии мы обозначили правило «микрозадачи раньше макрозадач». Здесь — полная модель: из чего состоит итерация цикла, где в ней живёт `requestAnimationFrame`, что такое рендеринг и почему код в Node.js ведёт себя похоже, но не одинаково.
 
@@ -29,7 +29,7 @@ description: "Call Stack, очереди микро- и макрозадач, re
 
 - **Call Stack** — синхронный код текущей задачи. Пока стек не пуст — Event Loop ждёт.
 - **Очередь макрозадач (task queue)** — `setTimeout`/`setInterval`, события DOM (`click`, `message`), `fetch`-колбэки на уровне задач, `<script>`.
-- **Очередь микрозадач (microtask queue)** — промисные реакции `.then/.catch/.finally`, продолжения после `await`, `queueMicrotask`, `MutationObserver`.
+- **Очередь микрозадач (microtask queue)** — промисные реакции `.then/.catch/.finally`, продолжения после `await`, [`queueMicrotask`](https://developer.mozilla.org/en-US/docs/Web/API/queueMicrotask), [`MutationObserver`](https://developer.mozilla.org/ru/docs/Web/API/MutationObserver).
 
 Главное правило: **после каждой макрозадачи Event Loop опустошает микрозадачи полностью** — даже если во время их выполнения появились новые. Только потом идёт рендеринг и следующая макрозадача.
 
@@ -130,7 +130,7 @@ for (let i = 0; i < 1e9; i++) { /* тяжёлый цикл на 2 секунды
 
 ## requestAnimationFrame и рендеринг
 
-`requestAnimationFrame(cb)` — просьба «вызови cb перед СЛЕДУЮЩИМ repaint». Порядок в итерации цикла: макрозадача → микрозадачи → **rAF-колбэки** → style/layout (reflow) → paint → composite. Поэтому чтение layout-свойств (offsetWidth и др.) внутри rAF-без надобности — лишний reflow не нужен, но и внутри микрозадач layout-чтение после записи принудительно делает синхронный reflow (layout thrashing).
+[`requestAnimationFrame(cb)`](https://developer.mozilla.org/ru/docs/Web/API/Window/requestAnimationFrame) — просьба «вызови cb перед СЛЕДУЮЩИМ repaint». Порядок в итерации цикла: макрозадача → микрозадачи → **rAF-колбэки** → style/layout (reflow) → paint → composite. Поэтому чтение layout-свойств (offsetWidth и др.) внутри rAF-без надобности — лишний reflow не нужен, но и внутри микрозадач layout-чтение после записи принудительно делает синхронный reflow (layout thrashing).
 
 ```js
 function animate() {
@@ -177,12 +177,12 @@ document.addEventListener('mousemove', updateTooltip);
 Обратный паттерн — **debounce через Event Loop**: отложить выполнение до паузы в событиях (поисковая строка). Там уместнее `setTimeout`, потому что важна тишина, а не синхронизация с кадром.
 
 :::tip[Long Tasks API)]
-Чтобы находить тяжёлые задачи в проде, используй PerformanceObserver с типом 'longtask' (>50 мс блокировки). Метрики отправляй в мониторинг реальных пользователей (RUM) — у пользователей на слабом железе проблемы видны раньше, чем у тебя на дев-машине.
+Чтобы находить тяжёлые задачи в проде, используй PerformanceObserver с типом 'longtask' (>50 мс блокировки) — подробности в [гайде web.dev по оптимизации long tasks](https://web.dev/articles/optimize-long-tasks). Метрики отправляй в мониторинг реальных пользователей (RUM) — у пользователей на слабом железе проблемы видны раньше, чем у тебя на дев-машине.
 :::
 
 ## Приоритеты задач: scheduler.postTask и фоновая работа
 
-Современный браузер даёт инструменты управления приоритетами задач без ручного «таймерного хака». API `scheduler.postTask` (Chrome 94+) позволяет ставить задачи в очередь с приоритетом: `user-blocking`, `user-visible` (по умолчанию), `background`:
+Современный браузер даёт инструменты управления приоритетами задач без ручного «таймерного хака». API [`scheduler.postTask`](https://developer.mozilla.org/en-US/docs/Web/API/Scheduler/postTask) (Chrome 94+) позволяет ставить задачи в очередь с приоритетом: `user-blocking`, `user-visible` (по умолчанию), `background`:
 
 ```js
 // Критичный фидбек — максимальный приоритет

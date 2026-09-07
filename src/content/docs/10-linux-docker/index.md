@@ -3,7 +3,7 @@ title: "Обзор раздела — Linux, Docker и эксплуатация"
 description: "Карта раздела: продвинутый bash, systemd и сети, внутреннее устройство Docker, Compose в продакшене, реестры и безопасность образов. Фундамент эксплуатации любого сервера."
 ---
 
-Любой фронтенд, любой бэкенд, любой пайплайн в итоге бежит на чужом железе под чужой ОС — и в 99 % случаев это Linux. В краткой версии учебника ты прошёл базу: пакетный менеджер, systemd-юниты, LVM и BTRFS, nftables, SSH-туннели, базовый bash и первый Compose-стек. Этого хватает, чтобы поднять сервер и не потерять его. Но эксплуатация — это когда серверов много, когда скрипты работают месяцами без присмотра, когда контейнеры живут не у тебя на ноутбуке, а в продакшене, где ошибка стоит денег и нервов.
+Любой фронтенд, любой бэкенд, любой пайплайн в итоге бежит на чужом железе под чужой ОС — и в 99 % случаев это Linux. В краткой версии учебника ты прошёл базу: пакетный менеджер, systemd-юниты, LVM и BTRFS, [nftables](https://wiki.nftables.org/wiki-nftables/index.php/Main_Page), SSH-туннели, базовый bash и первый Compose-стек. Этого хватает, чтобы поднять сервер и не потерять его. Но эксплуатация — это когда серверов много, когда скрипты работают месяцами без присмотра, когда контейнеры живут не у тебя на ноутбуке, а в продакшене, где ошибка стоит денег и нервов.
 
 ## Зачем углубляться
 
@@ -19,11 +19,11 @@ description: "Карта раздела: продвинутый bash, systemd и
 
 **2. [systemd и сети](/10-linux-docker/systemd-networks/)** — то, что держит сервер. Полный разбор директив `[Unit]`/`[Service]`/`[Install]`, timer-юниты против cron, изоляция зависимостей через `systemctl` и sandbox-директивы, journalctl как база данных логов. Плюс сетевой блок: `ip addr/route`, `ss`, диагностика DNS, полный firewall на nftables, tcpdump-фильтры для расследования инцидентов и SSH-туннели как инструмент проброса.
 
-**3. [Docker под капотом](/10-linux-docker/docker-deep/)** — что реально происходит при `docker run`: namespaces, cgroups, UnionFS, пошаговый жизненный цикл контейнера. Слои и кэширование, BuildKit, полноценный multi-stage Dockerfile для Node.js, сборка с аргументами и таймстемпами, анализ образа через Dive и системный подход к уменьшению размера.
+**3. [Docker под капотом](/10-linux-docker/docker-deep/)** — что реально происходит при `docker run`: namespaces, cgroups, UnionFS, пошаговый жизненный цикл контейнера. Слои и кэширование, [BuildKit](https://docs.docker.com/build/buildkit/), полноценный multi-stage Dockerfile для Node.js, сборка с аргументами и таймстемпами, анализ образа через Dive и системный подход к уменьшению размера.
 
 **4. [Compose в продакшене](/10-linux-docker/docker-compose-prod/)** — не демо-стек, а боевой: приложение + PostgreSQL с healthcheck + Redis + Nginx, две изолированные сети, `depends_on` с условиями, профили, env-файлы и секреты, политики рестарта, драйверы логов с ротацией, ресурсные лимиты и стратегия бэкапа томов.
 
-**5. [Реестры и безопасность образов](/10-linux-docker/docker-registry-security/)** — как устроены Docker Hub, GitHub Container Registry, Gitea и собственный registry 2.0 с TLS и htpasswd. Сканирование Trivy, подпись Cosign, запуск не от root, read-only filesystem, capabilities drop, seccomp/AppArmor и runtime-лимиты.
+**5. [Реестры и безопасность образов](/10-linux-docker/docker-registry-security/)** — как устроены Docker Hub, GitHub Container Registry, Gitea и собственный registry 2.0 с TLS и htpasswd. Сканирование [Trivy](https://trivy.dev/), подпись Cosign, запуск не от root, read-only filesystem, capabilities drop, seccomp/AppArmor и runtime-лимиты.
 
 ## Как работать с разделом
 
@@ -41,7 +41,7 @@ description: "Карта раздела: продвинутый bash, systemd и
 
 ## Минимальный инструментарий
 
-Нужна одна машина с Linux (VM на любом провайдере сгодится) и Docker:
+Нужна одна машина с Linux (VM на любом провайдере сгодится), Docker и [ShellCheck](https://www.shellcheck.net/) — линтер bash, который станет главным ревьюером твоих скриптов:
 
 ```bash
 ssh user@твой-сервер   # дальше весь раздел живёт здесь

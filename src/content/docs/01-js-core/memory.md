@@ -9,7 +9,7 @@ description: "Mark-and-sweep и reachability, типичные утечки (т�
 
 ## Как работает сборка мусора: reachability
 
-V8 (и все современные движки) используют **tracing garbage collection** с алгоритмом **mark-and-sweep**. Модель простая:
+V8 (и все современные движки) использует **tracing garbage collection** с алгоритмом [**mark-and-sweep**](https://developer.mozilla.org/ru/docs/Web/JavaScript/Memory_management). Модель простая:
 
 1. Движок поддерживает набор **корней (roots)**: глобальный объект, стек вызовов, активные слушатели событий, внутренние структуры.
 2. От корней начинается обход всех reachable-объектов: от корня до ссылки → объект помечается (mark). От него — дальше по его ссылкам.
@@ -199,7 +199,7 @@ memory
 ```
 
 :::tip[Дистанционные сессии)]
-В продакшене утечки ищут по метрикам: `performance.memory` (Chrome, `usedJSHeapSize`), метрики RSS в Node (`process.memoryUsage()`), снапшоты heap из Node (`node --inspect` + Chrome DevTools, или `v8.getHeapSnapshot()`).
+В продакшене утечки ищут по метрикам: [`performance.memory`](https://developer.mozilla.org/en-US/docs/Web/API/Performance/memory) (Chrome, `usedJSHeapSize`), метрики RSS в Node ([`process.memoryUsage()`](https://nodejs.org/api/process.html#processmemoryusage)), снапшоты heap из Node (`node --inspect` + Chrome DevTools, или `v8.getHeapSnapshot()`).
 :::
 
 ## WeakMap, WeakRef, FinalizationRegistry
@@ -231,7 +231,7 @@ w = null; // объект + его метаданные соберутся GC, �
 
 ### WeakRef
 
-`WeakRef` даёт явную слабую ссылку на объект: `ref.deref()` вернёт объект, если жив, или `undefined`:
+[`WeakRef`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef) даёт явную слабую ссылку на объект: `ref.deref()` вернёт объект, если жив, или `undefined`:
 
 ```js
 let cachedPreview = new WeakRef(loadHugePreview());
@@ -249,7 +249,7 @@ function showPreview() {
 
 Используется редко — обычно WeakMap решает задачу чище. Сценарий: кэш больших объектов, которые дорого держать, но и дорого пересоздавать (превью, декодированные буферы).
 
-### FinalizationRegistry
+### [FinalizationRegistry](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry)
 
 Колбэк при сборке объекта — для внешних ресурсов (нативные хендлы, файлы):
 
@@ -275,7 +275,7 @@ function openTracked(file) {
 
 - **Скрытые классы (hidden classes / shapes)**: объекты с одинаковой структурой делят описание формы. Менять форму на лету (`obj.a = 1; obj.b = 2;` в разных ветках) — деоптимизация.
 - **Inline caches**: вызовы `obj.method()` кешируются по форме объекта; полиморфные вызовы (разные формы) медленнее мономорфных.
-- **Орпанство поколений (generational GC)**: молодые объекты (allocation) собираются часто и быстро (scavenge), старые — редко (mark-compact). «Выжившие» объекты promoted в старое поколение. Отсюда правило: не держи живыми временные объекты дольше нужного.
+- [**Организация поколений (generational GC)**](https://v8.dev/blog/orinoco): молодые объекты (allocation) собираются часто и быстро (scavenge), старые — редко (mark-compact). «Выжившие» объекты promoted в старое поколение. Отсюда правило: не держи живыми временные объекты дольше нужного.
 - **Типизация через наблюдение**: V8 оптимизирует под фактически встречающиеся типы; `Array(1000)` смешанных типов (числа + строки + объекты) медленнее типизированных.
 
 Практический вывод: пиши естественно, избегай менять форму объектов в горячих путях и не оптимизируй преждевременно — профилируй (Performance-вкладка).

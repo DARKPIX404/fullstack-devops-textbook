@@ -3,7 +3,7 @@ title: "Promise под капотом"
 description: "Состояния и переходы промисов, then-цепочки и возврат значений, промисификация колбэков, комбинаторы all/race/allSettled/any, обработка ошибок и async-стек трейсов."
 ---
 
-Promise — это не «способ писать async/await», а самостоятельный примитив синхронизации с точной семантикой состояний. Понимание этой семантики — разница между разработчиком, который ловит «unhandled rejection» в логах продакшена, и тем, кто пишет цепочки, которые не ломаются.
+[Promise](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise) — это не «способ писать async/await», а самостоятельный примитив синхронизации с точной семантикой состояний. Понимание этой семантики — разница между разработчиком, который ловит «unhandled rejection» в логах продакшена, и тем, кто пишет цепочки, которые не ломаются.
 
 В краткой версии мы использовали промисы как обёртку над `fetch`. Здесь — как они устроены внутри: состояния, почему состояние меняется ровно один раз, как then-цепочки передают значения и ошибки, все четыре комбинатора и почему async-стек трейсов в современном V8 наконец-то читаемые.
 
@@ -90,7 +90,7 @@ fetch('/api/user')
 ```
 
 :::tip[fetch не реджектит на HTTP-статутах)]
-`fetch` отклоняет промис только при сетевой ошибке. `404`/`500` — успешный fulfilled с `response.ok === false`. Проверяй вручную — классическая грабля.
+`fetch` отклоняет промис только при сетевой ошибке. `404`/`500` — успешный fulfilled с [`response.ok === false`](https://developer.mozilla.org/ru/docs/Web/API/Response/ok). Проверяй вручную — классическая грабля.
 :::
 
 ## Паттерн Deferred: промис, которым управляют извне
@@ -150,7 +150,7 @@ function readFileAsync(path, encoding = 'utf8') {
 const content = await readFileAsync('./config.json');
 ```
 
-В Node.js для этого есть утилита `promisify` (и многие модули `node:fs/promises` уже промисные):
+В Node.js для этого есть утилита [`promisify`](https://nodejs.org/api/util.html#utilpromisifyoriginal) (и многие модули `node:fs/promises` уже промисные):
 
 ```js
 import { promisify } from 'node:util';
@@ -194,7 +194,7 @@ const any = await Promise.any(urls.map((u) => fetch(u)));
 | `all` | Все fulfilled → массив значений по порядку | Первый reject |
 | `allSettled` | Всегда → массив `{status, value/reason}` | Никогда (кроме синхронных багов) |
 | `race` | Первый settled (любой) | Первый settled (если reject) |
-| `any` | Первый fulfilled | Все reject → `AggregateError` |
+| `any` | Первый fulfilled | Все reject → [`AggregateError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError) |
 
 Порядок в `all`/`allSettled` — порядок массива входных промисов, не скорость исполнения. Это позволяет делать деструктуризацию: `const [user, settings] = await Promise.all([...])`.
 
@@ -204,7 +204,7 @@ const any = await Promise.any(urls.map((u) => fetch(u)));
 
 ## Ошибки: catch, наконец-то, unhandled rejection
 
-Цепочки без catch на конце — источник `unhandledrejection`. Браузер печатает его в консоль; в Node.js — это крэш процесса (по умолчанию). Гигиена: **каждая создаваемая цепочка имеет завершающий `.catch`**:
+Цепочки без catch на конце — источник [`unhandledrejection`](https://developer.mozilla.org/ru/docs/Web/API/Window/unhandledrejection_event). Браузер печатает его в консоль; в Node.js — это крэш процесса (по умолчанию). Гигиена: **каждая создаваемая цепочка имеет завершающий `.catch`**:
 
 ```js
 async function loadDashboard() {

@@ -11,7 +11,7 @@ description: "ACID под капотом: WAL и MVCC. Уровни изоляц
 
 ### Durability: WAL
 
-PostgreSQL не пишет данные сразу в таблицы. Сначала запись попадает в **WAL** (Write-Ahead Log) — последовательный журнал на диске. Только после fsync WAL транзакция считается зафиксированной. Падение сервера? При старте PostgreSQL проигрывает WAL с момента последнего checkpoint и восстанавливает состояние. Именно поэтому `COMMIT` быстрый, а данные в таблицах могут лежать несвежими — их запишут фоновые процессы позже.
+PostgreSQL не пишет данные сразу в таблицы. Сначала запись попадает в **WAL** (Write-Ahead Log) — последовательный журнал на диске. Только после fsync WAL транзакция считается зафиксированной. Падение сервера? При старте PostgreSQL проигрывает WAL с момента последнего checkpoint и восстанавливает состояние. Именно поэтому `COMMIT` быстрый, а данные в таблицах могут лежать несвежими — их запишут фоновые процессы позже. Устройство журнала описано в [главе документации про WAL](https://www.postgresql.org/docs/current/wal-intro.html).
 
 ### Atomicity и Consistency: undo через MVCC
 
@@ -28,7 +28,7 @@ SELECT xmin, xmax, * FROM accounts WHERE id = 1;
 
 ### Isolation: уровни как контракты
 
-Стандарт SQL определяет четыре уровня с аномалиями, которые они допускают. PostgreSQL реализует три из них (READ UNCOMMITTED работает как READ COMMITTED).
+Стандарт SQL определяет четыре уровня с аномалиями, которые они допускают. PostgreSQL реализует три из них (READ UNCOMMITTED работает как READ COMMITTED). Полное описание каждого уровня и допустимых аномалий — в [главе документации про изоляцию транзакций](https://www.postgresql.org/docs/current/transaction-iso.html).
 
 | Уровень | Dirty Read | Non-Repeatable Read | Phantom Read | Serialization Anomaly |
 |---------|------------|---------------------|--------------|----------------------|
@@ -118,7 +118,7 @@ UPDATE accounts SET balance = balance - 800 WHERE id = 1;
 COMMIT;  -- успех
 ```
 
-SSI детектирует опасную структуру: обе транзакции прочитали одну строку и обе пишут в неё. Одну убивает. Код приложения должен ловить `40001` и ретраить:
+SSI детектирует опасную структуру: обе транзакции прочитали одну строку и обе пишут в неё. Одну убивает. Код приложения должен ловить `40001` (см. [таблицу кодов ошибок PostgreSQL](https://www.postgresql.org/docs/current/errcodes-appendix.html)) и ретраить:
 
 ```ts
 async function transfer(fromId: number, toId: number, amount: number) {
@@ -145,7 +145,7 @@ async function transfer(fromId: number, toId: number, amount: number) {
 
 ## Блокировки: строки и таблицы
 
-PostgreSQL блокирует на уровне строк. `UPDATE`, `DELETE`, `SELECT FOR UPDATE` — берут `ROW EXCLUSIVE`. Две транзакции не могут одновременно блокировать одну строку на запись.
+PostgreSQL блокирует на уровне строк. `UPDATE`, `DELETE`, `SELECT FOR UPDATE` — берут `ROW EXCLUSIVE`. Две транзакции не могут одновременно блокировать одну строку на запись. Виды явных блокировок и их совместимость разобраны в [главе Explicit Locking](https://www.postgresql.org/docs/current/explicit-locking.html).
 
 ```sql
 -- Сессия A                          -- Сессия B
@@ -221,7 +221,7 @@ RETURNING *;
 
 ## Advisory locks: блокировки без таблиц
 
-Нужно заблокировать «ресурс», а не строку: не запускать две сверки баланса одновременно, не гонять два деплоя сразу.
+Нужно заблокировать «ресурс», а не строку: не запускать две сверки баланса одновременно, не гонять два деплоя сразу. Advisory locks — это [функции вида `pg_advisory_lock`](https://www.postgresql.org/docs/current/functions-admin.html#FUNCTIONS-ADVISORY-LOCKS) в документации:
 
 ```sql
 -- Блокировка по ключу 42, сессионная
@@ -273,5 +273,5 @@ await client.query('SELECT pg_advisory_xact_lock($1)', [hashString('nightly-repo
 
 - [PostgreSQL Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html)
 - [Explicit Locking](https://www.postgresql.org/docs/current/explicit-locking.html)
-- [SSI: A Critique of ANSI SQL Isolation Levels](https://www.cs.cmu.edu/~pavlo/courses/15721-fall2019/papers/05-serializability-berenson1995.pdf)
+- [SSI: A Critique of ANSI SQL Isolation Levels](https://www.jepsen.io/consistency)
 - [PostgreSQL 14 Internals: MVCC](https://www.interdb.jp/pg/)

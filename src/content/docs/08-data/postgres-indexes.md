@@ -3,7 +3,7 @@ title: "Индексы в PostgreSQL: от B-Tree до bloat"
 description: "Устройство B-Tree и его слепые зоны, составные индексы и leftmost prefix, покрывающие индексы INCLUDE, GIN для jsonb и полнотекста, частичные индексы, чтение плана EXPLAIN ANALYZE, VACUUM и bloat."
 ---
 
-Индекс — это структура данных, которая превращает полное сканирование таблицы в точечный поиск. Но индекс — не магия: он работает только тогда, когда запрос укладывается в геометрию структуры. Понимание этого — разница между «добавил индекс, стало быстро» и «понимаю, почему `LIKE '%foo%'` индекс не использует, и что с этим делать».
+Индекс — это [структура данных](https://www.postgresql.org/docs/current/indexes.html), которая превращает полное сканирование таблицы в точечный поиск. Но индекс — не магия: он работает только тогда, когда запрос укладывается в геометрию структуры. Понимание этого — разница между «добавил индекс, стало быстро» и «понимаю, почему `LIKE '%foo%'` индекс не использует, и что с этим делать».
 
 В краткой версии ты видел обзор B-Tree, GIN, GiST и `EXPLAIN ANALYZE`. Здесь копаем глубже: как устроен B-Tree страница за страницей, почему составные индексы подчиняются leftmost prefix, как работают покрывающие и частичные индексы, и почему твоя таблица раздувается, даже когда ты ничего не делаешь.
 
@@ -50,7 +50,7 @@ SELECT * FROM users WHERE lower(email) = 'a@b.c';  -- теперь индекс 
 
 ## Составные индексы и leftmost prefix
 
-Индекс `(a, b, c)` — это сортированный список кортежей `(a, b, c)`. Поиск возможен только по префиксу: `a`, `(a, b)`, `(a, b, c)`. Поиск по `b` или `(b, c)` — как искать в телефонной книге по имени без фамилии.
+Индекс `(a, b, c)` — это сортированный список кортежей `(a, b, c)`. Поиск возможен только по префиксу: `a`, `(a, b)`, `(a, b, c)`. Поиск по `b` или `(b, c)` — как искать в телефонной книге по имени без фамилии. Детали — в главе документации про [многоколоночные индексы](https://www.postgresql.org/docs/current/indexes-multicolumn.html).
 
 ```sql
 CREATE INDEX orders_user_status_idx ON orders (user_id, status, created_at DESC);
@@ -85,7 +85,7 @@ CREATE INDEX orders_user_covering_idx ON orders (user_id) INCLUDE (status, creat
 
 ## GIN: jsonb, массивы, полнотекст
 
-GIN — инвертированный индекс: для каждого элемента (ключа jsonb, слова, тега) — список строк, где он встречается. Поиск `jsonb @> '{"color": "red"}'` — мгновенно.
+GIN — инвертированный индекс: для каждого элемента (ключа jsonb, слова, тега) — список строк, где он встречается. Поиск `jsonb @> '{"color": "red"}'` — мгновенно. Полный список типов индексов и их операторов — в [документации PostgreSQL](https://www.postgresql.org/docs/current/indexes-types.html).
 
 ```sql
 -- JSONB с GIN
@@ -160,7 +160,7 @@ CREATE INDEX orders_active_created_idx ON orders (created_at) WHERE deleted_at I
 
 ## EXPLAIN ANALYZE: чтение плана
 
-`EXPLAIN` показывает план, `EXPLAIN ANALYZE` — выполняет и показывает реальные цифры.
+`EXPLAIN` показывает план, `EXPLAIN ANALYZE` — выполняет и показывает реальные цифры. Синтаксис и все опции — на странице [SQL EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html) в документации.
 
 ```sql
 EXPLAIN (ANALYZE, BUFFERS)
@@ -184,7 +184,7 @@ Limit  (actual time=0.123..0.456 rows=10 loops=1)
 
 ## VACUUM, autovacuum и bloat
 
-PostgreSQL не удаляет строки при `UPDATE`/`DELETE` — создаёт новую версию (MVCC). Старые версии — «мёртвые кортежи». `VACUUM` их подчищает, освобождает место для переиспользования.
+PostgreSQL не удаляет строки при `UPDATE`/`DELETE` — создаёт новую версию (MVCC). Старые версии — «мёртвые кортежи». `VACUUM` их подчищает, освобождает место для переиспользования. Вся механика регулярной очистки разобрана в [документации по routine vacuuming](https://www.postgresql.org/docs/current/routine-vacuuming.html).
 
 ```sql
 SELECT schemaname, relname, n_dead_tup, last_autovacuum

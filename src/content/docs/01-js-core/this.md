@@ -27,7 +27,7 @@ obj.method();                    // obj — вызван как метод
 
 ## Правило 1: Явная привязка — call, apply, bind
 
-Если при вызове используется `fn.call(ctx)`, `fn.apply(ctx, args)` или `fn.bind(ctx)`, `this` — переданный контекст. Приоритет выше всех остальных правил.
+Если при вызове используется [`fn.call(ctx)`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Function/call), [`fn.apply(ctx, args)`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Function/apply) или [`fn.bind(ctx)`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Function/bind), `this` — переданный контекст. Приоритет выше всех остальных правил.
 
 ```js
 function introduce(city, hobby) {
@@ -75,7 +75,7 @@ greet(); // «Привет, undefined» — вызов уже НЕ методо�
 
 ## Правило 3: Конструктор — new
 
-Если функция вызвана через `new Fn()`, создаётся пустой объект, он связывается с `this`, и, если функция не вернула свой объект, возвращается этот новый объект:
+Если функция вызвана через [`new Fn()`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/new), создаётся пустой объект, он связывается с `this`, и, если функция не вернула свой объект, возвращается этот новый объект:
 
 ```js
 function User(name) {
@@ -109,7 +109,7 @@ console.log(strict()); // undefined
 
 ## Правило 5: Лексический this — стрелочные функции
 
-Стрелочные функции **не имеют собственного `this`**. Они захватывают `this` из окружения, где были созданы — как обычную переменную через замыкание. Это единственное исключение из правила «this зависит от вызова»:
+[Стрелочные функции](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Functions/Arrow_functions) **не имеют собственного `this`**. Они захватывают `this` из окружения, где были созданы — как обычную переменную через замыкание. Это единственное исключение из правила «this зависит от вызова»:
 
 ```js
 const team = {
@@ -292,7 +292,7 @@ button.addEventListener('click', (event) => {
 });
 ```
 
-`event.currentTarget` — элемент, на котором сработал слушатель; `event.target` — элемент, где событие возникло (может быть вложенным). Путать их — частая причина «не тот this/не тот элемент».
+[`event.currentTarget`](https://developer.mozilla.org/en-US/docs/Web/API/Event/currentTarget) — элемент, на котором сработал слушатель; [`event.target`](https://developer.mozilla.org/en-US/docs/Web/API/Event/target) — элемент, где событие возникло (может быть вложенным). Путать их — частая причина «не тот this/не тот элемент».
 
 ## bind против стрелок: какую привязку выбрать
 

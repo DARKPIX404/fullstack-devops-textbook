@@ -11,7 +11,7 @@ systemd воспринимай как «систему оркестрации п
 
 ## Unit-файлы: анатомия
 
-Юнит — декларативное описание того, что systemd должен запустить и как это сопровождать. Файл кладётся в `/etc/systemd/system/myapp.service` (свои юниты — только туда; `/usr/lib/systemd/system/` — территория пакетного менеджера, её правки сотрутся при обновлении).
+Юнит — декларативное описание того, что systemd должен запустить и как это сопровождать (полный справочник директив — [systemd.service(5)](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html) и [systemd.exec(5)](https://www.freedesktop.org/software/systemd/man/latest/systemd.exec.html)). Файл кладётся в `/etc/systemd/system/myapp.service` (свои юниты — только туда; `/usr/lib/systemd/system/` — территория пакетного менеджера, её правки сотрутся при обновлении).
 
 ```ini
 # /etc/systemd/system/myapp.service
@@ -104,13 +104,13 @@ ExecStart=/opt/myapp/bin/backup.sh
 TimeoutStartSec=0
 ```
 
-`OnCalendar` — синтаксис мощнее cron: дни недели, конкретные даты, `*-*-* 03:00:00`, интервалы. `Persistent=true` — ключевое отличие от cron: если сервер был выключен в 03:00, таймер догонит пропущенный запуск сразу после загрузки. `RandomizedDelaySec` — размазывает запуски по флоту серверов, чтобы тысяча машин не ударила в бэкенд бэкапа одновременно.
+`OnCalendar` — синтаксис [systemd.timer(5)](https://www.freedesktop.org/software/systemd/man/latest/systemd.timer.html) мощнее cron: дни недели, конкретные даты, `*-*-* 03:00:00`, интервалы. `Persistent=true` — ключевое отличие от cron: если сервер был выключен в 03:00, таймер догонит пропущенный запуск сразу после загрузки. `RandomizedDelaySec` — размазывает запуски по флоту серверов, чтобы тысяча машин не ударила в бэкенд бэкапа одновременно.
 
 Проверка расписания до включения: `systemd-analyze calendar "Mon-Sat *-*-* 03:00:00"` — покажет ближайшие моменты запуска. Статус: `systemctl list-timers --all`.
 
 ## journalctl: логи как база данных
 
-systemd собирает stdout/stderr и syslog всех сервисов в структурированный журнал. Это не «grep по файлам», это запросы:
+systemd собирает stdout/stderr и syslog всех сервисов в структурированный журнал (интерфейс запросов к нему — [journalctl(1)](https://www.freedesktop.org/software/systemd/man/latest/journalctl.html)). Это не «grep по файлам», это запросы:
 
 ```bash
 journalctl -u myapp -f                          # живое слежение за сервисом
@@ -196,7 +196,7 @@ getent hosts example.com              # резолв глазами libc — т�
 
 ## nftables: firewall как код
 
-iptables умер, жив nftables: атомарное применение всего набора правил, читаемый синтаксис, единые таблицы для IPv4/IPv6 (`inet`). Полный рабочий firewall для одного сервера:
+iptables умер, жив [nftables](https://wiki.nftables.org/wiki-nftables/index.php/Main_Page): атомарное применение всего набора правил, читаемый синтаксис, единые таблицы для IPv4/IPv6 (`inet`). Полный рабочий firewall для одного сервера:
 
 ```nft
 #!/usr/sbin/nft -f

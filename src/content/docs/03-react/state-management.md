@@ -16,7 +16,7 @@ description: "Четыре категории состояния, клиентс
 
 ## Zustand: клиентский стор без церемоний
 
-Zustand — минималистичный стейт-менеджер: один хук, ноль провайдеров, ноль бойлерплейта. Стор создаётся функцией `create`, которая принимает колбэк с `set`/`get` и возвращает хук:
+[Zustand](https://zustand.docs.pmnd.rs/getting-started/introduction) — минималистичный стейт-менеджер: один хук, ноль провайдеров, ноль бойлерплейта. Стор создаётся функцией `create`, которая принимает колбэк с `set`/`get` и возвращает хук:
 
 ```tsx
 import { create } from 'zustand';
@@ -111,7 +111,7 @@ export const useCart = create<CartState>()(
 
 ## Redux Toolkit: когда он оправдан
 
-Redux Toolkit (RTK) — современное лицо Redux: `createSlice` убирает 80% старого бойлерплейта, Immer встроен, thunk-ы из коробки. Но философия прежняя: **единый стор, actions, reducer'ы, однонаправленный поток**.
+[Redux Toolkit (RTK)](https://redux-toolkit.js.org/tutorials/quick-start) — современное лицо Redux: `createSlice` убирает 80% старого бойлерплейта, Immer встроен, thunk-ы из коробки. Но философия прежняя: **единый стор, actions, reducer'ы, однонаправленный поток**.
 
 ```tsx
 import { createSlice, configureStore } from '@reduxjs/toolkit';
@@ -148,7 +148,7 @@ export const { addItem } = cartSlice.actions;
 
 ## TanStack Query: серверное состояние как первоклассный житель
 
-Вернёмся к категории 2. Список товаров из API — это не «состояние» в реактивном смысле, это **кэш удалённых данных**. Ручной подход (useState + useEffect + fetch) заставляет тебя самому решать: когда перезапрашивать, как дедуплицировать параллельные запросы, что показывать при повторном посещении страницы, как обновлять после мутации. TanStack Query (React Query) решает это инфраструктурно.
+Вернёмся к категории 2. Список товаров из API — это не «состояние» в реактивном смысле, это **кэш удалённых данных**. Ручной подход (useState + useEffect + fetch) заставляет тебя самому решать: когда перезапрашивать, как дедуплицировать параллельные запросы, что показывать при повторном посещении страницы, как обновлять после мутации. [TanStack Query](https://tanstack.com/query/latest/docs/framework/react/guides/queries) (React Query) решает это инфраструктурно.
 
 ### Queries: чтение с кэшем
 
@@ -194,7 +194,7 @@ function AddToCartButton({ product }: { product: Product }) {
 }
 ```
 
-Мутация — императивная операция (`mutate`). Её флаги (`isPending`, `isError`, `isSuccess`) заменяют ручное состояние кнопки. Главное — `invalidateQueries`: точечный сброс кэша по префиксу ключа, после чего Query сам перезапросит активные подписчики. Больше никаких «забыл обновить список после добавления».
+Мутация — императивная операция (`mutate`). Её флаги (`isPending`, `isError`, `isSuccess`) заменяют ручное состояние кнопки. Главное — [`invalidateQueries`](https://tanstack.com/query/latest/docs/framework/react/guides/mutations): точечный сброс кэша по префиксу ключа, после чего Query сам перезапросит активные подписчики. Больше никаких «забыл обновить список после добавления».
 
 ### Инвалидация и optimistic updates
 

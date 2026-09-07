@@ -63,7 +63,7 @@ process.on('SIGINT', () => void shutdown('SIGINT'));
 
 ## Keep-alive и агенты HTTP
 
-По умолчанию исходящие HTTP-запросы (`fetch`, `http.request`) используют глобальный агент с keep-alive выключенным — каждый запрос открывает новый TCP-сокет (и TLS-хендшейк). На высоких RPS это тысячи сокетов в TIME_WAIT и лишний RTT на каждый запрос.
+По умолчанию исходящие HTTP-запросы (`fetch`, `http.request`) используют глобальный агент с keep-alive выключенным — каждый запрос открывает новый TCP-сокет (и TLS-хендшейк). На высоких RPS это тысячи сокетов в TIME_WAIT и лишний RTT на каждый запрос. Настройка глобального диспетчера подробно описана в [документации undici `Agent`](https://undici.nodejs.org/#/docs/api/Agent).
 
 ```js
 // для fetch (undici) — глобальный агент с лимитами
@@ -106,7 +106,7 @@ async function fetchWithTimeout(url, opts = {}, timeoutMs = 5000) {
 
 ## Логирование: pino и структурные логи
 
-`console.log` в проде не работает: нет уровней, нет контекста, синхронная запись в stdout тормозит цикл под нагрузкой. Стандарт — **pino**: быстрый (сериализация в worker'е), структурный (JSON-строки), с уровнями и дочерними логгерами.
+`console.log` в проде не работает: нет уровней, нет контекста, синхронная запись в stdout тормозит цикл под нагрузкой. Стандарт — **[pino](https://getpino.io/)**: быстрый (сериализация в worker'е), структурный (JSON-строки), с уровнями и дочерними логгерами.
 
 ```js
 import pino from 'pino';
@@ -136,7 +136,7 @@ log.info({ userId: 42, durationMs: 87 }, 'user created');
 
 ## Конфигурация: env + Zod
 
-Конфиг из переменных окружения — стандарт 12-factor. Без валидации опечатка в имени переменной всплывёт через час (`undefined` в порте БД) или никогда. Правило: **схема, валидация на старте, падение при ошибке**.
+Конфиг из переменных окружения — стандарт 12-factor. Без валидации опечатка в имени переменной всплывёт через час (`undefined` в порте БД) или никогда. Правило: **схема, валидация на старте, падение при ошибке** — классический подход с [Zod](https://zod.dev/):
 
 ```js
 import { z } from 'zod';
@@ -220,7 +220,7 @@ app.get('/metrics', async (req, res) => {
 });
 ```
 
-Обрати внимание на `collectDefaultMetrics` — там уже есть event loop lag из `perf_hooks.monitorEventLoopDelay()` (мы разбирали его в [главе про Event Loop](/06-nodejs/event-loop-node/)): сразу получаешь p50/p99 лага в метриках `nodejs_eventloop_lag_*`. По гистограмме HTTP-запросов Prometheus считает quantile'ы через `histogram_quantile`.
+Обрати внимание на `collectDefaultMetrics` — там уже есть event loop lag из `perf_hooks.monitorEventLoopDelay()` (мы разбирали его в [главе про Event Loop](/06-nodejs/event-loop-node/)): сразу получаешь p50/p99 лага в метриках `nodejs_eventloop_lag_*`. По гистограмме HTTP-запросов Prometheus считает quantile'ы через `histogram_quantile`. Документация по метрикам и типам — в [репозитории prom-client](https://github.com/siimon/prom-client).
 
 :::tip[Метрики против логов]
 Метрики — для «что происходит со всеми запросами» (алерты, тренды), логи — для «что произошло с этим запросом» (расследование). Классическая связка: метрика показала рост 5xx → логи по requestId → причина. Дорожная карта полного стека — в разделе про [трейсинг](/12-iac-deploy-obs/tracing-alerting/).
@@ -256,7 +256,7 @@ if (process.env.HEAP_SNAPSHOT === '1') {
 
 ## Отладка: --inspect
 
-Node поддерживает протокол Chrome DevTools. Запуск с `--inspect` (или `--inspect-brk` — остановиться на первой строке):
+Node поддерживает протокол Chrome DevTools. Запуск с `--inspect` (или `--inspect-brk` — остановиться на первой строке; обзор возможностей — в [официальном гайде по отладке](https://nodejs.org/en/learn/getting-started/debugging)):
 
 ```bash
 node --inspect=0.0.0.0:9229 server.js

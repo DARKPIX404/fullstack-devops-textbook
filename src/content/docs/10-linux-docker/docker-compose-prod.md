@@ -183,13 +183,13 @@ depends_on:
     condition: service_started   # только факт старта (redis почти мгновенен)
 ```
 
-Варианты условий: `service_started` (контейнер запущен), `service_healthy` (healthcheck healthy), `service_completed_successfully` (для init-контейнеров с `profiles`/oneshot — миграции). Healthcheck в app нужен самому себе: nginx ждёт его, прежде чем считать стек поднятым.
+Варианты условий: `service_started` (контейнер запущен), `service_healthy` (healthcheck healthy), `service_completed_successfully` (для init-контейнеров с `profiles`/oneshot — миграции). Полная семантика условий — в [спецификации Compose](https://docs.docker.com/compose/compose-file/). Healthcheck в app нужен самому себе: nginx ждёт его, прежде чем считать стек поднятым.
 
 Важно: healthcheck — не замена retry-логике в приложении. Между «pg_isready вернул ok» и «приложение реально подключилось» есть секунды, и соединение может оборваться в любой момент жизни. Клиенты БД должны уметь переподключаться — healthcheck решает только стартовую гонку.
 
 ## Профили: опциональные сервисы
 
-Профили отделяют то, что должно работать постоянно, от того, что запускается по требованию:
+[Профили](https://docs.docker.com/compose/how-tos/profiles/) отделяют то, что должно работать постоянно, от того, что запускается по требованию:
 
 ```bash
 docker compose up -d                          # app, db, redis, nginx — без backup
@@ -209,7 +209,7 @@ DB_PASSWORD=s3cret-from-vault
 
 Compose подставляет `${VAR}` из shell и из `.env`. Два правила: обязательные переменные помечай `:?сообщение` — забытый `.env` даст понятную ошибку вместо пустого пароля; `.env` в `.gitignore` всегда, в репе — `.env.example` с пустыми значениями.
 
-Compose-secrets (файл `secrets/tls_key.pem` монтируется в `/run/secrets/tls_key` внутри контейнера): лучше env-переменных, потому что не видны в `docker inspect` (переменные окружения там видны всем, у кого есть доступ к docker-сокету!) и не попадают в логи при ошибках. Для Compose на одном хосте это «почти» security: физически файл на том же диске, но граница «не в inspect/не в env» уже снимает целый класс утечек.
+Compose-secrets ([документация](https://docs.docker.com/compose/use-secrets/); файл `secrets/tls_key.pem` монтируется в `/run/secrets/tls_key` внутри контейнера): лучше env-переменных, потому что не видны в `docker inspect` (переменные окружения там видны всем, у кого есть доступ к docker-сокету!) и не попадают в логи при ошибках. Для Compose на одном хосте это «почти» security: физически файл на том же диске, но граница «не в inspect/не в env» уже снимает целый класс утечек.
 
 :::caution[docker inspect — публичное достояние]
 Кто угодно с доступом к docker-сокету (а это часто все в группе docker, т.е. фактически root) видит `Config.Env` каждого контейнера. Пароль БД в `environment:` — плохо; тот же пароль через `secrets:` — терпимо; лучше всего — внешний секрет-менеджер (Vault, SOPS), но на уровне Compose секреты уже правильный шаг.

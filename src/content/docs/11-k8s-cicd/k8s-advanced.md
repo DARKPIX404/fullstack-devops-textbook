@@ -9,7 +9,7 @@ description: "Ingress и Ingress Controller, TLS через cert-manager, Helm-�
 
 Service типа NodePort открывает порт на нодах, но это не HTTP-маршрутизация: ни доменов, ни путей, ни TLS-терминации. За это отвечает связка из двух объектов:
 
-- **Ingress** — декларативное правило: «домен `api.darkpix.dev`, путь `/api` → Service backend, TLS сертификат из секрета `api-tls`».
+- **Ingress** — декларативное правило: «домен `api.darkpix.dev`, путь `/api` → Service backend, TLS сертификат из секрета `api-tls`». Формат ресурса — в [документации по Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/).
 - **Ingress Controller** — демон, который *реализует* эти правила. Самый распространённый — **ingress-nginx**: читает все Ingress'ы через API-сервер и перегенерирует конфиг nginx + reload.
 
 ```bash
@@ -48,7 +48,7 @@ spec:
 
 ## TLS через cert-manager
 
-Ручное продление сертификатов — ритуал, который однажды забывают. **cert-manager** — оператор в кластере, который сам выпускает и обновляет сертификаты Let's Encrypt через ACME-протокол (challenge http-01: спрятать файл по пути, который проверит LE).
+Ручное продление сертификатов — ритуал, который однажды забывают. **cert-manager** — оператор в кластере, который сам выпускает и обновляет сертификаты Let's Encrypt через ACME-протокол (challenge http-01: спрятать файл по пути, который проверит LE). Концепции issuance и настройки ACME-issuer'ов — в [документации cert-manager](https://cert-manager.io/docs/).
 
 ```bash
 helm upgrade --install cert-manager jetstack/cert-manager \
@@ -80,7 +80,7 @@ Let's Encrypt имеет rate limits: 5 неудачных валидаций в
 
 ## Helm: шаблонизация манифестов
 
-Когда манифестов много и они отличаются значениями между окружениями, правят одни и те же файлы — пора в Helm. Чарт — это Go-шаблоны + `values.yaml` + метаданные; релиз — установленный в кластер экземпляр чарта.
+Когда манифестов много и они отличаются значениями между окружениями, правят одни и те же файлы — пора в Helm. Чарт — это Go-шаблоны + `values.yaml` + метаданные; релиз — установленный в кластер экземпляр чарта. Шаблонизация, values и жизненный цикл релизов подробно описаны в [документации Helm](https://helm.sh/docs/).
 
 ```
 charts/api/
@@ -213,11 +213,11 @@ spec:
         resources: { requests: { storage: 10Gi } }
 ```
 
-Ключевые отличия от Deployment: PVC создаётся из шаблона и **не удаляется** при удалении/пересоздании пода (диск переживает под, пока жив StatefulSet); поды стартуют и останавливаются по порядку (db-0 → db-1); DNS через headless-сервис даёт прямой доступ к конкретной реплике. Для pet-проекта хватит одной реплики; кластеризация Postgres (Patroni, CloudNativePG) — отдельная большая глава.
+Ключевые отличия от Deployment: PVC создаётся из шаблона и **не удаляется** при удалении/пересоздании пода (диск переживает под, пока жив StatefulSet); поды стартуют и останавливаются по порядку (db-0 → db-1); DNS через headless-сервис даёт прямой доступ к конкретной реплике. Гарантии упорядочения и персистентности — в [документации StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/). Для pet-проекта хватит одной реплики; кластеризация Postgres (Patroni, CloudNativePG) — отдельная большая глава.
 
 ## NetworkPolicy: сетевой фаервол внутри кластера
 
-По умолчанию любой под может достучаться до любого пода — любой скомпрометированный контейнер видит базу. NetworkPolicy (реализует CNI: Calico, Cilium) ограничивает трафик на L3/L4:
+По умолчанию любой под может достучаться до любого пода — любой скомпрометированный контейнер видит базу. NetworkPolicy (реализует CNI: Calico, Cilium) ограничивает трафик на L3/L4 — синтаксис и семантика селекторов разобраны в [документации по NetworkPolicies](https://kubernetes.io/docs/concepts/services-networking/network-policies/):
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -240,7 +240,7 @@ NetworkPolicy срабатывает только если CNI-плагин её
 
 ## RBAC: ServiceAccount, Role, RoleBinding
 
-RBAC в K8s отвечает на вопрос «кто может что». Субъект (ServiceAccount/пользователь) + много действий (Role с правилами) + связка (RoleBinding). Разница Role/ClusterRole — область: namespace или весь кластер.
+RBAC в K8s отвечает на вопрос «кто может что». Субъект (ServiceAccount/пользователь) + много действий (Role с правилами) + связка (RoleBinding). Разница Role/ClusterRole — область: namespace или весь кластер. Модель авторизации целиком — в [документации по RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/).
 
 Главный практический кейс — **сервис-аккаунт для CI/GitOps**, который может деплоить только одно приложение и ничего больше:
 

@@ -7,7 +7,7 @@ description: "Полный .gitlab-ci.yml: stages, rules/when, artifacts про�
 
 ## Анатомия .gitlab-ci.yml
 
-Полный пример для Node.js-приложения с безопасностью и GitOps-финалом:
+Полный пример для Node.js-приложения с безопасностью и GitOps-финалом. Все ключи и их семантика — в [GitLab CI/CD YAML reference](https://docs.gitlab.com/ee/ci/yaml/):
 
 ```yaml
 # .gitlab-ci.yml
@@ -122,6 +122,7 @@ deploy:gitops:
 # + Привычный docker build; — привилегированный режим, тяжело, требует TLS.
 
 # Вариант 2: kaniko — сборка без демона, userspace, без привилегий.
+# https://github.com/GoogleContainerTools/kaniko — реализация и ограничения.
 build:kaniko:
   stage: build
   image:
@@ -142,7 +143,7 @@ build:kaniko:
 
 ### Runner'ы
 
-Job'ы исполняет **runner** — агент, опрашивающий GitLab. Типы:
+Job'ы исполняет **runner** — агент, опрашивающий GitLab. Типы и executor'ы разобраны в [документации GitLab Runner](https://docs.gitlab.com/runner/):
 
 - **Shared** (gitLab.com) — чужие машины, ограничения по минутам, не для приватного кода с секретами.
 - **Specific/Group/Project runner** — свой. Классика: Docker executor (каждый job — контейнер на хосте), shell executor (job'ы прямо на хосте), Kubernetes executor (job'ы — поды в кластере, автомасштабирование).
@@ -219,6 +220,8 @@ scan:snyk:
 
 ### ArgoCD: установка и Application
 
+Концепции ArgoCD (Application, project, sync policy) — в [официальной документации](https://argoproj.github.io/argo-cd/).
+
 ```bash
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
@@ -256,7 +259,7 @@ spec:
 
 ### App-of-apps и Flux кратко
 
-Когда приложений много, Application'ы становятся boilerplate. **App-of-apps**: один корневой Application следит за директорией, в которой лежат Application'ы (helm-чартом или простыми манифестами) — ArgoCD рекурсивно разворачивает их:
+Когда приложений много, Application'ы становятся boilerplate. **App-of-apps**: один корневой Application следит за директорией, в которой лежат Application'ы (helm-чартом или простыми манифестами) — ArgoCD рекурсивно разворачивает их (паттерн описан в [документации ArgoCD](https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/#app-of-apps-pattern)):
 
 ```
 pet-infra/
@@ -270,7 +273,7 @@ pet-infra/
 
 Плюс отделение сред: **ApplicationSet** генерирует Application на каждый кластер/окружение из шаблона + списка сред (dev/stage/prod) — одна правда, три кластера.
 
-**Flux** — альтернатива от CNCF (тот же pull, иная реализация): не GUI, а набор контроллеров (source-controller, kustomize-controller, helm-controller, notification-controller); состояние в CRD `GitRepository` + `Kustomization`/`HelmRelease`. Выбор: ArgoCD — визуализация и управление из UI, богатые sync-стратегии; Flux — «всё кодом», нативный GitOps-нрав, легче старт в существующем кластере. Механика одна, термины разные.
+**Flux** — альтернатива от CNCF (тот же pull, иная реализация): не GUI, а набор контроллеров (source-controller, kustomize-controller, helm-controller, notification-controller); состояние в CRD `GitRepository` + `Kustomization`/`HelmRelease`. Детали — в [документации Flux](https://fluxcd.io/flux/). Выбор: ArgoCD — визуализация и управление из UI, богатые sync-стратегии; Flux — «всё кодом», нативный GitOps-нрав, легче старт в существующем кластере. Механика одна, термины разные.
 
 ## Типичные ошибки и грабли
 

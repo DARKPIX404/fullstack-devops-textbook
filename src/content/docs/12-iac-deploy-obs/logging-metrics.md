@@ -100,7 +100,7 @@ app.use((req, res, next) => {
 
 ## Loki-стек: агрегация и LogQL
 
-Сырой stdout контейнера — не хранилище. Loki (Grafana Labs) забирает логи и индексирует **только метки** (labels), не содержимое: дешевле ELK на порядок, родной выбор для Grafana-стека.
+Сырой stdout контейнера — не хранилище. [Loki](https://grafana.com/docs/loki/latest/) (Grafana Labs) забирает логи и индексирует **только метки** (labels), не содержимое: дешевле ELK на порядок, родной выбор для Grafana-стека.
 
 ```yaml
 # docker-compose.yml — стек наблюдаемости
@@ -158,7 +158,7 @@ Promtail читает JSON-логи Docker'а, парсит каждую стр�
 
 ### LogQL: язык запросов
 
-LogQL-запрос = селектор меток + фильтр/агрегация:
+[LogQL](https://grafana.com/docs/loki/latest/query/)-запрос = селектор меток + фильтр/агрегация:
 
 ```text
 # Все логи контейнера приложения
@@ -318,7 +318,7 @@ app.get("/metrics", async (req, res) => {            // Prometheus ходит с
 
 ### PromQL-практика
 
-PromQL — язык запросов к time-series. Три функции закрывают 90% задач:
+[PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/) — язык запросов к time-series. Три функции закрывают 90% задач:
 
 **`rate()` — скорость изменения counter'а.** Всегда используй с `[Xm]`-окном:
 

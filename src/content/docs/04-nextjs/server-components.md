@@ -3,7 +3,7 @@ title: "React Server Components: граница сервера и клиента
 description: "Что выполняется на сервере в RSC, где проходит граница 'use client', почему хуки и браузерные API запрещены, сериализация props, стоимость гидратации и клиентские островки."
 ---
 
-React Server Components (RSC) — архитектурный сдвиг, который React готовил несколько лет, а Next.js App Router сделал массовым. Идея проста и радикальна одновременно: **часть компонентов React исполняется только на сервере и никогда не попадает в браузер как JavaScript**. Браузер получает их готовый HTML-подобный результат — сериализованное дерево с инструкциями, где какие места должны стать интерактивными.
+React Server Components (RSC) — архитектурный сдвиг, который React готовил несколько лет, а Next.js App Router сделал массовым. Идея проста и радикальна одновременно: **часть компонентов React исполняется только на сервере и никогда не попадает в браузер как JavaScript**. Браузер получает их готовый HTML-подобный результат — сериализованное дерево с инструкциями, где какие места должны стать интерактивными. Базовая механика расписана в [официальном гайде по Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components).
 
 Это меняет экономику фронтенда. Раньше «весь React» ехал в бандл: и разметка, и логика, и библиотеки. С RSC бандл уменьшается до клиентских островков, а серверная часть работает там, где есть прямой доступ к базе, файловой системе и приватным ключам. Но эта сила имеет цену: жёсткая граница между сервером и клиентом, правила сериализации и новый класс ошибок, которых не существовало в классическом SPA.
 
@@ -44,7 +44,7 @@ export default async function UsersPage() {
 
 ## Граница 'use client': как она устроена
 
-Директива `'use client'` помечает точку, от которой компонент и всё его поддерево становятся клиентскими. Но важно понимать механику: **граница проходит по импортам, а не по JSX-вложенности**.
+Директива `'use client'` помечает точку, от которой компонент и всё его поддерево становятся [клиентскими](https://nextjs.org/docs/app/building-your-application/rendering/client-components). Но важно понимать механику: **граница проходит по импортам, а не по JSX-вложенности**.
 
 ```
 app/page.tsx (сервер)
@@ -130,12 +130,12 @@ export default async function ProductsPage() {
 ```
 
 :::tip[Пакет server-only]
-Next.js поставляет пакет `server-only`: добавь `import 'server-only'` первой строкой в модули с секретами и запросами к БД. Если такой модуль случайно попадёт в клиентский бандл, сборка упадёт с понятной ошибкой, а не молча отдаст секреты в браузер.
+Next.js поставляет пакет `server-only` (см. [паттерны композиции](https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns)): добавь `import 'server-only'` первой строкой в модули с секретами и запросами к БД. Если такой модуль случайно попадёт в клиентский бандл, сборка упадёт с понятной ошибкой, а не молча отдаст секреты в браузер.
 :::
 
 ## Гидратация и её стоимость
 
-Клиентский компонент получает с сервера HTML и должен «ожить»: React скачивает бандл, выполняет компоненты, сопоставляет виртуальное дерево с реальным DOM и навешивает обработчики. Это и есть гидратация, и у неё две цены:
+Клиентский компонент получает с сервера HTML и должен «ожить»: React скачивает бандл, выполняет компоненты, сопоставляет виртуальное дерево с реальным DOM и навешивает обработчики. Это и есть гидратация (цена подробно разобрана в [Rendering on the Web](https://web.dev/articles/rendering-on-the-web)), и у неё две цены:
 
 - **Скачивание и парсинг JS.** Каждый клиентский островок тянет за собой React-рантайм, хуки, библиотеки. Большое дерево из клиентских компонентов = сотни килобайт JS на 3G-соединении.
 - **Main-thread время.** Гидратация выполняется на главном потоке и конкурирует с обработкой ввода пользователя. На слабом телефоне «страница загрузилась, но не нажимается» — симптом перегруженной гидратации.
@@ -210,5 +210,5 @@ export default async function ArticlePage({ params }: Props) {
 - [React: Server Components — RFC и мотивация](https://github.com/reactjs/rfcs/blob/main/text/0188-server-components.md)
 - [Next.js: Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components)
 - [Next.js: Client Components](https://nextjs.org/docs/app/building-your-application/rendering/client-components)
-- [web.dev: Hydration is a tree — cost of interactivity](https://web.dev/articles/hydration-is-pure-overhead)
+- [web.dev: Rendering on the Web — SSR, гидратация и их цена](https://web.dev/articles/rendering-on-the-web)
 - [Next.js: Composition patterns (server/client граница)](https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns)

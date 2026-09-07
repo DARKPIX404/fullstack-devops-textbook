@@ -8,7 +8,7 @@ description: "Карта раздела: от проектирования сх�
 В краткой версии учебника ты уже видел обзор: нормализация по формам, B-Tree/GIN-индексы, транзакции ACID, Prisma против Drizzle, PgBouncer, cache-aside и лидерборды на Sorted Sets. Здесь мы копаем глубже — до уровня «могу объяснить на собеседовании, как PostgreSQL физически хранит строки и почему `LIKE '%foo'` не использует индекс».
 
 :::caution[Не единственный источник]
-Этот раздел — карта и практика, а не финальная инстанция. Для настоящей глубины по PostgreSQL и Redis иди к первоисточникам: документация (главы про индексы, изоляцию, WAL), «PostgreSQL Internals» Рогова и обязательные лабораторные (реплика, deadlock, 10 млн строк) — в [«Углубление: первоисточники и лабораторные»](/appendix/deep-dive/).
+Этот раздел — карта и практика, а не финальная инстанция. Для настоящей глубины по PostgreSQL и Redis иди к первоисточникам: документация (главы про [индексы](https://www.postgresql.org/docs/current/indexes.html), [изоляцию транзакций](https://www.postgresql.org/docs/current/transaction-iso.html), [WAL](https://www.postgresql.org/docs/current/wal-intro.html)), «PostgreSQL Internals» Рогова и обязательные лабораторные (реплика, deadlock, 10 млн строк) — в [«Углубление: первоисточники и лабораторные»](/appendix/deep-dive/).
 :::
 
 ## Почему данные — это отдельная дисциплина
@@ -27,11 +27,11 @@ description: "Карта раздела: от проектирования сх�
 
 3. **[Транзакции и блокировки](/08-data/postgres-transactions/)** — ACID под капотом: WAL и MVCC. Все уровни изоляции с воспроизводимыми аномалиями на примерах с двумя сессиями, разница `READ COMMITTED` и `REPEATABLE READ` в PostgreSQL, `SERIALIZABLE` и SSI, блокировки строк и таблиц, чтение разбора дедлока, `FOR UPDATE` / `SKIP LOCKED` для очередей, advisory locks.
 
-4. **[Prisma, Drizzle и пулинг соединений](/08-data/orm-prisma-drizzle/)** — Prisma: схема, генерация клиента, миграции и drift, проблема N+1, interactive transactions, ограничения ORM. Drizzle: SQL-like синтаксис и миграции. Дальше — pooling: почему `max_connections` — это ловушка, PgBouncer в режимах `session` и `transaction`, интеграция с Prisma, сиды.
+4. **[Prisma, Drizzle и пулинг соединений](/08-data/orm-prisma-drizzle/)** — Prisma: схема, генерация клиента, миграции и drift, проблема N+1, interactive transactions, ограничения ORM. Drizzle: SQL-like синтаксис и миграции. Дальше — pooling: почему `max_connections` — это ловушка, [PgBouncer](https://www.pgbouncer.org/features.html) в режимах `session` и `transaction`, интеграция с Prisma, сиды.
 
 5. **[Кэш-паттерны в Redis](/08-data/redis-patterns/)** — cache-aside с TTL и джиттером, защита от cache stampede через mutex и permValue, write-through и write-behind, стратегии инвалидации, сессии, rate limiting: token bucket на Lua-скриптах и sliding window, кэширование API-ответов, антипаттерны.
 
-6. **[Структуры данных Redis](/08-data/redis-structures/)** — строки, хэши, списки, сеты, Sorted Sets с полными примерами команд, лидерборд на `ZADD`/`ZREVRANGE`/`ZRANGEBYSCORE`, Pub/Sub против Streams (`XADD`/`XREAD`, consumer groups), Redis Streams как очередь, RedisJSON и RediSearch кратко, персистентность RDB против AOF, eviction-политики.
+6. **[Структуры данных Redis](/08-data/redis-structures/)** — строки, хэши, списки, сеты, Sorted Sets с полными примерами команд, лидерборд на `ZADD`/`ZREVRANGE`/`ZRANGEBYSCORE`, Pub/Sub против Streams (`XADD`/`XREAD`, consumer groups), Redis Streams как очередь, RedisJSON и RediSearch кратко, персистентность RDB против AOF, [eviction-политики](https://redis.io/docs/latest/reference/eviction/).
 
 ## Связь с pet-проектом
 

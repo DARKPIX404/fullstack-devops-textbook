@@ -11,7 +11,7 @@ description: "Механика загрузки CommonJS и ESM: require про�
 
 ### CommonJS: синхронный рантайм-конвейер
 
-`require('./mod.js')` — это **функция, выполняющаяся во время работы программы**. Механика:
+[`require('./mod.js')`](https://nodejs.org/api/modules.html) — это **функция, выполняющаяся во время работы программы**. Механика:
 
 1. Node резолвит путь (`./mod.js` → абсолютный путь, с учётом `node_modules`).
 2. Если модуль уже есть в кэше (`require.cache`) — возвращает закэшированный `module.exports`.
@@ -26,7 +26,7 @@ description: "Механика загрузки CommonJS и ESM: require про�
 
 1. **Конструкция (Construction):** парсер строит дерево зависимостей: из entry-point рекурсивно находятся все `import`'ы, файлы загружаются (асинхронно!), для каждого создаётся record.
 2. **Инстанцирование (Instantiation):** для каждого модуля выделяются переменные, связываются import'ы с export'ами — **до выполнения какого-либо кода**. Здесь рождаются Live Bindings: `import { config } from './config.js'` — это не копия значения, а живая ссылка на ячейку модуля-источника.
-3. **Выполнение (Evaluation):** модули выполняются в постфиксном порядке графа (зависимости раньше потребителей), каждый — ровно один раз.
+3. **Выполнение (Evaluation):** модули выполняются в постфиксном порядке графа (зависимости раньше потребителей), каждый — ровно один раз. Все три фазы подробно описаны в [документации Node.js по ESM](https://nodejs.org/api/esm.html).
 
 Отсюда три жёстких следствия:
 
@@ -64,7 +64,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 ```
 
-`import.meta.url` — это URL модуля (`file:///home/user/proj/config.js`), а не путь; конвертировать нужно всегда через `fileURLToPath`, особенно на Windows, где прямое использование URL в `path.*` ломается.
+`import.meta.url` — это URL модуля (`file:///home/user/proj/config.js`), а не путь; конвертировать нужно всегда через `fileURLToPath`, особенно на Windows, где прямое использование URL в `path.*` ломается (см. [`import.meta.url` в документации ESM](https://nodejs.org/api/esm.html#importmetaurl)).
 
 ## Интероп: CJS ↔ ESM
 
@@ -85,7 +85,7 @@ import { level } from './logger.cjs';     // named — работает чере
 logger.log(level);
 ```
 
-Node пытается распарсить named-экспорты из CJS через `cjs-module-lexer`; с простыми присваиваниями `exports.foo =` это работает, с динамическими — нет (тогда только default).
+Node пытается распарсить named-экспорты из CJS через [`cjs-module-lexer`](https://github.com/nodejs/cjs-module-lexer); с простыми присваиваниями `exports.foo =` это работает, с динамическими — нет (тогда только default).
 
 **CJS импортирует ESM** — по умолчанию **нельзя**: `require('./mod.mjs')` → `ERR_REQUIRE_ESM`. Динамический `import()` из CJS — можно (это рантайн-вызов):
 
@@ -157,7 +157,7 @@ console.log(a);
 
 ## Пакетные exports: один пакет — много входов
 
-Поле `exports` в package.json — современный способ описать, что и как можно импортировать из пакета. Оно заменяет старую связку `main` + ручное лазанье в `node_modules`, даёт условный резолвинг и скрывает внутренности.
+Поле `exports` в package.json — современный способ описать, что и как можно импортировать из пакета (формальная спецификация условий и сабпасов — в [документации Node.js «Package exports»](https://nodejs.org/api/packages.html#exports)). Оно заменяет старую связку `main` + ручное лазанье в `node_modules`, даёт условный резолвинг и скрывает внутренности.
 
 ```json
 {
