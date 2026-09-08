@@ -116,7 +116,7 @@ trivy fs --severity HIGH,CRITICAL .
 ```yaml
 # Фрагмент CI: образ не уходит в prod без чистого скана
 security-scan:
-  image: aquasec/trivy:latest
+  image: aquasec/trivy:0.70.0
   script:
     - trivy image --exit-code 1 --severity CRITICAL --ignore-unfixed
         $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG

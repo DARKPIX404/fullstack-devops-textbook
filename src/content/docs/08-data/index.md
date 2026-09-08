@@ -1,6 +1,6 @@
 ---
 title: "Данные: PostgreSQL и Redis"
-description: "Карта раздела: от проектирования схем PostgreSQL и индексов до транзакций, ORM и кэш-паттернов Redis. Как устроены данные pet-проекта под капотом."
+description: "Карта раздела: от проектирования схем PostgreSQL и индексов до транзакций, бэкапов с restore drill, ORM и кэш-паттернов Redis. Как устроены данные pet-проекта под капотом."
 ---
 
 Данные — сердце любого приложения. Пользователь, заказ, сессия, лидерборд — всё это состояние, которое нужно где-то хранить, быстро читать и надёжно не терять. В этом разделе мы разбираем два главных хранилища современного бэкенда: **PostgreSQL** как систему записи (source of truth) и **Redis** как ускоритель и координатор.
@@ -27,15 +27,17 @@ description: "Карта раздела: от проектирования сх�
 
 3. **[Транзакции и блокировки](/08-data/postgres-transactions/)** — ACID под капотом: WAL и MVCC. Все уровни изоляции с воспроизводимыми аномалиями на примерах с двумя сессиями, разница `READ COMMITTED` и `REPEATABLE READ` в PostgreSQL, `SERIALIZABLE` и SSI, блокировки строк и таблиц, чтение разбора дедлока, `FOR UPDATE` / `SKIP LOCKED` для очередей, advisory locks.
 
-4. **[Prisma, Drizzle и пулинг соединений](/08-data/orm-prisma-drizzle/)** — Prisma: схема, генерация клиента, миграции и drift, проблема N+1, interactive transactions, ограничения ORM. Drizzle: SQL-like синтаксис и миграции. Дальше — pooling: почему `max_connections` — это ловушка, [PgBouncer](https://www.pgbouncer.org/features.html) в режимах `session` и `transaction`, интеграция с Prisma, сиды.
+4. **[Бэкапы и восстановление PostgreSQL](/08-data/postgres-backups/)** — RPO и RTO как инженерный контракт, стратегия 3-2-1, логические бэкапы pg_dump против физических base backup, WAL archiving и PITR, pgBackRest, restore drill, шифрование и мониторинг бэкапов. Бэкап, который никогда не восстанавливали, — это не бэкап, а надежда.
 
-5. **[Кэш-паттерны в Redis](/08-data/redis-patterns/)** — cache-aside с TTL и джиттером, защита от cache stampede через mutex и permValue, write-through и write-behind, стратегии инвалидации, сессии, rate limiting: token bucket на Lua-скриптах и sliding window, кэширование API-ответов, антипаттерны.
+5. **[Prisma, Drizzle и пулинг соединений](/08-data/orm-prisma-drizzle/)** — Prisma: схема, генерация клиента, миграции и drift, проблема N+1, interactive transactions, ограничения ORM. Drizzle: SQL-like синтаксис и миграции. Дальше — pooling: почему `max_connections` — это ловушка, [PgBouncer](https://www.pgbouncer.org/features.html) в режимах `session` и `transaction`, интеграция с Prisma, сиды.
 
-6. **[Структуры данных Redis](/08-data/redis-structures/)** — строки, хэши, списки, сеты, Sorted Sets с полными примерами команд, лидерборд на `ZADD`/`ZREVRANGE`/`ZRANGEBYSCORE`, Pub/Sub против Streams (`XADD`/`XREAD`, consumer groups), Redis Streams как очередь, RedisJSON и RediSearch кратко, персистентность RDB против AOF, [eviction-политики](https://redis.io/docs/latest/reference/eviction/).
+6. **[Кэш-паттерны в Redis](/08-data/redis-patterns/)** — cache-aside с TTL и джиттером, защита от cache stampede через mutex и permValue, write-through и write-behind, стратегии инвалидации, сессии, rate limiting: token bucket на Lua-скриптах и sliding window, кэширование API-ответов, антипаттерны.
+
+7. **[Структуры данных Redis](/08-data/redis-structures/)** — строки, хэши, списки, сеты, Sorted Sets с полными примерами команд, лидерборд на `ZADD`/`ZREVRANGE`/`ZRANGEBYSCORE`, Pub/Sub против Streams (`XADD`/`XREAD`, consumer groups), Redis Streams как очередь, RedisJSON и RediSearch кратко, персистентность RDB против AOF, [eviction-политики](https://redis.io/docs/latest/reference/eviction/).
 
 ## Связь с pet-проектом
 
-Pet-проект учебника — платформа с заказами: пользователи, товары, корзина, заказы, платежи, уведомления. К концу раздела ты спроектируешь для него схему в 3НФ, построишь индексы под реальные запросы, реализуешь перевод денег с защитой от гонок, подключишь Prisma с миграциями через PgBouncer и вынесешь сессии, кэш каталога и лидерборд в Redis. Это тот же стек, который ты встретишь в реальной работе — просто маленький и безопасный для экспериментов.
+Pet-проект учебника — платформа с заказами: пользователи, товары, корзина, заказы, платежи, уведомления. К концу раздела ты спроектируешь для него схему в 3НФ, построишь индексы под реальные запросы, реализуешь перевод денег с защитой от гонок, настроишь регулярные бэкапы и самостоятельно проделаешь restore drill — восстановишь кластер из копии на чистую машину, подняв архив WAL до нужной точки во времени. Дальше подключишь Prisma с миграциями через PgBouncer и вынесешь сессии, кэш каталога и лидерборд в Redis. Это тот же стек, который ты встретишь в реальной работе — просто маленький и безопасный для экспериментов.
 
 :::tip[Как работать с разделом]
 Код из глав можно запускать локально: PostgreSQL и Redis поднимаются одной командой `docker compose up -d`. Каждая глава заканчивается практикой — делай её, не читай пассивно. Данные не прощает теории без опыта.

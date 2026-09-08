@@ -26,6 +26,7 @@ description: "Итеративный план от фундамента до д�
 - [ ] Изучи React глубоко: хуки (включая `useTransition` и `useDeferredValue`), кастомные хуки, Zustand, TanStack Query, React Hook Form + Zod.
 - [ ] Освой Next.js App Router: Server/Client Components, Data Fetching с кэшированием, Server Actions, SSG/SSR/ISR.
 - [ ] Сверстай и запрограммируй **сложный pet-проект** — SaaS-дашборд: авторизация (пока на моках), таблицы с сортировкой и фильтрами, графики, real-time уведомления.
+- [ ] Добавь real-time уведомления через WebSocket или SSE: хотя бы моковый канал событий, к которому позже подключишь backend-шлюз.
 - [ ] Стилизация: Tailwind CSS + Shadcn UI, адаптивная вёрстка, базовый a11y (семантика, навигация с клавиатуры).
 - [ ] Покрой проект тестами: Vitest + React Testing Library, Playwright для E2E-сценариев.
 - [ ] Проверь Core Web Vitals проекта в Lighthouse.
@@ -41,6 +42,8 @@ description: "Итеративный план от фундамента до д�
 - [ ] Спроектируй REST API для дашборда: аутентификация (JWT access + refresh), ролевая модель, валидация через Zod на границе.
 - [ ] PostgreSQL + Prisma: схема БД, миграции, индексы, транзакции. Подключи Redis для кэша и сессий.
 - [ ] Документируй API через OpenAPI (Swagger или Scalar).
+- [ ] Реализуй real-time канал для дашборда: NestJS Gateway на WebSocket с комнатами или SSE-поток событий.
+- [ ] Вынеси фоновые задачи в очередь с outbox-паттерном: письма, пересчёт агрегатов, события в аналитику — через RabbitMQ с retry и DLQ.
 - [ ] Покрой бэкенд интеграционными тестами: Supertest + Testcontainers.
 
 :::caution[Частая ловушка]
@@ -54,6 +57,9 @@ description: "Итеративный план от фундамента до д�
 - [ ] Арендуй VPS (Hetzner или DigitalOcean), настрой Ubuntu Server.
 - [ ] Настрой Nginx reverse proxy + SSL через Let's Encrypt.
 - [ ] Добавь мониторинг: Prometheus + Grafana (Node Exporter, cAdvisor), алерты в Telegram.
+- [ ] Настрой бэкапы PostgreSQL и проделай restore drill: восстанови базу из копии на чистую машину по инструкции, а не «проверь, что бэкап создаётся».
+- [ ] Добавь SBOM и подпись образов в CI: Syft для SBOM, Cosign для keyless-подписи по дайджесту.
+- [ ] Проведи учебный инцидент и напиши postmortem: смоделируй падение сервиса, пройди severity/роли/таймлайн, выпиши corrective actions.
 - [ ] Проделай «боевое крещение»: убей контейнер на сервере и восстанови по пайплайну.
 
 :::tip[Критерий выхода из года]

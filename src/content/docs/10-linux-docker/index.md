@@ -1,6 +1,6 @@
 ---
 title: "Обзор раздела — Linux, Docker и эксплуатация"
-description: "Карта раздела: продвинутый bash, systemd и сети, внутреннее устройство Docker, Compose в продакшене, реестры и безопасность образов. Фундамент эксплуатации любого сервера."
+description: "Карта раздела: продвинутый bash, systemd и сети, внутреннее устройство Docker, Compose в продакшене, реестры, безопасность и supply-chain образов. Фундамент эксплуатации любого сервера."
 ---
 
 Любой фронтенд, любой бэкенд, любой пайплайн в итоге бежит на чужом железе под чужой ОС — и в 99 % случаев это Linux. В краткой версии учебника ты прошёл базу: пакетный менеджер, systemd-юниты, LVM и BTRFS, [nftables](https://wiki.nftables.org/wiki-nftables/index.php/Main_Page), SSH-туннели, базовый bash и первый Compose-стек. Этого хватает, чтобы поднять сервер и не потерять его. Но эксплуатация — это когда серверов много, когда скрипты работают месяцами без присмотра, когда контейнеры живут не у тебя на ноутбуке, а в продакшене, где ошибка стоит денег и нервов.
@@ -24,6 +24,8 @@ description: "Карта раздела: продвинутый bash, systemd и
 **4. [Compose в продакшене](/10-linux-docker/docker-compose-prod/)** — не демо-стек, а боевой: приложение + PostgreSQL с healthcheck + Redis + Nginx, две изолированные сети, `depends_on` с условиями, профили, env-файлы и секреты, политики рестарта, драйверы логов с ротацией, ресурсные лимиты и стратегия бэкапа томов.
 
 **5. [Реестры и безопасность образов](/10-linux-docker/docker-registry-security/)** — как устроены Docker Hub, GitHub Container Registry, Gitea и собственный registry 2.0 с TLS и htpasswd. Сканирование [Trivy](https://trivy.dev/), подпись Cosign, запуск не от root, read-only filesystem, capabilities drop, seccomp/AppArmor и runtime-лимиты.
+
+**6. [Supply-chain security: SBOM и подпись образов](/10-linux-docker/supply-chain-security/)** — защита всей цепочки поставки софта: SBOM в форматах SPDX и CycloneDX через Syft, сканирование Trivy, keyless-подпись Cosign по дайджесту, provenance и SLSA-уровни в GitHub Actions, пиннинг зависимостей и защита CI-секретов.
 
 ## Как работать с разделом
 

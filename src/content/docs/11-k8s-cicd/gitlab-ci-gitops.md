@@ -59,7 +59,7 @@ build:image:
 # ── Сканирование ────────────────────────────────────────────────────
 scan:trivy:
   stage: scan
-  image: aquasec/trivy:latest
+  image: aquasec/trivy:0.70.0
   script:
     - trivy image --severity CRITICAL,HIGH --exit-code 1 --ignore-unfixed $IMAGE
     - trivy fs --severity HIGH --exit-code 1 .
