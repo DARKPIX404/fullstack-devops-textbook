@@ -29,7 +29,7 @@ el.innerHTML = `<p>Результат: ${new URLSearchParams(location.search).ge
 
 React/Vue экранируют текстовые интерполяции по умолчанию, но три двери остаются открытыми: `dangerouslySetInnerHTML` без санитайзера, `javascript:` в href из пользовательских данных, ручной `innerHTML`. Лечение — санитайзер (`DOMPurify.sanitize(html)`) и запрет на инлайн-обработчики через CSP.
 
-:::caution[XSS в 2026-м — это не только <script>]
+:::caution[XSS в 2026-м — это не только &lt;script&gt;]
 Payload обходят фильтры через `<img src=x onerror=...>`, `<svg onload=...>`, `onfocus` + автoфокус. Фильтровать «плохие теги» списком — проигрышная гонка. Единственный надёжный путь: экранирование по контексту (HTML-текст, атрибут, JS-строка — разные правила, расписаны в [OWASP XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html)) плюс CSP, режущий исполнение чужого кода.
 :::
 

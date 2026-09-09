@@ -1,6 +1,8 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import mdx from '@astrojs/mdx';
+import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
@@ -32,6 +34,12 @@ export default defineConfig({
 				},
 			},
 			tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 3 },
+			head: [
+				{
+					tag: 'script',
+					attrs: { src: '/interactive/quiz-progress.js', defer: true },
+				},
+			],
 			pagefind: true,
 			customCss: [
 				'./src/styles/custom.css',
@@ -248,5 +256,7 @@ export default defineConfig({
 				},
 			],
 		}),
+		react(),
+		mdx(),
 	],
 });
