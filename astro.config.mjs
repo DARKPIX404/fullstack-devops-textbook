@@ -245,6 +245,17 @@ export default defineConfig({
 					],
 				},
 				{
+					label: 'Dev-инструменты: Omarchy, Neovim, tmux',
+					items: [
+						{ label: 'Обзор раздела', slug: '14-dev-tools' },
+						{ label: 'Omarchy: система для разработчика', slug: '14-dev-tools/omarchy' },
+						{ label: 'Neovim глубоко', slug: '14-dev-tools/neovim' },
+						{ label: 'tmux глубоко', slug: '14-dev-tools/tmux' },
+						{ label: 'Прозрачность и блюр', slug: '14-dev-tools/transparency' },
+						{ label: 'Рабочее место как у профи', slug: '14-dev-tools/workflow' },
+					],
+				},
+				{
 					label: 'Приложения',
 					items: [
 						{ label: 'Инструментарий для Arch Linux', slug: 'appendix/tooling' },
