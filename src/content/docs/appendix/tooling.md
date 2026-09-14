@@ -208,7 +208,8 @@ nix-shell '<home-manager>' -A install
 
 ## Что почитать
 
+- [Раздел «Dev-инструменты: Omarchy, Neovim, tmux»](/14-dev-tools/) — глубокие главы по редактору, мультиплексору и десктопу из этого списка: здесь — что поставить, там — как этим владеть.
 - [Arch Wiki](https://wiki.archlinux.org) — лучшая документация по Linux вообще; каждая утилита из списка там разобрана.
-- [Yazi docs](https://yazi-rs.github.io/docs/) — ключи и конфигурация файлового менеджера.
+- [Yazi docs](https://yazi-rs.github.io/docs/quick-start) — ключи и конфигурация файлового менеджера.
 - [Dev Containers specification](https://containers.dev/) — формат `.devcontainer.json`.
 - [Home Manager manual](https://nix-community.github.io/home-manager/) — когда доберёшься до Nix.
