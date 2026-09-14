@@ -52,6 +52,7 @@ export default defineConfig({
 						{ label: 'Главная', slug: 'index' },
 						{ label: 'Введение и философия', slug: 'intro/philosophy' },
 						{ label: 'План действий', slug: 'intro/action-plan' },
+						{ label: 'Omarchy: система для разработчика', slug: 'intro/omarchy' },
 					],
 				},
 				{
@@ -202,6 +203,10 @@ export default defineConfig({
 					items: [
 						{ label: 'Обзор раздела', slug: '10-linux-docker' },
 						{ label: 'Bash и shell-мастерство', slug: '10-linux-docker/shell-mastery' },
+						{ label: 'tmux глубоко', slug: '10-linux-docker/tmux' },
+						{ label: 'Neovim глубоко', slug: '10-linux-docker/neovim' },
+						{ label: 'Прозрачность и блюр', slug: '10-linux-docker/transparency' },
+						{ label: 'Рабочее место как у профи', slug: '10-linux-docker/workflow' },
 						{ label: 'systemd, сети, nftables, диагностика', slug: '10-linux-docker/systemd-networks' },
 						{ label: 'Docker под капотом', slug: '10-linux-docker/docker-deep' },
 						{ label: 'Docker Compose в продакшене', slug: '10-linux-docker/docker-compose-prod' },
@@ -242,17 +247,6 @@ export default defineConfig({
 						{ label: 'System Design: масштабирование, CAP, очереди', slug: '13-cloud-design-ai/system-design-fundamentals' },
 						{ label: 'System Design: паттерны устойчивости', slug: '13-cloud-design-ai/system-design-patterns' },
 						{ label: 'AI-инструменты разработчика', slug: '13-cloud-design-ai/ai-dev-tools' },
-					],
-				},
-				{
-					label: 'Dev-инструменты: Omarchy, Neovim, tmux',
-					items: [
-						{ label: 'Обзор раздела', slug: '14-dev-tools' },
-						{ label: 'Omarchy: система для разработчика', slug: '14-dev-tools/omarchy' },
-						{ label: 'Neovim глубоко', slug: '14-dev-tools/neovim' },
-						{ label: 'tmux глубоко', slug: '14-dev-tools/tmux' },
-						{ label: 'Прозрачность и блюр', slug: '14-dev-tools/transparency' },
-						{ label: 'Рабочее место как у профи', slug: '14-dev-tools/workflow' },
 					],
 				},
 				{

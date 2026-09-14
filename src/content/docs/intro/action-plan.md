@@ -11,7 +11,7 @@ description: "Итеративный план от фундамента до д�
 
 Задача — стоячая уверенность в JavaScript и TypeScript. Без неё фреймворки превращаются в магию, а отладку — в кошмар.
 
-- [ ] Установи и настрой Arch Linux (если ещё нет): i3wm/Hyprland или GNOME/KDE — по вкусу.
+- [ ] Установи и настрой Arch Linux (если ещё нет): i3wm/Hyprland или GNOME/KDE — по вкусу. Либо поставь Omarchy — готовый десктоп на Arch + Hyprland: глава [Omarchy: система для разработчика](/intro/omarchy/).
 - [ ] Настрой окружение: zsh/fish, tmux, Neovim или VS Code, шрифты Nerd Font, темы. Список — в [Приложении: инструментарий](/appendix/tooling/).
 - [ ] Повтори Advanced JS: замыкания, прототипы, Event Loop, микро-/макрозадачи, `Promise`/`async/await`, ES Modules.
 - [ ] Пройди TypeScript в strict-режиме: дженерики, утилитарные типы, `satisfies`, брендированные типы.
@@ -52,6 +52,7 @@ description: "Итеративный план от фундамента до д�
 
 ## Месяц 10–12: DevOps и деплой
 
+- [ ] Переведи ежедневную работу в терминальный стек: [tmux глубоко](/10-linux-docker/tmux/) и [Neovim глубоко](/10-linux-docker/neovim/), сценарии использования — в [Рабочее место как у профи](/10-linux-docker/workflow/). К этому моменту ты уже знаешь язык и бэкенд — редактор и мультиплексор заходят на готовую почву.
 - [ ] Упакуй приложение в Docker: многоступенчатые Dockerfile, `docker-compose.yml` (App + PostgreSQL + Redis + Nginx).
 - [ ] Настрой CI/CD в GitHub Actions: lint → test → build → deploy.
 - [ ] Арендуй VPS (Hetzner или DigitalOcean), настрой Ubuntu Server.
