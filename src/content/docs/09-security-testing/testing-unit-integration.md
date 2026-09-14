@@ -256,7 +256,7 @@ let redisC: StartedRedisContainer;
 
 export async function startTestDb() {
   [pg, redisC] = await Promise.all([
-    new PostgreSqlContainer('postgres:16-alpine').withDatabase('app_test').start(),
+    new PostgreSqlContainer('postgres:18-alpine').withDatabase('app_test').start(),
     new RedisContainer('redis:7-alpine').start(),
   ]);
 
@@ -325,7 +325,7 @@ nock('https://api.stripe.com')
   .reply(200, { id: 'ch_test', status: 'succeeded' });
 ```
 
-Зафиксируй в CI переменную, запрещающую реальные исходящие запросы (например, `NOCK_OFF=true` вне тестов и egress-файрвол на CI-раннерах) — тест, случайно стукнувшийся в прод-API третьей стороны, обнаружится мгновенно, а не счётом от вендора.
+Зафиксируй в CI запрет реальных исходящих запросов: вызов `nock.disableNetConnect()` в setup-файле тестов (любой запрос без мока падает с ошибкой) и egress-файрвол на CI-раннерах — тест, случайно стукнувшийся в прод-API третьей стороны, обнаружится мгновенно, а не счётом от вендора. Учти: переменная окружения `NOCK_OFF=true` делает ровно наоборот — полностью отключает nock и пускает запросы в сеть, поэтому в тестовом окружении её быть не должно.
 
 ## Тестовая матрица
 

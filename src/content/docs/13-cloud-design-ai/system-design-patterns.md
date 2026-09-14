@@ -136,7 +136,7 @@ export class CircuitBreaker {
 
 ```ts
 // Использование: breaker на каждую внешнюю зависимость, не один на все
-const paymentsBreaker = new CircuitBreaker({ threshold: 0.5, windowSize: 10, cooldownMs: 15000 });
+const paymentsBreaker = new CircuitBreaker(0.5, 10, 15000); // threshold, windowSize, cooldownMs
 
 app.post("/api/checkout", async (req, res) => {
   try {
@@ -321,6 +321,10 @@ async function getCached<T>(key: string, ttlMs: number, loader: () => Promise<T>
 ```
 
 **Cache avalanche** — третий сценарий: массовое протухание кучи ключей одновременно (рестарт кэша, совпавшие TTL). Лечится тем же jitter'ом TTL, pre-warm после рестарта, circuit breaker на БД.
+
+:::tip[Jitter дешевле всего остального]
+Из всех защит против stampede и avalanche самый высокий выигрыш на строку кода даёт случайный разброс TTL: `ttl + random(0, 0.1 * ttl)` при записи. Одна строка — и ключи перестают протухать синхронными волнами. Ставь jitter в обёртке кэша по умолчанию, чтобы про него не приходилось помнить в каждом вызове.
+:::
 
 ## CQRS и Event Sourcing: кратко и по делу
 

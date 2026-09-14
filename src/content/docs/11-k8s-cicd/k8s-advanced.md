@@ -200,7 +200,7 @@ spec:
       terminationGracePeriodSeconds: 60   # время на checkpoint WAL
       containers:
         - name: postgres
-          image: postgres:16-alpine
+          image: postgres:18-alpine
           env:
             - { name: POSTGRES_DB, value: appdb }
           volumeMounts:
@@ -295,6 +295,10 @@ spec:
 ```
 
 Теперь `kubectl drain` и rolling update под Deployment с репликами 2 будут заблокированы: eviction API откажет, если после удаления пода останется меньше 2 доступных. Важно: PDB не спасает от *недобровольных* исчезновений (нода сгорела) — только от плановых операций. Классическая пара: PDB + две реплики минимум.
+
+:::caution[PDB может повесить обновление кластера]
+Если `minAvailable` равен числу реплик, `drain` ноды блокируется бессрочно: выселить под нельзя — после этого доступных останется меньше минимума. В managed Kubernetes это кладёт автоматические апгрейды нод всего кластера, и обновление висит сутками. Держи запас: реплик минимум на одну больше, чем `minAvailable`.
+:::
 
 ## HPA: горизонтальное автомасштабирование
 

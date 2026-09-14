@@ -526,4 +526,4 @@ export class MetricsInterceptor implements NestInterceptor {
 - [class-validator](https://github.com/typestack/class-validator) — декораторы валидации, все правила.
 - [NestJS: Interceptors](https://docs.nestjs.com/interceptors) и [Exception filters](https://docs.nestjs.com/exception-filters) — RxJS-подход и маппинг ошибок.
 - [Reflector и metadata](https://docs.nestjs.com/fundamentals/execution-context) — `ExecutionContext` и работа с metadata.
-- [OWASP Mass Assignment](https://owasp.org/www-community/attacks/Mass_Assignment_Cheat_Sheet) — почему `whitelist` обязателен.
+- [OWASP Mass Assignment](https://cheatsheetseries.owasp.org/cheatsheets/Mass_Assignment_Cheat_Sheet.html) — почему `whitelist` обязателен.

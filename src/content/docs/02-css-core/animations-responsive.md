@@ -134,7 +134,7 @@ Transition — между двумя состояниями; `@keyframes` — п
 
 ## prefers-reduced-motion: анимации — не для всех
 
-Для части пользователей (вестибулярные расстройства, мигрени) параллакс, «пружины» и бесконечные пульсации вызывают тошноту и головную боль. ОС имеет переключатель «уменьшить движение» — и браузер отдаёт его в медиазапрос [prefers-reduced-motion](https://developer.mozilla.org/ru/docs/Web/CSS/@media/prefers-reduced-motion). Это **обязательная доступность**, а не опция:
+Для части пользователей (вестибулярные расстройства, мигрени) параллакс, «пружины» и бесконечные пульсации вызывают тошноту и головную боль. ОС имеет переключатель «уменьшить движение» — и браузер отдаёт его в медиазапрос [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion). Это **обязательная доступность**, а не опция:
 
 ```css
 .card { transition: transform 0.3s, box-shadow 0.3s; }
@@ -187,7 +187,7 @@ MOBILE-FIRST (современный стандарт)        DESKTOP-FIRST (л�
 @media (min-width: 1024px) { }             @media (max-width: 640px) { }
 ```
 
-Почему mobile-first выиграл: мобильный трафик больше; «добавлять» сложность через min-width проще, чем «вычитать»; производительность: девайс получает только нужные стили без перекрытий. Грабля min-width-стиля: ширина ВКЛЮЧИТЕЛЬНА — `(min-width: 768px)` срабатывает ровно на 768, поэтому диапазоны пишут через `max-width: 1023.98px` (пол-пикселя против наложения). Полный синтаксис медиазапросов с операторами — в [MDN: Использование медиазапросов](https://developer.mozilla.org/ru/docs/Web/CSS/CSS_media_queries/Using_media_queries).
+Почему mobile-first выиграл: мобильный трафик больше; «добавлять» сложность через min-width проще, чем «вычитать»; производительность: девайс получает только нужные стили без перекрытий. Грабля min-width-стиля: ширина ВКЛЮЧИТЕЛЬНА — `(min-width: 768px)` срабатывает ровно на 768, поэтому диапазоны пишут через `max-width: 1023.98px` (пол-пикселя против наложения). Полный синтаксис медиазапросов с операторами — в [MDN: Использование медиазапросов](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries).
 
 ### Breakpoints: от контента, не от устройств
 
@@ -230,7 +230,7 @@ slope = (y2 − y1) / (x2 − x1)            в vw: slope × 100
 pref  = (y1 − slope × x1)  в rem  +  slope × 100 vw
 ```
 
-Например, 1rem при 400px → 1.25rem при 1200px: slope = 0.25/800 = 0.0003125 → `clamp(1rem, 0.875rem + 0.3125vw, 1.25rem)`. Генераторы (utopia.fyi) считают за тебя; важно понимать механику, чтобы не копипастить магию.
+Например, 1rem при 400px → 1.25rem при 1200px: slope = 0.25/800 = 0.0003125 → `clamp(1rem, 0.875rem + 0.03125vw, 1.25rem)`. Генераторы (utopia.fyi) считают за тебя; важно понимать механику, чтобы не копипастить магию.
 
 ## Container queries: медиазапросы для компонентов
 
@@ -306,9 +306,9 @@ pref  = (y1 − slope × x1)  в rem  +  slope × 100 vw
 
 ## Что почитать
 
-- [MDN: transition](https://developer.mozilla.org/ru/docs/Web/CSS/transition) и [MDN: animation](https://developer.mozilla.org/ru/docs/Web/CSS/animation) — подсвойства, синтаксис, примеры.
-- [MDN: Стилизация анимаций](https://developer.mozilla.org/ru/docs/Web/CSS/CSS_animations/Using_CSS_animations) — @keyframes в деталях.
+- [MDN: transition](https://developer.mozilla.org/en-US/docs/Web/CSS/transition) и [MDN: animation](https://developer.mozilla.org/en-US/docs/Web/CSS/animation) — подсвойства, синтаксис, примеры.
+- [MDN: Стилизация анимаций](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations) — @keyframes в деталях.
 - [web.dev: Animations and performance](https://web.dev/articles/animations-guide) — высокопроизводительные анимации и инструменты замера.
 - [cubic-bezier.com](https://cubic-bezier.com/) — интерактивный редактор кубиков Безье с наглядной кривой.
-- [MDN: Медиазапросы](https://developer.mozilla.org/ru/docs/Web/CSS/CSS_media_queries/Using_media_queries) и [MDN: Container queries](https://developer.mozilla.org/ru/docs/Web/CSS/CSS_containment/Container_queries) — полный синтаксис обоих.
+- [MDN: Медиазапросы](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries) и [MDN: Container queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries) — полный синтаксис обоих.
 - [Utopia: fluid type scale calculator](https://utopia.fyi/type/calculator) — генератор clamp()-формул с объяснением математики.

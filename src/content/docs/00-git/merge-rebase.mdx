@@ -139,7 +139,7 @@ git add app.ts
 
 ## Rebase: механика пересадки коммитов
 
-Rebase — альтернатива merge с другой философией: **не склеивать ветки коммитом-слиянием, а переписать историю feature так, будто она началась от текущего main** (классический разбор — [Pro Git, раздел «Rebase»](https://git-scm.com/book/ru/v2/%D0%92%D0%B5%D1%82%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B2-Git-Rebase)). Все коммиты feature пересоздаются (новые хэши!) поверх новой базы.
+Rebase — альтернатива merge с другой философией: **не склеивать ветки коммитом-слиянием, а переписать историю feature так, будто она началась от текущего main** (классический разбор — [Pro Git, раздел «Rebase»](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)). Все коммиты feature пересоздаются (новые хэши!) поверх новой базы.
 
 Пошагово, что делает `git rebase main`, стоя на `feature`:
 
@@ -405,7 +405,7 @@ A ← B ← C   main, HEAD         A ← B ← C   main, HEAD
 
 ## Что почитать
 
-- [Pro Git, глава 3: Ветвление — rebase](https://git-scm.com/book/ru/v2/%D0%92%D0%B5%D1%82%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B2-Git-Rebase) — классический разбор механики rebase и golden rule.
+- [Pro Git, глава 3: Ветвление — rebase](https://git-scm.com/book/en/v2/Git-Branching-Rebasing) — классический разбор механики rebase и golden rule.
 - [Pro Git, глава 7: rerere](https://git-scm.com/book/ru/v2/%D0%98%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B-Git-Rerere) — reuse recorded resolution.
 - [git-reflog(1) — man-страница](https://git-scm.com/docs/git-reflog) — формат журнала и expire-политики.
 - [Merging vs. Rebasing (Atlassian Git Tutorial)](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) — наглядные схемы и командные сценарии.

@@ -353,5 +353,5 @@ ssh -fN -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 \
 - [systemd.service(5) и systemd.exec(5)](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html) — все директивы, включая sandbox
 - [systemd.timer(5)](https://www.freedesktop.org/software/systemd/man/latest/systemd.timer.html) — синтаксис OnCalendar с примерами
 - [Arch Wiki — nftables](https://wiki.archlinux.org/title/Nftables) — рабочие примеры наборов правил
-- [iproute2 cheat sheet](https://jensd.be/1204/linux/ip-route-cheatsheet) — соответствие старых и новых команд
+- [Arch Wiki — iproute2](https://wiki.archlinux.org/title/Iproute2) — соответствие старых и новых команд
 - [tcpdump examples](https://danielmiessler.com/study/tcpdump/) — подборка фильтров для боевых сценариев

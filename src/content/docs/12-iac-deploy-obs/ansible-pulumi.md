@@ -365,13 +365,13 @@ const servers = Array.from({ length: env === "prod" ? 2 : 1 }, (_, i) =>
 );
 
 // DNS-запись: зависимость выражается ссылкой на свойство ресурса
-const zone = hcloud.getDnsZone({ name: "darkpix.dev" });
-new hcloud.DnsRecord("pet-a", {
-  zoneId: zone.then((z) => z.id),
+const zone = hcloud.getZone({ name: "darkpix.dev" });
+new hcloud.ZoneRrset("pet-a", {
+  zone: zone.then((z) => z.name!),
   name: env === "prod" ? "pet" : `pet-${env}`,
   type: "A",
-  value: servers[0].ipv4Address,
   ttl: 300,
+  records: [{ value: servers[0].ipv4Address }],
 });
 
 // Stack outputs — аналог terraform output
@@ -413,7 +413,7 @@ pulumi stack output serverIps   # прочитать выводы (наприм�
 3. **Notify на handler с опечаткой в имени.** Сайт обновился, Nginx не перечитал конфиг — час «недоступности», который лечился reload. Хорошо: `--diff` прогон на staging, проверка что handler числится в recap `changed` → handler запускается в `RUNNING HANDLER`.
 4. **Секреты в открытых переменных.** `db_password: hunter2` в `group_vars/all/vars.yml` — попал в git вместе с коммитом. Хорошо: vault с первого дня, `ansible-vault encrypt_string` для точечных значений, pre-commit проверка на незашифрованные `vault_*`.
 5. **`--check` как единственная защита prod.** Модули `command`/`shell` в check-режиме врут или пропускаются; «в dry-run всё чисто» ≠ «на prod не сломается». Хорошо: сначала `--limit` на одном staging-хосте, потом prod.
-6. **Pulumi-программа с побочными эффектами.** HTTP-запросы и запись файлов в теле index.ts выполнятся и при preview — создавая мусор и непредсказуемые диффы. Хорошо: только создание ресурсов; данные — через data-source аналоги (`hcloud.getDnsZone`), секреты — через `config.getSecret`.
+6. **Pulumi-программа с побочными эффектами.** HTTP-запросы и запись файлов в теле index.ts выполнятся и при preview — создавая мусор и непредсказуемые диффы. Хорошо: только создание ресурсов; данные — через data-source аналоги (`hcloud.getZone`), секреты — через `config.getSecret`.
 7. **Сторонние Galaxy-роли без аудита.** Роль с `state: latest` для всех пакетов или открытым 0.0.0.0/0 в фаерволе — подарок для инцидента. Хорошо: читать код роли до установки, фиксировать версию в requirements.yml, оборачивать чужие роли своими defaults.
 
 ## Вопросы на собеседовании

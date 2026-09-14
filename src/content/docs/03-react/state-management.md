@@ -16,7 +16,7 @@ description: "Четыре категории состояния, клиентс
 
 ## Zustand: клиентский стор без церемоний
 
-[Zustand](https://zustand.docs.pmnd.rs/getting-started/introduction) — минималистичный стейт-менеджер: один хук, ноль провайдеров, ноль бойлерплейта. Стор создаётся функцией `create`, которая принимает колбэк с `set`/`get` и возвращает хук:
+[Zustand](https://zustand.docs.pmnd.rs/learn/getting-started/introduction) — минималистичный стейт-менеджер: один хук, ноль провайдеров, ноль бойлерплейта. Стор создаётся функцией `create`, которая принимает колбэк с `set`/`get` и возвращает хук:
 
 ```tsx
 import { create } from 'zustand';
@@ -108,6 +108,10 @@ export const useCart = create<CartState>()(
 ```
 
 `persist` — сериализация в localStorage с мерджем при загрузке. `devtools` — интеграция с Redux DevTools: тайм-тревел, инспекция actions. Для продакшен-отладки это дёшево и бесценно одновременно.
+
+:::caution[Что нельзя отдавать persist]
+`persist` пишет стор в localStorage открытым текстом — его читает любой скрипт на странице, включая XSS. Токены, персональные данные и черновики с чувствительным содержимым туда не клади; персисть только то, что не жалко показать (тема, состав корзины). И не забудь про `version` + `migrate` в опциях: изменил структуру стора без миграции — у старых пользователей поднимется устаревший снимок с непредсказуемыми последствиями.
+:::
 
 ## Redux Toolkit: когда он оправдан
 
@@ -219,6 +223,10 @@ const mutation = useMutation({
 ```
 
 Это паттерн «предсказание + сверка»: UI мгновенный, сервер — источник правды, расхождения лечатся инвалидацией.
+
+:::tip[Optimistic — не бесплатный UX]
+Оптимистичное обновление окупается на частых и обратимых действиях: лайк, чекбокс, перетаскивание карточки. Для редких и «дорогих» операций (оплата, публикация, удаление) честный спиннер лучше: ложно показанный успех, который через секунду откатывается, разрушает доверие сильнее, чем полсекунды ожидания. Выбирай паттерн по цене ошибки, а не по моде.
+:::
 
 ### Query против ручного fetch
 
@@ -334,7 +342,7 @@ Context — транспорт значений вниз по дереву: лю
 
 ## Что почитать
 
-- [Zustand: документация](https://zustand.docs.pmnd.rs/getting-started/introduction) — гайды по селекторам, мидлварам, TypeScript-типизации.
+- [Zustand: документация](https://zustand.docs.pmnd.rs/learn/getting-started/introduction) — гайды по селекторам, мидлварам, TypeScript-типизации.
 - [Redux Toolkit: официальный туториал](https://redux-toolkit.js.org/tutorials/quick-start) — современный Redux за один вечер.
 - [TanStack Query: Queries](https://tanstack.com/query/latest/docs/framework/react/guides/queries) и [Mutations](https://tanstack.com/query/latest/docs/framework/react/guides/mutations) — фундамент серверного состояния.
 - [TanStack Query: Query Keys](https://tanstack.com/query/latest/docs/framework/react/guides/query-keys) — как проектировать ключи.

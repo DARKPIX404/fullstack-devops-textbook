@@ -186,6 +186,10 @@ UPDATE accounts SET balance = 700 WHERE id = 2;
 
 Профилактика: одинаковый порядок обновления строк во всех транзакциях, короткие транзакции, ретрай после дедлока.
 
+:::note[Детект дедлока не мгновенный]
+PostgreSQL проверяет граф ожиданий только когда транзакция простояла в ожидании дольше `deadlock_timeout` (по умолчанию 1 с). До этого обе стороны дедлока тихо висят: каждая жертва — это ещё и секунда простоя соединения. На горячих путях профилактика (единый порядок блокировок строк) дешевле любых ретраев.
+:::
+
 ## SKIP LOCKED: очереди без блокировок
 
 Задача: забрать следующую задачу из очереди. `SELECT ... FOR UPDATE` — все воркеры повиснут на первой строке. Решение — `SKIP LOCKED`: пропустить заблокированные строки.
@@ -273,5 +277,5 @@ await client.query('SELECT pg_advisory_xact_lock($1)', [hashString('nightly-repo
 
 - [PostgreSQL Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html)
 - [Explicit Locking](https://www.postgresql.org/docs/current/explicit-locking.html)
-- [SSI: A Critique of ANSI SQL Isolation Levels](https://www.jepsen.io/consistency)
+- [Strong consistency models (Jepsen)](https://jepsen.io/consistency)
 - [PostgreSQL 14 Internals: MVCC](https://www.interdb.jp/pg/)

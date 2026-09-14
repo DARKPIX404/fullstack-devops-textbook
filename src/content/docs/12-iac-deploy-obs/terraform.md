@@ -215,7 +215,10 @@ infra/
 variable "name"        { type = string }
 variable "server_type" { type = string }
 variable "ssh_key_ids" { type = list(string) }
-variable "enable_backups" { type = bool, default = false }
+variable "enable_backups" {
+  type    = bool
+  default = false
+}
 
 # modules/server/main.tf
 resource "hcloud_server" "this" {
@@ -382,7 +385,7 @@ terraform import hcloud_server.legacy 1234567
 # versions.tf
 terraform {
   required_providers {
-    hcloud = { source = "hetznercloud/hcloud", version = "~> 1.45" }
+    hcloud = { source = "hetznercloud/hcloud", version = "~> 1.54" }
   }
 }
 
@@ -410,17 +413,20 @@ resource "hcloud_server" "pet" {
   EOF
 }
 
-# DNS-запись через того же провайдера (Hetzner DNS)
-resource "hcloud_dns_record" "pet" {
-  zone_id = data.hcloud_dns_zone.main.id
-  name    = "pet"
-  value   = hcloud_server.pet.ipv4_address
-  type    = "A"
-  ttl     = 300
+# DNS-запись через того же провайдера (Hetzner DNS, провайдер >= 1.54)
+data "hcloud_zone" "main" {
+  name = "darkpix.dev"
 }
 
-data "hcloud_dns_zone" "main" {
-  name = "darkpix.dev"
+resource "hcloud_zone_rrset" "pet" {
+  zone = data.hcloud_zone.main.name
+  name = "pet"
+  type = "A"
+  ttl  = 300
+
+  records = [
+    { value = hcloud_server.pet.ipv4_address },
+  ]
 }
 
 # outputs.tf
@@ -430,7 +436,7 @@ output "server_ip" {
 }
 
 output "fqdn" {
-  value = "${hcloud_dns_record.pet.name}.darkpix.dev"
+  value = "${hcloud_zone_rrset.pet.name}.darkpix.dev"
 }
 ```
 
@@ -472,7 +478,7 @@ terraform apply tfplan
 1. Вынеси конфигурацию pet-сервера из этой главы в модуль `modules/server` с входами `name`, `server_type`, `ssh_key_ids`, `enable_backups` и выводом `ipv4`. Корневой код собирает два вызова модуля: `staging` (cx11, без бэкапов) и `prod` (cx22, с бэкапами).
 2. Настрой remote backend: S3-совместимый бакет с `encrypt = true`, `use_lockfile = true` и включённым версионированием. Докажи блокировку: запусти два `terraform apply` одновременно из разных терминалов — второй должен получить ошибку state lock.
 3. Напиши workflow drift-detection из примера, добавь план как артефакт и проверь: открой порт в веб-консоли Hetzner → job упал на plan → верни всё кодом → job зелёный.
-4. Реализуй DNS-запись через Hetzner DNS API (`hcloud_dns_record`) с `ttl = 60`, а IP сервера — через `output`. После apply проверь резолвинг: `dig +short pet.darkpix.dev` возвращает выведенный IP.
+4. Реализуй DNS-запись через Hetzner DNS API (`hcloud_zone_rrset`) с `ttl = 60`, а IP сервера — через `output`. После apply проверь резолвинг: `dig +short pet.darkpix.dev` возвращает выведенный IP.
 5. Найди в облаке один существующий ресурс (или создай вручную через консоль), опиши его пустым блоком, выполни `terraform import` и доведи код до пустого плана. Зафиксируй, какие атрибуты пришлось «угадать».
 6. Смоделируй disaster recovery: скопируй state из бакета в сторону, выполни `terraform destroy` на staging, верни state на место и прогони `plan` — убедись, что Terraform снова видит ресурсы без пересоздания.
 

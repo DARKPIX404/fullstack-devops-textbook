@@ -1,9 +1,9 @@
 ---
-title: "Роутинг: React Router v6+ и data routers"
+title: "Роутинг: React Router v7 и data routers"
 description: "Data routers: createBrowserRouter, loaders, actions, useNavigation, errorElement, вложенные маршруты и интеграция с TanStack Query."
 ---
 
-Роутинг — это не только «показать компонент по URL». В современном React Router это ещё и когда грузить данные, как обрабатывать ошибки загрузки, где ловить исключения и как не превратить каждую страницу в спагетти из `useEffect` с `fetch`. Шестая версия React Router перевернула философию: появились **[data routers](https://reactrouter.com/start/data/routing)** — роутеры, у которых маршруты знают про данные. Data loader грузит до рендера, action обрабатывает мутации, а компонент страницы получает готовые данные. Разберём эту модель до конца и покажем, как она сосуществует с TanStack Query.
+Роутинг — это не только «показать компонент по URL». В современном React Router это ещё и когда грузить данные, как обрабатывать ошибки загрузки, где ловить исключения и как не превратить каждую страницу в спагетти из `useEffect` с `fetch`. Перелом случился ещё в v6.4, а актуальная v7 сделала его стандартом: появились **[data routers](https://reactrouter.com/start/data/routing)** — роутеры, у которых маршруты знают про данные. Data loader грузит до рендера, action обрабатывает мутации, а компонент страницы получает готовые данные. Разберём эту модель до конца и покажем, как она сосуществует с TanStack Query.
 
 ## От declarative к data router
 
@@ -89,6 +89,10 @@ export function ProductPage() {
 
 Loader выполняется в момент навигации — **параллельно для всех совпавших маршрутов** (вложенные). Это значит, что каркас приложения не ждёт данные конкретной страницы: layout рендерится сразу, страница — когда её loader завершится. Для глубоко вложенных страниц это заметный UX-выигрыш.
 
+:::note[Почему в loader нет React]
+Loader выполняется роутером до рендера — компонентов страницы в этот момент ещё не существует. Поэтому внутри loader недоступны хуки, контекст и DOM: только `params`, `request` и то, что ты импортировал. Если данным нужен `localStorage` или cookie — читай их напрямую, а не через React-абстракции.
+:::
+
 `params` типизируются как `string | undefined` — для строгой типизации есть паттерн с `as` + валидация (в проде — через тот же Zod из главы про формы):
 
 ```tsx
@@ -164,6 +168,10 @@ function AppLayout() {
 ```
 
 Это убирает ручное управление спиннерами: один индикатор на верхнем уровне покрывает все навигации приложения. Для кнопок сабмита есть `useSubmit`-интеграция и `navigation.formData` (данные текущего сабмита — можно рисовать optimistic UI на уровне роутера).
+
+:::tip[Индикатор с задержкой]
+Полоса загрузки, срабатывающая мгновенно, выглядит миганием на быстрых переходах: loader отработал за 50 мс, а полоса успела мелькнуть. Показывай индикатор с задержкой 150–200 мс (таймер в `useEffect` при входе в состояние `loading`): быстрая навигация пройдёт без визуального шума, медленная — с понятной обратной связью.
+:::
 
 ## errorElement и обработка ошибок
 
@@ -262,6 +270,10 @@ export function ProductsPage() {
 ```
 
 При смене search-параметров роутер пере-исполняет loader с новым `request.url` — данные перезагружаются, URL обновляется, кнопка «назад» работает как ожидает пользователь. Бонус: ссылка `?sort=price&page=3` открывается на любом устройстве в том же состоянии — бесплатный «шаринг представления».
+
+:::caution[URL — тоже недоверенный ввод]
+`searchParams.get('page')` возвращает строку или `null`, и `Number(null)` даст `0`, а не первую страницу. Всегда задавай дефолт (`?? '1'`) до приведения типа и валидируй диапазон: ссылку `?page=-5&sort=DROP` может отправить кто угодно, и она дойдёт до твоего API. Zod-парсинг search-параметров в loader закрывает это раз и навсегда.
+:::
 
 ### defer и Await: стриминг медленных данных
 
@@ -455,8 +467,8 @@ Loader дёргает queryClient.ensureQueryData (prefetch в кэш), комп
 
 ## Что почитать
 
-- [React Router: Picking a Router](https://reactrouter.com/en/main/routers/picking-a-router) — почему createBrowserRouter, а не старые BrowserRouter.
-- [React Router: Loaders](https://reactrouter.com/en/main/route/loader) и [Actions](https://reactrouter.com/en/main/route/action) — официальные гайды.
-- [React Router: Error Handling](https://reactrouter.com/en/main/start/overview#error-handling) — модель errorElement.
-- [React Router: useNavigation](https://reactrouter.com/en/main/hooks/use-navigation) — состояния навигации.
+- [React Router: Modes](https://reactrouter.com/start/modes) — режимы framework / data / declarative: почему createBrowserRouter, а не старые BrowserRouter.
+- [React Router: Data Loading](https://reactrouter.com/start/data/data-loading) и [Actions](https://reactrouter.com/start/data/actions) — официальные гайды по loader'ам и action'ам.
+- [React Router: Error Handling](https://reactrouter.com/how-to/error-boundary) — модель errorElement/ErrorBoundary.
+- [React Router: useNavigation](https://reactrouter.com/api/hooks/useNavigation) — состояния навигации.
 - [TkDodo's Blog: React Router + React Query](https://tkdodo.eu/blog/react-router-react-query) — эталонная статья об интеграции двух систем.

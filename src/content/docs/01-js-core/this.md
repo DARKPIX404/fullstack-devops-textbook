@@ -27,7 +27,7 @@ obj.method();                    // obj — вызван как метод
 
 ## Правило 1: Явная привязка — call, apply, bind
 
-Если при вызове используется [`fn.call(ctx)`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Function/call), [`fn.apply(ctx, args)`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Function/apply) или [`fn.bind(ctx)`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Function/bind), `this` — переданный контекст. Приоритет выше всех остальных правил.
+Если при вызове используется [`fn.call(ctx)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call), [`fn.apply(ctx, args)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply) или [`fn.bind(ctx)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind), `this` — переданный контекст. Приоритет выше всех остальных правил.
 
 ```js
 function introduce(city, hobby) {
@@ -75,7 +75,7 @@ greet(); // «Привет, undefined» — вызов уже НЕ методо�
 
 ## Правило 3: Конструктор — new
 
-Если функция вызвана через [`new Fn()`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/new), создаётся пустой объект, он связывается с `this`, и, если функция не вернула свой объект, возвращается этот новый объект:
+Если функция вызвана через [`new Fn()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new), создаётся пустой объект, он связывается с `this`, и, если функция не вернула свой объект, возвращается этот новый объект:
 
 ```js
 function User(name) {
@@ -109,7 +109,7 @@ console.log(strict()); // undefined
 
 ## Правило 5: Лексический this — стрелочные функции
 
-[Стрелочные функции](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Functions/Arrow_functions) **не имеют собственного `this`**. Они захватывают `this` из окружения, где были созданы — как обычную переменную через замыкание. Это единственное исключение из правила «this зависит от вызова»:
+[Стрелочные функции](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) **не имеют собственного `this`**. Они захватывают `this` из окружения, где были созданы — как обычную переменную через замыкание. Это единственное исключение из правила «this зависит от вызова»:
 
 ```js
 const team = {
@@ -192,7 +192,7 @@ class Player {
 
 Варианты 3 и 4 — «привязка раз и навсегда»: независимо от того, куда передали метод, `this` останется экземпляром.
 
-:::caution[Стрелка как метод — антипаттерн)]
+:::caution[Стрелка как метод — антипаттерн]
 ```js
 const obj = {
   count: 0,
@@ -209,7 +209,7 @@ obj.increment(); // NaN или TypeError
 
 Правила перечислены по приоритету, но что, если два применимы одновременно? Разберём два частых конфликта.
 
-**Явная привязка против конструктора.** `bind` выигрывает у `new`:
+**Явная привязка против конструктора.** `new` выигрывает у `bind`:
 
 ```js
 function Point(x) { this.x = x; }
@@ -226,7 +226,7 @@ console.log(p.x); // 5 — new создал СВЕЖИЙ объект, bind-ко
 ```js
 const arrow = () => this;
 console.log(arrow.call({ a: 1 }) === arrow.apply({ b: 2 })); // true — всегда один и тот же this
-// new arrow(); // SyntaxError: arrow is not a constructor
+// new arrow(); // TypeError: arrow is not a constructor
 ```
 
 Отсюда практический вывод для фреймворков: колбэки, определённые стрелками в методах класса, **нельзя переопределить извне**. Если нужна возможность перепривязки — обычная функция.
@@ -263,7 +263,31 @@ function Primitive() {
 console.log(new Primitive().kept); // true
 ```
 
-Это легализует паттерн «конструктор-фабрика» (возвращаем кэшированный экземпляр или подтип), но в классах ES6 return объекта запрещён (`new Class` с `return {}` бросает TypeError) — классы строже функций-конструкторов.
+Это легализует паттерн «конструктор-фабрика» (возвращаем кэшированный экземпляр или подтип), и классы ES6 здесь ведут себя так же, как функции-конструкторы: `return {}` из конструктора класса работает и заменяет `this`:
+
+```js
+class Factory {
+  constructor() {
+    this.plain = true;
+    return { replaced: true }; // объект побеждает this, как и в функции
+  }
+}
+console.log(new Factory().replaced);            // true
+console.log(new Factory().plain);               // undefined
+console.log(new Factory() instanceof Factory);  // false — объект не экземпляр класса
+```
+
+Единственное отличие классов строже: return примитива из конструктора **производного** класса (с `extends`) бросает TypeError, тогда как базовый класс, как и обычная функция, примитив игнорирует:
+
+```js
+class Base {}
+class Child extends Base {
+  constructor() {
+    super();
+    return 42; // TypeError: Derived constructors may only return object or undefined
+  }
+}
+```
 
 ## this в обработчиках DOM и библиотеках
 
@@ -344,7 +368,7 @@ console.log(b.handleClick === c.handleClick); // false — каждому экз
 - Внутренние вызовы `this.helper()` внутри класса — безопасны: вызов методом.
 - Библиотечные функции высшего порядка (`forEach`, `addEventListener`, промисы) обычно вызывают колбэки «голыми» — будь готов.
 
-:::note[Почему React отошёл от this)]
+:::note[Почему React отошёл от this]
 Классовые компоненты React требовали bind в конструкторе — это была массовая точка боли. Функциональные компоненты + хуки убрали `this` из уравнения вообще: состояние в замыканиях (useState), эффекты — колбэки. Понимание этой главы всё равно нужно: старые кодовые базы, Angular/Vue-классы, Node.js-сервисы — везде классы с `this`.
 :::
 
@@ -387,8 +411,8 @@ console.log(b.handleClick === c.handleClick); // false — каждому экз
 
 ## Что почитать
 
-- [MDN: this](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/this)
-- [MDN: Методы функций call/apply/bind](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Function/call)
+- [MDN: this](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this)
+- [MDN: Методы функций call/apply/bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call)
 - [You Don't Know JS Yet: this & Object Prototypes](https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/this-object-prototypes/README.md)
 - [JavaScript Visualized: this (Lydia Hallie)](https://dev.to/lydiahallie/javascript-visualized-7-cheatsheets-1hgj)
 - [Web Dev Simplified: this за 100 секунд + разбор](https://www.youtube.com/watch?v=YOlr79NaAtQ)

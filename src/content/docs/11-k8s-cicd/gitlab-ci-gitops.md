@@ -20,7 +20,7 @@ variables:
 # ── Тесты: кэш node_modules между job'ами пайплайна ─────────────────
 lint:eslint:
   stage: lint
-  image: node:22-alpine
+  image: node:24-alpine
   script:
     - npm ci
     - npm run lint
@@ -30,7 +30,7 @@ lint:eslint:
 
 test:unit:
   stage: test
-  image: node:22-alpine
+  image: node:24-alpine
   script:
     - npm ci
     - npm test -- --coverage
@@ -69,7 +69,7 @@ scan:trivy:
 # ── GitOps: бамп тега в инфра-репозитории ───────────────────────────
 deploy:gitops:
   stage: deploy
-  image: alpine/git:latest
+  image: alpine/git:2.54.0
   script:
     - git clone --depth 1 https://gitlab-ci-token:$INFRA_TOKEN@gitlab.darkpix.dev/infra/pet-infra.git
     - cd pet-infra
@@ -154,7 +154,7 @@ gitlab-runner register \
   --url https://gitlab.darkpix.dev \
   --token glrt-xxxxxxxx \
   --executor docker \
-  --docker-image alpine:latest \
+  --docker-image alpine:3.24.1 \
   --docker-volumes /var/run/docker.sock:/var/run/docker.sock
 ```
 
@@ -182,7 +182,7 @@ scan:trivy-image:
 ```yaml
 scan:snyk:
   stage: scan
-  image: node:22-alpine
+  image: node:24-alpine
   script:
     - npm install -g snyk
     - snyk test --severity-threshold=high
@@ -192,6 +192,10 @@ scan:snyk:
 ```
 
 Секреты в GitLab: **CI/CD Variables** с флагами `masked` (не показывать в логах) и `protected` (только на protected-ветках — т.е. в main). Правило: токены с минимальными правами (deploy-роль в registry, бранч-протекшн на main), срок жизни — короткий, аудит использования — включённый.
+
+:::caution[Masked — защита от случайности, не от умысла]
+Флаг `masked` скрывает значение в логах, только если оно выведено целиком и в исходном виде. Злонамеренный job выведет секрет кусками, в base64 или отправит его наружу сетевым запросом — маскировка этого не заметит. Настоящая граница — `protected` переменные и минимальные права токена: украденный deploy-token на чтение не должен уметь ничего, кроме pull/push в registry.
+:::
 
 ## GitOps: pull против push
 
@@ -257,6 +261,10 @@ spec:
 
 Теперь цикл деплоя: CI бампает тег в `apps/api/deployment.yaml` инфра-репозитория → ArgoCD видит diff (polling каждые 3 минуты или webhook) → синхронизирует. Откат плохого релиза: `git revert` коммита бампа — ArgoCD сам вернёт старый образ. Ручной `kubectl set image` теперь бессмысленен: selfHeal вернёт состояние из git за 3 минуты — а это фича, а не баг.
 
+:::tip[Webhook вместо ожидания polling'а]
+Дефолтный polling раз в 3 минуты — это до трёх минут задержки между мержем и деплоем. Настрой webhook из GitLab в ArgoCD (репозиторий → Settings → Webhooks на URL `argocd-server/api/webhook`) — синхронизация начнётся за секунды после пуша. Polling при этом остаётся как страховка на случай потерянного webhook'а.
+:::
+
 ### App-of-apps и Flux кратко
 
 Когда приложений много, Application'ы становятся boilerplate. **App-of-apps**: один корневой Application следит за директорией, в которой лежат Application'ы (helm-чартом или простыми манифестами) — ArgoCD рекурсивно разворачивает их (паттерн описан в [документации ArgoCD](https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/#app-of-apps-pattern)):
@@ -308,6 +316,6 @@ pet-infra/
 
 - [GitLab CI/CD YAML reference](https://docs.gitlab.com/ee/ci/yaml/) — полный справочник ключей
 - [GitLab Runners](https://docs.gitlab.com/runner/) — executors, кэш через S3, регистрация
-- [Trivy](https://trivy.dev/latest/) — image/fs/config сканирование
+- [Trivy](https://trivy.dev/latest/docs/) — image/fs/config сканирование
 - [ArgoCD Documentation](https://argo-cd.readthedocs.io/en/stable/) — core concepts, Application, app-of-apps, ApplicationSet
 - [Flux CD](https://fluxcd.io/flux/) — альтернативная реализация GitOps

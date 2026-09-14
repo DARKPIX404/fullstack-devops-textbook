@@ -83,7 +83,7 @@ services:
 
   db:
     <<: *app-defaults
-    image: postgres:16-alpine
+    image: postgres:18-alpine
     environment:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD обязателен}
@@ -141,7 +141,7 @@ services:
   backup:
     <<: *app-defaults
     profiles: ["backup"]           # не стартует по умолчанию
-    image: postgres:16-alpine
+    image: postgres:18-alpine
     environment:
       PGHOST: db
       PGUSER: app
@@ -263,7 +263,7 @@ OUT=/backups
 
 # 1. Логический дамп PostgreSQL (pg_dump — консистентен при работающей БД)
 pg_dump -Fc appdb -f "$OUT/pg-$TS.dump"
-pg_dump требует, чтобы БД принимала соединения — она в internal-сети, backup там же
+# pg_dump требует, чтобы БД принимала соединения — она в internal-сети, backup там же
 
 # 2. Redis: RDB-дамп через SAVE на slave-коннекте
 redis-cli -h redis --rdb "$OUT/redis-$TS.rdb" || true

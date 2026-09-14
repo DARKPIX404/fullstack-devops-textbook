@@ -196,5 +196,5 @@ const { stdout } = await execFileAsync('ffmpeg', [
 - [Документация: child_process](https://nodejs.org/api/child_process.html) — exec/spawn/execFile/fork и безопасность.
 - [Документация: cluster](https://nodejs.org/api/cluster.html) — механика распределения соединений.
 - [Piscina](https://github.com/piscinajs/piscina) — пул worker_threads для продакшена.
-- [Don't Block the Event Loop (Mixu)](https://mixu.net/blog/dont-block-the-event-loop/) — почему CPU-работу нельзя держать в колбеках.
+- [Understanding the Node.js Event Loop (Mixu)](https://blog.mixu.net/2011/02/01/understanding-the-node-js-event-loop/) — почему CPU-работу нельзя держать в колбеках.
 - [OWASP Command Injection](https://owasp.org/www-community/attacks/Command_Injection) — классификация и примеры инъекций.

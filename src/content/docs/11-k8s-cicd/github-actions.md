@@ -57,9 +57,9 @@ jobs:
 **Кэш зависимостей npm** — ключ кэша от lockfile; попадание = `npm ci` за секунды:
 
 ```yaml
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 24
           cache: npm                    # ключ: hash package-lock.json
 ```
 
@@ -80,6 +80,10 @@ jobs:
 
 `mode=max` — критично: без него кэшируются только слои финального образа, а промежуточные (с установкой зависимостей) теряются, и каждый прогон ставит зависимости заново. После включения обоих типичный прогон падает с 8-10 до 2-4 минут. Механика ключей, восстановления и eviction описана в [документации по кэшированию](https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows).
 
+:::note[Кэш привязан к ветке]
+Кэш Actions изолирован по веткам: PR-ветка читает кэш `main`, но не наоборот, а соседние PR друг друга не видят вовсе. Поэтому первый прогон в новой ветке всегда «холодный» — не удивляйся восьми минутам там, где в `main` давно три. Прогон после мержа в `main` прогревает кэш для всех будущих PR.
+:::
+
 :::tip[Кэш vs артефакт]
 Кэш — оптимизация (может отсутствовать, ключи меняются, eviction). Артефакт — гарантированный результат job'а для следующих (`upload-artifact`/`download-artifact`). Сборку из кэша продлеваем, собранные бинарники передаём артефактом.
 :::
@@ -93,17 +97,17 @@ jobs:
     strategy:
       fail-fast: false              # одна упавшая комбинация не роняет остальные
       matrix:
-        node: [20, 22]
+        node: [22, 24]
         os: [ubuntu-24.04]
         include:
-          - node: 22
+          - node: 24
             os: ubuntu-22.04        # доп. комбинация сверх декартова произведения
         exclude:
-          - node: 20
+          - node: 22
             os: ubuntu-22.04
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with: { node-version: ${{ matrix.node }}, cache: npm }
       - run: npm ci && npm test
 ```
@@ -240,6 +244,10 @@ jobs:
         run: echo "Проверяем PR: $TITLE"   # безопасно: значение — данные, не код
 ```
 
+:::danger[Чужой PR — это исполняемый ввод]
+Всё, что приходит от внешнего контрибьютора — заголовок PR, имя ветки, тело коммита — попадает в контекст прогона. Интерполяция такого значения прямо в `run:` даёт чужому пул-реквесту выполнить код с правами `GITHUB_TOKEN` и доступом к секретам репозитория. Env-переменные и минимальные permissions — не опция для параноиков, а дефолт для любого репозитория, куда можно открыть PR.
+:::
+
 ## Полный пайплайн: lint-test-build-scan-deploy
 
 Собираем всё вместе — этот файл можно взять в проект почти без правок:
@@ -266,8 +274,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm }
+      - uses: actions/setup-node@v7
+        with: { node-version: 24, cache: npm }
       - run: npm ci
       - run: npm run lint
       - run: npm run typecheck
@@ -376,4 +384,4 @@ jobs:
 - [Reusing workflows](https://docs.github.com/en/actions/using-workflows/reusing-workflows) и [Creating composite actions](https://docs.github.com/en/actions/creating-actions/creating-a-composite-action)
 - [Using environments for deployment](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment)
 - [Configuring OpenID Connect in AWS](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services)
-- [docker/build-push-action](https://github.com/docker/build-push-action/blob/master/docs/advanced/cache.md) — кэширование в деталях
+- [Cache management with GitHub Actions](https://docs.docker.com/build/ci/github-actions/cache/) — кэширование в деталях

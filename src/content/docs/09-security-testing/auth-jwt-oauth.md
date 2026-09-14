@@ -10,7 +10,7 @@ description: "JWT изнутри: header/payload/signature, HS256 vs RS256, ат
 JWT — три сегмента, разделённые точками, каждый — Base64URL без паддинга:
 
 ```text
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjQyLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3MzU2MDAwMDB9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJVadQssw5c
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjQyLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MzU1OTY0MDAsImV4cCI6MTczNTYwMDAwMH0.-R9BT3SlJ0eH9DZpLC-2JYlDrT5zT5bh_wZRN0dHlSw
 └──────── header ────────┘ └──────── payload ────────┘ └──────── signature ────────┘
 ```
 
@@ -23,7 +23,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjQyLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE
 { "sub": 42, "role": "admin", "iat": 1735596400, "exp": 1735600000 }
 ```
 
-Подпись считается по формуле: `HMACSHA256(base64(header) + "." + base64(payload), secret)`. Сервер, получив токен, пересчитывает подпись своим секретом. Не сошлась — токен отбрасывается. Ключевое свойство: изменить хоть один байт payload (например, `role: "user"` → `"admin"`) невозможно без пересчёта подписи, а секрет знает только сервер.
+Подпись считается по формуле: `HMACSHA256(base64(header) + "." + base64(payload), secret)`. Сервер, получив токен, пересчитывает подпись своим секретом. Не сошлась — токен отбрасывается. Ключевое свойство: изменить хоть один байт payload (например, `role: "user"` → `"admin"`) невозможно без пересчёта подписи, а секрет знает только сервер. В примере выше подпись посчитана секретом `supersecret-demo-key-do-not-use-in-prod` — вставь токен на jwt.io вместе с этим секретом, и дебаггер покажет «Signature Verified».
 
 :::note[Стандартные claims]
 `sub` — идентификатор субъекта, `iat` — время выпуска, `exp` — истечение, `nbf` — не валиден раньше, `iss` — кто выпустил, `aud` — для кого предназначен. Проверяй `aud` и `iss`, если токенов в системе больше одного вида — иначе токен от сервиса A примет сервис B. Полный перечень claims — в [RFC 7519](https://datatracker.ietf.org/doc/html/rfc7519).
@@ -256,7 +256,7 @@ const ok = await argon2.verify(user.passwordHash, password);
 ## Что почитать
 
 - [RFC 7519 — JWT](https://datatracker.ietf.org/doc/html/rfc7519) и [RFC 8725 — Best Practices](https://datatracker.ietf.org/doc/html/rfc8725)
-- [OWASP JWT Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html)
+- [OWASP JWT Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_Cheat_Sheet.html)
 - [RFC 7636 — PKCE](https://datatracker.ietf.org/doc/html/rfc7636) и [OAuth 2.0 Security Best Current Practice](https://datatracker.ietf.org/doc/html/rfc9700)
 - [OpenID Connect Core](https://openid.net/specs/openid-connect-core-1_0.html) — спецификация id_token
 - [OWASP Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)

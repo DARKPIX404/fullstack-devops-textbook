@@ -198,7 +198,7 @@ ALB/Nginx для HTTP API, NLB для не-HTTP и экстремального 
 | Свойство | RabbitMQ | Kafka | AWS SQS |
 |---|---|---|---|
 | **Модель** | Брокер сообщений: exchanges, routing keys, очереди | Распределённый лог: топики, партиции, offset | Управляемая очередь, FIFO/standard |
-| **Доставка** | At-least-once (с ACK), exactly-once сложно | At-least-once по умолчанию; exactly-once в пределах Kafka (транзакции) | Standard: at-least-once с дедупликацией окном; FIFO: exactly-once по message group |
+| **Доставка** | At-least-once (с ACK), exactly-once сложно | At-least-once по умолчанию; exactly-once в пределах Kafka (транзакции) | Standard: at-least-once, без дедупликации; FIFO: exactly-once (дедупликация в 5-мин окне) по message group |
 | **Порядок** | В пределах одной очереди гарантируется | Только внутри партиции (поэтому ключ партиции = ключ порядка) | FIFO: строго; Standard: не гарантируется |
 | **Retry/DLQ** | Dead-letter exchange, TTL, TTL+DLX | Отдельные топики retry, нет встроенного DLQ | Redrive policy на DLQ-очередь, `maxReceiveCount` |
 | **Пропускная способность** | Десятки тысяч msg/s на кластер | Миллионы msg/s, дешёвое хранение | Масштабируется AWS, лимиты на аккаунт |
@@ -207,16 +207,19 @@ ALB/Nginx для HTTP API, NLB для не-HTTP и экстремального 
 Практические выводы из таблицы: порядок в Kafka — только внутри партиции (нужен порядок по пользователю → ключ партиции = `user_id`); SQS standard может доставить сообщение дважды и не по порядку — консьюмер обязан быть идемпотентным; RabbitMQ не для потоков в миллион сообщений в секунду — берите Kafka.
 
 ```python
-# SQS: отправка с атрибутами для маршрутизации и дедупликации
+# SQS FIFO: отправка с атрибутами для маршрутизации и дедупликации
+# MessageDeduplicationId работает только в FIFO-очередях (имя с суффиксом .fifo);
+# в Standard-очереди этот параметр — ошибка API, там дедупликации нет вовсе.
 import boto3, json, uuid
 
 sqs = boto3.client("sqs")
 sqs.send_message(
-    QueueUrl="https://sqs.eu-west-1.amazonaws.com/123/orders",
+    QueueUrl="https://sqs.eu-west-1.amazonaws.com/123/orders.fifo",
     MessageBody=json.dumps({"order_id": 4711, "total": 1500}),
     MessageAttributes={
         "type": {"DataType": "String", "StringValue": "order.created"},
     },
+    MessageGroupId="order-4711",  # обязателен для FIFO: группа, внутри которой держится порядок
     MessageDeduplicationId=str(uuid.uuid5(uuid.NAMESPACE_URL, "order:4711")),
 )
 ```

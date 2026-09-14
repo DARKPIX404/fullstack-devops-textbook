@@ -311,7 +311,7 @@ location /api/v1/notifications/stream {
 - **SSE за прокси без настроек.** Плохо: `proxy_buffering on` и дефолтный `proxy_read_timeout` — события идут пачками раз в минуту. Хорошо: `proxy_buffering off`, таймаут в час.
 - **Масштабирование без адаптера.** Плохо: две реплики, emit со второй не доходит до сокетов первой — «комнаты работают странно». Хорошо: Redis Pub/Sub adapter с первого дня, если планируешь больше одной реплики.
 
-## Вопросы на собеседование
+## Вопросы на собеседовании
 
 1. **Чем WebSocket отличается от SSE?** WebSocket — полнодуплексный бинарный канал поверх TCP после HTTP 101 upgrade; клиент и сервер пишут в любой момент. SSE — односторонний текстовый поток поверх обычного HTTP, только сервер → клиент, с авто-reconnect и `Last-Event-ID` в браузере.
 2. **Как происходит WebSocket handshake?** Обычный GET с `Upgrade: websocket` и `Connection: Upgrade`, сервер отвечает `101 Switching Protocols` и хешом ключа в `Sec-WebSocket-Accept`; дальше по соединению идут WebSocket-фреймы, HTTP закончился.

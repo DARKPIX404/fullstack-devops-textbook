@@ -7,7 +7,7 @@ description: "Как await работает поверх промисов, по�
 
 ## Как await работает под капотом
 
-[`async`-функция](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Statements/async_function) при вызове **немедленно возвращает промис**. Тело выполняется синхронно до первого `await`, затем функция приостанавливается — управление возвращается вызывающему коду, а продолжение (всё после `await`) ставится в очередь микрозадач и выполнится, когда промис разрешится:
+[`async`-функция](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) при вызове **немедленно возвращает промис**. Тело выполняется синхронно до первого `await`, затем функция приостанавливается — управление возвращается вызывающему коду, а продолжение (всё после `await`) ставится в очередь микрозадач и выполнится, когда промис разрешится:
 
 ```js
 async function demo() {
@@ -88,11 +88,11 @@ const avatars = await mapWithConcurrency(userIds, 3, async (id) => {
 });
 ```
 
-:::tip[Маппинг сохраняет порядок)]
+:::tip[Маппинг сохраняет порядок]
 `Promise.all(ids.map(...))` вернёт результаты в порядке `ids`, независимо от порядка завершения запросов. Деструктуризация безопасна.
 :::
 
-:::caution[forEach не ждёт await)]
+:::caution[forEach не ждёт await]
 ```js
 ids.forEach(async (id) => { await save(id); });
 console.log('готово'); // напечатается ДО завершения всех save!
@@ -102,7 +102,7 @@ console.log('готово'); // напечатается ДО завершени
 
 ## Отмена операций: AbortController
 
-`fetch`, `addEventListener`, `ReadableStream` и большинство современных асинхронных API принимают `signal` — объект-«флажок отмены». [`AbortController`](https://developer.mozilla.org/ru/docs/Web/API/AbortController) — источник этого сигнала:
+`fetch`, `addEventListener`, `ReadableStream` и большинство современных асинхронных API принимают `signal` — объект-«флажок отмены». [`AbortController`](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) — источник этого сигнала:
 
 ```js
 const controller = new AbortController();
@@ -202,7 +202,7 @@ delay(5000, { signal: c.signal }).catch((e) => console.log(e.name)); // AbortErr
 setTimeout(() => c.abort(), 100);
 ```
 
-:::note[AbortError — не ошибка)]
+:::note[AbortError — не ошибка]
 По конвенции отмена сигнализирует через `AbortError` (DOMException). Код потребителя обязан различать: отмена — штатный сценарий (молча завершить), сетевая ошибка — показать пользователю. Всегда проверяй `err.name === 'AbortError'` первым.
 :::
 
@@ -265,7 +265,7 @@ for await (const user of fetchUsersInBatches('/api/users')) {
 
 Ключевые свойства:
 
-- [`for await...of`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Statements/for-await...of) работает с async-итерабелями (объект с `[Symbol.asyncIterator]`) и с обычными итерируемыми (массив промисов).
+- [`for await...of`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of) работает с async-итерабелями (объект с `[Symbol.asyncIterator]`) и с обычными итерируемыми (массив промисов).
 - `break`/`return` в цикле вызывает `generator.return()` — finally-блоки внутри генератора выполнятся (отмена fetch, закрытие курсора).
 - Async-генераторы — основа streaming-API: чтение файлов/ответов по кускам, подписки на события как потоки.
 
@@ -398,8 +398,8 @@ for await (const user of streamUsers()) {
 
 ## Что почитать
 
-- [MDN: async function](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Statements/async_function)
-- [MDN: AbortController](https://developer.mozilla.org/ru/docs/Web/API/AbortController)
-- [MDN: for await...of](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Statements/for-await...of)
+- [MDN: async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)
+- [MDN: AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
+- [MDN: for await...of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of)
 - [V8 Blog: Async generators](https://v8.dev/blog/async-iteration)
-- [MDN: Top-level await](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/await#top-level-await)
+- [MDN: Top-level await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await#top_level_await)

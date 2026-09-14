@@ -257,7 +257,7 @@ docker run -d --name node-exporter --net=obs \
 docker run -d --name cadvisor --net=obs \
   -v /:/rootfs:ro -v /var/run:/var/run:ro -v /sys:/sys:ro \
   -v /var/lib/docker/:/var/lib/docker:ro \
-  gcr.io/cadvisor/cadvisor:latest
+  ghcr.io/google/cadvisor:v0.60.5
 ```
 
 ### Приложение: prom-client
@@ -413,4 +413,4 @@ histogram_quantile(
 - [Prometheus — getting started](https://prometheus.io/docs/prometheus/latest/getting_started/) и [Querying basics](https://prometheus.io/docs/prometheus/latest/querying/basics/)
 - [prom-client](https://github.com/siimon/prom-client) — метрики для Node.js
 - [Google SRE Book — Monitoring Distributed Systems](https://sre.google/sre-book/monitoring-distributed-systems/) — RED, базовые линии, алертинг-философия
-- [ELK Stack vs Loki](https://grafana.com/docs/loki/latest/get-started/compare/) — честное сравнение
+- [ELK Stack vs Loki](https://grafana.com/docs/loki/latest/get-started/overview/) — честное сравнение

@@ -60,13 +60,13 @@ docker run -d --name app -p 8080:3000 -e NODE_ENV=prod myapp:1.4.2
 
 ```dockerfile
 # Плохо: любая правка в src/ пересобирает npm ci — сборка 3 минуты
-FROM node:22-alpine
+FROM node:24-alpine
 COPY . /app
 WORKDIR /app
 RUN npm ci
 
 # Хорошо: правка src/ пересобирает только последние два слоя — сборка 15 секунд
-FROM node:22-alpine
+FROM node:24-alpine
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
@@ -90,7 +90,7 @@ COPY src ./src
 
 ```dockerfile
 # syntax=docker/dockerfile:1
-FROM node:22-alpine AS build
+FROM node:24-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 # Кэш npm между сборками — слой не инвалидируется
@@ -112,14 +112,14 @@ RUN --mount=type=secret,id=npmrc,target=/root/.npmrc \
 # syntax=docker/dockerfile:1
 
 # --- Стадия deps: только production-зависимости ---
-FROM node:22-alpine AS deps
+FROM node:24-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm \
     npm ci --omit=dev
 
 # --- Стадия build: компиляция TS ---
-FROM node:22-alpine AS build
+FROM node:24-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm \
@@ -129,7 +129,7 @@ COPY src ./src
 RUN npm run build && npm prune --omit=dev
 
 # --- Финальный образ: рантайм ---
-FROM node:22-alpine AS runtime
+FROM node:24-alpine AS runtime
 ENV NODE_ENV=production
 WORKDIR /app
 
@@ -186,7 +186,7 @@ tests
 `ARG` — переменные времени сборки. Их главные опасности: значение запекается в слой и видно в `docker history`; и каждое уникальное значение ARG вверху Dockerfile сбрасывает весь кэш ниже.
 
 ```dockerfile
-FROM node:22-alpine AS build
+FROM node:24-alpine AS build
 ARG APP_VERSION=dev
 # ARG-подстановка происходит ДО выполнения: строка попадёт в историю слоя
 RUN echo "export const VERSION = '$APP_VERSION';" > src/version.ts
@@ -218,7 +218,7 @@ dive myapp:1.4.2
 По убыванию эффекта:
 
 1. **[Multi-stage](https://docs.docker.com/build/building/multi-stage/)** — самый большой выигрыш: -60–80 % объёма (исходники, компиляторы, devDeps остаются в build-стадиях).
-2. **Минимальный base**: `alpine` (5 МБ) vs `slim` (debian без лишнего, ~30 МБ) vs полный образ (~80–1000 МБ). Для node — `node:22-alpine`. Для go/rust — `FROM scratch` или `gcr.io/distroless`.
+2. **Минимальный base**: `alpine` (5 МБ) vs `slim` (debian без лишнего, ~30 МБ) vs полный образ (~80–1000 МБ). Для node — `node:24-alpine`. Для go/rust — `FROM scratch` или `gcr.io/distroless`.
 3. **Один RUN для установки**: все пакеты и их кэши в одном слое с очисткой.
 4. **Точечный COPY** вместо `COPY . .` — копируй только нужное: `COPY src ./src`, `COPY package*.json ./`.
 5. **.dockerignore** — не тащить мусор в контекст.

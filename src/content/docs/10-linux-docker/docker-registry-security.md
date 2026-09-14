@@ -280,6 +280,6 @@ Capabilities режут привилегии root-набора (chown, net_admin
 
 - [OCI Distribution Spec](https://github.com/opencontainers/distribution-spec) — API реестров, на котором стоит всё
 - [Trivy документация](https://aquasecurity.github.io/trivy/) — режимы image/fs/repo, фильтры, CI-интеграция
-- [Sigstore Cosign](https://docs.sigstore.dev/cosign/overview/) — подпись образов, keyless-режим
+- [Sigstore Cosign](https://docs.sigstore.dev/cosign/signing/overview/) — подпись образов, keyless-режим
 - [Docker security best practices](https://docs.docker.com/develop/security-best-practices/) — non-root, seccomp, capabilities
 - [capabilities(7)](https://man7.org/linux/man-pages/man7/capabilities.7.html) — полный список capabilities и что каждая позволяет

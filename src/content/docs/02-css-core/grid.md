@@ -79,7 +79,7 @@ grid-template-columns: minmax(0, 1fr);
 }
 ```
 
-Контейнер сам решает, сколько колонок поместится: при 1200px — 5, при 700px — 3, при 360px — 1. Медиазапросы не нужны. Теперь разница двух близнецов, которая выносит мозг:
+Контейнер сам решает, сколько колонок поместится: при 1200px — 4, при 700px — 2, при 360px — 1. Медиазапросы не нужны. Формула простая: помещается `floor((ширина + gap) / (минимум + gap))` колонок, каждая — не уже 240px. Теперь разница двух близнецов, которая выносит мозг:
 
 ```text
 auto-fill: пустые треки СОХРАНЯЮТСЯ            auto-fit: пустые треки СХЛОПЫВАЮТСЯ
@@ -96,7 +96,7 @@ fill — количество колонок фиксировано        fit �
 (полезно с явным justify-контролем)
 ```
 
-Правило большого пальца: **в 95% случаев для карточных сеток нужен `auto-fit`**. `auto-fill` оправдан, когда ты сознательно держишь сетку «в натяг» (например, галерея с фиксированным числом колонок для определённого breakpoint'а). Разница близнецов с иллюстрациями — в [MDN: Автоматическое размещение в Grid](https://developer.mozilla.org/ru/docs/Web/CSS/CSS_grid_layout/Auto-placement_in_grid_layout).
+Правило большого пальца: **в 95% случаев для карточных сеток нужен `auto-fit`**. `auto-fill` оправдан, когда ты сознательно держишь сетку «в натяг» (например, галерея с фиксированным числом колонок для определённого breakpoint'а). Разница близнецов с иллюстрациями — в [MDN: Автоматическое размещение в Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Auto-placement_in_grid_layout).
 
 ### Другие функции треков
 
@@ -326,8 +326,8 @@ Header и footer на всю ширину, сайдбар слева, main сп�
 
 ## Что почитать
 
-- [MDN: CSS Grid Layout](https://developer.mozilla.org/ru/docs/Web/CSS/CSS_grid_layout) — полный раздел: концепции, треки, области, выравнивание.
-- [MDN: auto-fill против auto-fit](https://developer.mozilla.org/ru/docs/Web/CSS/CSS_grid_layout/Auto-placement_in_grid_layout) — автоплейсмент и разница близнецов с примерами.
+- [MDN: CSS Grid Layout](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout) — полный раздел: концепции, треки, области, выравнивание.
+- [MDN: auto-fill против auto-fit](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Auto-placement_in_grid_layout) — автоплейсмент и разница близнецов с примерами.
 - [CSS Tricks: A Complete Guide to Grid](https://css-tricks.com/snippets/css/complete-guide-grid/) — визуальная шпаргалка всех свойств.
 - [Every Layout: The Grid Layout](https://every-layout.dev/layouts/grid/) — composable-философия сеток.
 - [web.dev: CSS subgrid](https://web.dev/articles/css-subgrid) — разбор subgrid с реальными кейсами карточек.

@@ -128,7 +128,7 @@ spec:
 
 ## Service: стабильная точка входа
 
-П IP у пода меняется при каждом пересоздании, поэтому поды находят друг друга через Service — стабильное DNS-имя + виртуальный IP + балансировка:
+IP у пода эфемерен: он меняется при каждом пересоздании, поэтому поды находят друг друга через Service — стабильное DNS-имя + постоянный виртуальный IP (ClusterIP) + балансировка:
 
 ```yaml
 apiVersion: v1
@@ -164,6 +164,10 @@ spec:
 - **LoadBalancer** — в облаке создаёт внешний LB; на bare-metal нужен MetalLB.
 
 Балансировка реализована через iptables/IPVS-правила kube-proxy: DNAT на случайный живой под. Поэтому Service не «владеет» соединениями и не терминирует TLS. Типы сервисов и механика service discovery разобраны в [документации по Services](https://kubernetes.io/docs/concepts/services-networking/service/).
+
+:::note[DNS-имена сервисов под капотом]
+Каждому Service CoreDNS выдаёт имя вида `api.pet.svc.cluster.local`. Внутри одного namespace хватает короткого `api`, из соседнего — `api.pet`. Структура `сервис.namespace.svc.cluster.local` пригодится, когда будешь читать чужие конфиги или дебажить резолв через `nslookup` из временного debug-пода.
+:::
 
 ## ConfigMap и Secret: конфигурация вне образа
 
@@ -242,7 +246,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: backup
-              image: postgres:16-alpine
+              image: postgres:18-alpine
               envFrom: [{ secretRef: { name: api-secrets } }]
               command: ["/bin/sh", "-c"]
               args:
@@ -325,4 +329,4 @@ kubectl explain deployment.spec.strategy       # справка по полям 
 - [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) — первоисточник по пробам
 - [kubectl Cheat Sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
 - [Assign Memory Resources to Containers](https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/) и [CPU](https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/) — практика requests/limits
-- [Configure a Pod to Use a PersistentVolume](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/)
+- [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)

@@ -57,7 +57,7 @@ app.use(
 );
 ```
 
-Ключевые директивы: `script-src` — главная защита от XSS (без `'unsafe-inline'` инлайн-скрипты не исполнятся, XSS через `onerror` тоже режется, если нет `'unsafe-eval'`); `connect-src` — куда может стучаться `fetch` (украденный токен не уйдёт на чужой домен); `frame-ancestors` — аналог `X-Frame-Options`, против кликджекинга; `report-uri`/`report-to` — браузер шлёт нарушения политики, подключи для режима `Content-Security-Policy-Report-Only` перед боевым включением.
+Ключевые директивы: `script-src` — главная защита от XSS (без `'unsafe-inline'` не исполнятся ни инлайн-скрипты, ни обработчики вроде `onerror`; `'unsafe-eval'` — отдельная история, он про `eval` и `new Function`, и его тоже не должно быть); `connect-src` — куда может стучаться `fetch` (украденный токен не уйдёт на чужой домен); `frame-ancestors` — аналог `X-Frame-Options`, против кликджекинга; `report-uri`/`report-to` — браузер шлёт нарушения политики, подключи для режима `Content-Security-Policy-Report-Only` перед боевым включением.
 
 :::tip[Nonce вместо unsafe-inline]
 Если нужен инлайн-скрипт — генерируй per-запрос nonce (`crypto.randomBytes(16)`) и разрешай `'nonce-...'`. Ниже покажем Trusted Types — следующий уровень.
@@ -273,7 +273,7 @@ chmod 600 .env
 ## Что почитать
 
 - [OWASP Top 10 (2021)](https://owasp.org/Top10/) — разбор каждого пункта с примерами
-- [Content Security Policy — MDN](https://developer.mozilla.org/ru/docs/Web/HTTP/CSP) и [Trusted Types](https://web.dev/articles/trusted-types)
+- [Content Security Policy — MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) и [Trusted Types](https://web.dev/articles/trusted-types)
 - [OWASP CSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html)
 - [CORS for Developers — W3C](https://www.w3.org/TR/cors/)
 - [Helmet.js — документация по каждому заголовку](https://helmetjs.github.io/)

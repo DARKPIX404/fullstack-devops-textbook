@@ -30,29 +30,20 @@ Trace a1b2c3d4e5f6... (запрос GET /api/orders)
 
 ### Развёртывание Jaeger
 
-Jaeger — система хранения и визуализации трейсов от Uber. Архитектура: приложения шлют спаны OTLP-коллектору, Jaeger хранит их в БД (для pet-проекта — in-memory или Badger, для продакшена — Elasticsearch/ClickHouse) и показывает в UI.
+Jaeger — система хранения и визуализации трейсов от Uber. Актуальная вторая версия (v1 снят с поддержки 31 декабря 2025) — один бинарник на базе OpenTelemetry Collector: принимает OTLP нативно, хранит трейсы (для pet-проекта — в памяти, для продакшена — Elasticsearch/ClickHouse) и показывает в UI.
 
 ```yaml
-# docker-compose.yml — Jaeger all-in-one для pet-проекта
+# docker-compose.yml — Jaeger 2 all-in-one для pet-проекта
 services:
   jaeger:
-    image: jaegertracing/all-in-one:1.60
+    image: jaegertracing/jaeger:2.20.0
     ports:
       - "16686:16686"        # UI
       - "4318:4318"          # OTLP HTTP (приём спанов)
-    environment:
-      COLLECTOR_OTLP_ENABLED: true
-      SPAN_STORAGE_TYPE: badger   # badger = локальное хранилище на диске
-      BADGER_EPHEMERAL: false
-      BADGER_DIRECTORY_VALUE: /badger/data
-      BADGER_DIRECTORY_KEY: /badger/key
-    volumes: [jaeger-data:/badger]
-
-volumes:
-  jaeger-data:
+      - "4317:4317"          # OTLP gRPC
 ```
 
-Открой `http://localhost:16686` — UI Jaeger: выбор сервиса, поиск по trace_id, «водопад» спанов. All-in-one годится для pet-проекта; при росте нагрузки переезжай на коллектор + отдельное хранилище.
+Без конфигурационного файла Jaeger 2 стартует в режиме all-in-one с хранилищем в памяти: трейсы живут до рестарта контейнера — для pet-проекта этого достаточно. Открой `http://localhost:16686` — UI Jaeger: выбор сервиса, поиск по trace_id, «водопад» спанов. При росте нагрузки переезжай на отдельное хранилище (конфиг через `--config`, см. [документацию](https://www.jaegertracing.io/docs/latest/configuration/)).
 
 ### Инструментация Node.js
 

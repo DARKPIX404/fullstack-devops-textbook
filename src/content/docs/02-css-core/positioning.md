@@ -87,7 +87,7 @@ Absolute-элемент ищет ближайшего предка с НЕ-stati
      ▲ кнопка всегда тут                     и ЕДЕТ со скроллом
 ```
 
-Это главная грабля порталов-модалок в React: модалка рисуется внутри узла с анимационным `transform`, а её кнопки `position: fixed` едут по странице. Решение — рендерить оверлей в `body` (порталы) или не анимировать обёртку transform'ом. Поведение `fixed` (и его исключения) документировано в [MDN: position](https://developer.mozilla.org/ru/docs/Web/CSS/position).
+Это главная грабля порталов-модалок в React: модалка рисуется внутри узла с анимационным `transform`, а её кнопки `position: fixed` едут по странице. Решение — рендерить оверлей в `body` (порталы) или не анимировать обёртку transform'ом. Поведение `fixed` (и его исключения) документировано в [MDN: position](https://developer.mozilla.org/en-US/docs/Web/CSS/position).
 
 ### sticky: прилипание с условиями
 
@@ -124,7 +124,7 @@ Absolute-элемент ищет ближайшего предка с НЕ-stati
 
 ## z-index и stacking contexts: лестница слоёв
 
-`z-index` сравнивается только ВНУТРИ одного stacking context. Контекст — изолированная «лестница», победитель которой выходит наружу как единый слой. Поэтому «z-index: 9999 не помогает»: контекст дропдауна ниже контекста модалки, и внутри своей лестницы он побеждает, но сама лестница стоит ниже. Полный перечень условий создания контекста и порядок отрисовки слоёв — в [MDN: Stacking context](https://developer.mozilla.org/ru/docs/Web/CSS/CSS_positioned_layout/Stacking_context).
+`z-index` сравнивается только ВНУТРИ одного stacking context. Контекст — изолированная «лестница», победитель которой выходит наружу как единый слой. Поэтому «z-index: 9999 не помогает»: контекст дропдауна ниже контекста модалки, и внутри своей лестницы он побеждает, но сама лестница стоит ниже. Полный перечень условий создания контекста и порядок отрисовки слоёв — в [MDN: Stacking context](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioned_layout/Stacking_context).
 
 Стекинг-контекст создаётся:
 
@@ -177,7 +177,7 @@ Absolute-элемент ищет ближайшего предка с НЕ-stati
 | `auto` | обрезает + полоса по необходимости | универсальный скролл-контейнер |
 | `clip` | обрезает без скролл-контейнера (совр.) | строгая обрезка, не создаёт BFC |
 
-Важная связка: `overflow` ≠ `visible` на предке **обрезает sticky и ломает fixed** (см. выше), а также создаёт блокировку для абсолютных потомков — торчащий тултип обрежется родителем с `overflow: hidden`. Семантика каждого значения — в [MDN: overflow](https://developer.mozilla.org/ru/docs/Web/CSS/overflow).
+Важная связка: `overflow` ≠ `visible` на предке **обрезает sticky и ломает fixed** (см. выше), а также создаёт блокировку для абсолютных потомков — торчащий тултип обрежется родителем с `overflow: hidden`. Семантика каждого значения — в [MDN: overflow](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow).
 
 ## Типовые задачи
 
@@ -324,8 +324,8 @@ Absolute-элемент не обязан лежать ВНУТри своего
 
 ## Что почитать
 
-- [MDN: Позиционирование](https://developer.mozilla.org/ru/docs/Web/CSS/position) — все пять режимов с интерактивными примерами.
-- [MDN: Stacking context](https://developer.mozilla.org/ru/docs/Web/CSS/CSS_positioned_layout/Stacking_context) — полный список создателей контекстов и алгоритм отрисовки.
+- [MDN: Позиционирование](https://developer.mozilla.org/en-US/docs/Web/CSS/position) — все пять режимов с интерактивными примерами.
+- [MDN: Stacking context](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioned_layout/Stacking_context) — полный список создателей контекстов и алгоритм отрисовки.
 - [CSS Tricks: position: sticky](https://css-tricks.com/position-sticky-2/) — нюансы sticky и его «неприлипания».
 - [web.dev: Слои и производительность](https://web.dev/articles/rendering-performance) — зачем браузеру stacking contexts и compositor-слои (мостик к главе про анимации).
 - [Philip Walton: Stacking Contexts интерактивно](https://philipwalton.com/articles/what-no-one-told-you-about-z-index/) — классический разбор «z-index как работает на самом деле».

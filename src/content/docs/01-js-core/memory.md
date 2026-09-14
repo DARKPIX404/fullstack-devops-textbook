@@ -9,7 +9,7 @@ description: "Mark-and-sweep и reachability, типичные утечки (т�
 
 ## Как работает сборка мусора: reachability
 
-V8 (и все современные движки) использует **tracing garbage collection** с алгоритмом [**mark-and-sweep**](https://developer.mozilla.org/ru/docs/Web/JavaScript/Memory_management). Модель простая:
+V8 (и все современные движки) использует **tracing garbage collection** с алгоритмом [**mark-and-sweep**](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_management). Модель простая:
 
 1. Движок поддерживает набор **корней (roots)**: глобальный объект, стек вызовов, активные слушатели событий, внутренние структуры.
 2. От корней начинается обход всех reachable-объектов: от корня до ссылки → объект помечается (mark). От него — дальше по его ссылкам.
@@ -26,7 +26,7 @@ user = null;
 
 Это объясняет всё из прошлых глав: замыкание держит окружение живым, пока жива функция; промис удерживает свои реакции; DOM-нода в глобальной переменной — корень для всего поддерева.
 
-:::note[Нет детерминированного момента освобождения)]
+:::note[Нет детерминированного момента освобождения]
 Ты не знаешь, когда GC пройдёт. Поэтому нельзя «очистить ресурс в деструкторе» — в JS нет деструкторов. Файлы, сокеты, соединения — закрывай явно (finally, try-with-resources-паттерн), память — доверяй GC.
 :::
 
@@ -134,7 +134,7 @@ async function getUser(id) {
 }
 ```
 
-:::caution[Detached DOM-узлы)]
+:::caution[Detached DOM-узлы]
 Узел удалён из документа (`removeChild`), но на него есть ссылка в JS (массив, замыкание, jQuery-данные) — узел и всё его поддерево висят в памяти. DevTools Memory → «Detached DOM tree» — прямой диагноз.
 :::
 
@@ -198,7 +198,7 @@ memory
   └──┴─────┴─┴─────┴──► действия
 ```
 
-:::tip[Дистанционные сессии)]
+:::tip[Дистанционные сессии]
 В продакшене утечки ищут по метрикам: [`performance.memory`](https://developer.mozilla.org/en-US/docs/Web/API/Performance/memory) (Chrome, `usedJSHeapSize`), метрики RSS в Node ([`process.memoryUsage()`](https://nodejs.org/api/process.html#processmemoryusage)), снапшоты heap из Node (`node --inspect` + Chrome DevTools, или `v8.getHeapSnapshot()`).
 :::
 
@@ -220,7 +220,7 @@ function createWidget(id) {
   return widget;
 }
 
-const w = createWidget('btn-1');
+let w = createWidget('btn-1');
 console.log(meta.get(w)); // { createdAt: ..., clicks: 0 }
 w = null; // объект + его метаданные соберутся GC, записи в WeakMap не мешают
 ```
@@ -265,7 +265,7 @@ function openTracked(file) {
 }
 ```
 
-:::caution[FinalizationRegistry — не деструктор)]
+:::caution[FinalizationRegistry — не деструктор]
 Колбэк выполняется **неизвестно когда** (после GC, в отдельной задаче) и без гарантий порядка. Для детерминированной очистки — всегда явный `close()`/`finally`. Registry — страховка, не протокол.
 :::
 
@@ -315,8 +315,8 @@ function openTracked(file) {
 
 ## Что почитать
 
-- [MDN: Управление памятью](https://developer.mozilla.org/ru/docs/Web/JavaScript/Memory_management)
-- [MDN: WeakMap](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/WeakMap)
-- [MDN: FinalizationRegistry](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry)
+- [MDN: Управление памятью](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_management)
+- [MDN: WeakMap](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap)
+- [MDN: FinalizationRegistry](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry)
 - [V8 Blog: Trash talk (сборка мусора)](https://v8.dev/blog/trash-talk)
 - [Chrome DevTools: Fix memory problems](https://developer.chrome.com/docs/devtools/memory-problems/)

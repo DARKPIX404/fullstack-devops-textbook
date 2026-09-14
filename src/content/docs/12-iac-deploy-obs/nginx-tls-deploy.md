@@ -145,6 +145,14 @@ Zone — разделяемая память (`10m` хватает на ~160k IP
 ### Полный server-блок (HTTP, перед TLS)
 
 ```conf
+# log_format и limit_req_zone допустимы только в http-контексте:
+# объявляем их в /etc/nginx/nginx.conf (внутри http { ... })
+# или в отдельном файле /etc/nginx/conf.d/pet-zones.conf
+log_format main '$remote_addr - $status "$request" rt=$request_time '
+                'urt=$upstream_response_time "$http_user_agent"';
+
+limit_req_zone $binary_remote_addr zone=global:10m rate=20r/s;
+
 # /etc/nginx/sites-available/pet
 server {
     listen 80;
@@ -152,11 +160,7 @@ server {
     server_name pet.darkpix.dev;
 
     # Логи с разделением времени: Nginx vs upstream
-    log_format main '$remote_addr - $status "$request" rt=$request_time '
-                    'urt=$upstream_response_time "$http_user_agent"';
     access_log /var/log/nginx/access.log main;
-
-    limit_req_zone $binary_remote_addr zone=global:10m rate=20r/s;
 
     location /api/ {
         limit_req zone=global burst=40 nodelay;

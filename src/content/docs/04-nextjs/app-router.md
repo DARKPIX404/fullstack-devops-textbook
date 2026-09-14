@@ -174,14 +174,16 @@ app/
 ```tsx
 // app/feed/@modal/(.)photo/[id]/page.tsx — модалка
 'use client';
+import { use } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function PhotoModal({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params); // клиентский компонент не может быть async — разворачиваем Promise через use()
   const router = useRouter();
   return (
     // клик по фону = «назад» — модалка закрывается, лента осталась
     <div className="modal-backdrop" onClick={() => router.back()}>
-      <PhotoContent id={/* await params */} />
+      <PhotoContent id={id} />
     </div>
   );
 }

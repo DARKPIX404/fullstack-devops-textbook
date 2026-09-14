@@ -9,7 +9,7 @@ description: "Стек вызовов, контекст выполнения, л
 
 ## Стек вызовов (Call Stack)
 
-JS — однопоточный язык. В каждый момент времени выполняется ровно одна функция. Чтобы помнить, «кто кого вызвал» и «куда возвращаться», движок использует [**стек вызовов**](https://developer.mozilla.org/ru/docs/Glossary/Call_stack) — структуру LIFO (последний пришёл — первый ушёл).
+JS — однопоточный язык. В каждый момент времени выполняется ровно одна функция. Чтобы помнить, «кто кого вызвал» и «куда возвращаться», движок использует [**стек вызовов**](https://developer.mozilla.org/en-US/docs/Glossary/Call_stack) — структуру LIFO (последний пришёл — первый ушёл).
 
 ```js
 function a() {
@@ -131,7 +131,7 @@ function greet() {
 
 ### var: поднимается только имя
 
-[`var`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Statements/var) поднимается как имя со значением `undefined`. Присваивание происходит там, где написано:
+[`var`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/var) поднимается как имя со значением `undefined`. Присваивание происходит там, где написано:
 
 ```js
 console.log(a); // undefined — имя есть, значения ещё нет
@@ -146,7 +146,7 @@ console.log(a); // 42
 
 ### let/const: поднимаются, но в TDZ
 
-`let` и `const` тоже поднимаются (окружение знает об их именах с фазы создания), но обращение к ним до строки объявления запрещено — это [**временная мёртвая зона (Temporal Dead Zone, TDZ)**](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Statements/let#temporal_dead_zone_tdz):
+`let` и `const` тоже поднимаются (окружение знает об их именах с фазы создания), но обращение к ним до строки объявления запрещено — это [**временная мёртвая зона (Temporal Dead Zone, TDZ)**](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let#temporal_dead_zone_tdz):
 
 ```js
 console.log(b); // ReferenceError: Cannot access 'b' before initialization
@@ -165,7 +165,7 @@ function loop() {
 }
 ```
 
-:::caution[var в цикле — один экземпляр)]
+:::caution[var в цикле — один экземпляр]
 `var` игнорирует блочную область видимости, поэтому в цикле существует **одна** переменная на все итерации. `let` создаёт новое окружение на каждой итерации — поэтому замыкания в цикле ведут себя так по-разному. Подробный разбор — в главе про замыкания.
 :::
 
@@ -278,7 +278,7 @@ logEnv (prefix) ─Outer─▶ bootEnv (mode='prod', startedAt) ─Outer─▶ g
 
 Вызов `boot('dev')` построил **параллельную** цепочку с `mode='dev'`. Две ветки не пересекаются, хотя функция `log` одна и та же по коду. Это и есть та самая «дешёвая изоляция», которую замыкания дают без классов и приватных полей.
 
-:::tip[Отладочный прием)]
+:::tip[Отладочный прием]
 В DevTools (Sources → Scope) при остановке на breakpoint внутри `log` ты увидишь в панели Scope все три окружения цепочки: Local (prefix), Closure (mode, startedAt), Global (app, ...). Это рентген Scope Chain — используй, когда непонятно, откуда переменная.
 :::
 
@@ -410,7 +410,7 @@ console.log(w.get()); // 2
 ## Что почитать
 
 - [ECMAScript-спецификация: Lexical Environments (раздел 9.1)](https://tc39.es/ecma262/#sec-lexical-environments)
-- [MDN: Область видимости и стек вызовов](https://developer.mozilla.org/ru/docs/Web/JavaScript/Guide/Closures#%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D1%82%D1%8C_%D0%B2%D0%B8%D0%B4%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D0%B8_%D0%B8_%D1%81%D1%82%D0%B5%D0%BA_%D0%B2%D1%8B%D0%B7%D0%BE%D0%B2%D0%BE%D0%B2)
+- [MDN: Цепочка областей видимости замыканий](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures#closure_scope_chain)
 - [V8 Blog: Fast properties](https://v8.dev/blog/fast-properties) — как устроены скрытые классы и словари свойств
 - [JavaScript Visualized: Hoisting (Lydia Hallie)](https://dev.to/lydiahallie/javascript-visualized-hoisting-478h)
 - [You Don't Know JS Yet: Scope & Closures (Kyle Simpson)](https://github.com/getify/You-Dont-Know-JS/tree/2nd-ed/scope-closures)

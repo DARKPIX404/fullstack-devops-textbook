@@ -472,7 +472,7 @@ draft/        ✗       draft/        УДАЛЁН
 
 ## Что почитать
 
-- [Pro Git: Инструменты Git — stash, bisect, worktree (глава 7)](https://git-scm.com/book/ru/v2/Инструменты-Git-Прятанье-и-очистка)
+- [Pro Git: Инструменты Git — stash, bisect, worktree (глава 7)](https://git-scm.com/book/en/v2/Git-Tools-Stashing-and-Cleaning)
 - [Git Worktree documentation](https://git-scm.com/docs/git-worktree)
 - [Git Bisect documentation](https://git-scm.com/docs/git-bisect)
 - [Git LFS](https://git-lfs.com/)

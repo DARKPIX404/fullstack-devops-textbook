@@ -207,9 +207,9 @@ jobs:
           fetch-depth: 0 # affected-вычислениям нужна история git
 
       - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
@@ -240,7 +240,7 @@ jobs:
 6. **Дубли критичных зависимостей.** Две версии React или zod в одном бандле — трудноотлаживаемые баги в рантайме. Ловится `pnpm why react` и жёстким `overrides`.
 7. **Ручные версии вместо changesets.** «Поднимем версию при публикации руками» работает для двух пакетов и ломается на пяти: забыли бамп потребителя, changelog не ведётся, порядок публикации нарушен.
 
-## Вопросы на собеседование
+## Вопросы на собеседовании
 
 1. **Чем монорепа отличается от polyrepo и когда какой подход выбрать?** Монорепа — один репозиторий со связанными пакетами и общими артефактами; polyrepo — изолированные репозитории с публикацией пакетов. Монорепа выигрывает при связной разработке и общей команде; polyrepo — при независимых командах и релизных циклах.
 2. **Как pnpm резолвит зависимости в workspace и чем это лучше npm?** Через симлинки в content-addressable store: каждый пакет видит только объявленные зависимости, внутренние пакеты линкуются автоматически. npm hoisting допускает фантомные зависимости — импорт незадекларированных пакетов.
@@ -268,4 +268,4 @@ jobs:
 - [Nx: Mental Model](https://nx.dev/concepts/mental-model) — как Nx строит граф проекта и вычисляет affected.
 - [Turborepo: Filtering Packages](https://turbo.build/repo/docs/core-concepts/filtering) — синтаксис фильтров `--filter` по графу зависимостей.
 - [Changesets](https://github.com/changesets/changesets) — версионирование и публикация пакетов монорепы.
-- [Node.js: Workspaces](https://nodejs.org/api/workspaces.html) — как workspaces поддержаны нативно в npm/ядре Node.
+- [npm: Workspaces](https://docs.npmjs.com/cli/v11/using-npm/workspaces) — как workspaces поддержаны в npm.

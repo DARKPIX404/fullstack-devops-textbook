@@ -112,7 +112,7 @@ flex-grow: 2, 1, 1  при контейнере 800 и basis 200:
 вклад айтема в сжатие = недостача × (basis × shrink) / Σ(basis × shrink)
 ```
 
-Важно: shrink работает относительно basis, а не текущего размера. `flex: 1` на узком айтеме сожмёт его меньше, чем `flex: 1` на широком, — пропорция сохраняется. Браузерные алгоритмы этого перераспределения шаг за шагом разобраны в [MDN: Контролирование соотношения элементов по главной оси](https://developer.mozilla.org/ru/docs/Web/CSS/CSS_flexible_box_layout/Controlling_ratios_of_flex_items_along_the_main_axis) — читать сразу после этой главы.
+Важно: shrink работает относительно basis, а не текущего размера. `flex: 1` на узком айтеме сожмёт его меньше, чем `flex: 1` на широком, — пропорция сохраняется. Браузерные алгоритмы этого перераспределения шаг за шагом разобраны в [MDN: Контролирование соотношения элементов по главной оси](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout/Controlling_ratios_of_flex_items_along_the_main_axis) — читать сразу после этой главы.
 
 ### Шорткаты flex
 
@@ -327,8 +327,8 @@ flex: none;     /* = 0 0 auto — жёсткий бокс: не расти и н
 
 ## Что почитать
 
-- [MDN: Flexbox](https://developer.mozilla.org/ru/docs/Web/CSS/CSS_flexible_box_layout/Basic_concepts_of_flexbox) — базовые концепции с интерактивными примерами.
-- [MDN: Контролирование соотношения элементов по главной оси](https://developer.mozilla.org/ru/docs/Web/CSS/CSS_flexible_box_layout/Controlling_ratios_of_flex_items_along_the_main_axis) — глубокий разбор grow/shrink/basis с алгоритмами.
+- [MDN: Flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout/Basic_concepts_of_flexbox) — базовые концепции с интерактивными примерами.
+- [MDN: Контролирование соотношения элементов по главной оси](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout/Controlling_ratios_of_flex_items_along_the_main_axis) — глубокий разбор grow/shrink/basis с алгоритмами.
 - [CSS Tricks: A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/) — шпаргалка всех свойств с графиками.
 - [Every Layout: The Flexbox Layout](https://every-layout.dev/layouts/flexbox/) — философия «содержимое определяет раскладку» против фиксированных брейкпоинтов.
 - [web.dev: Flexbox froggy как тренажёр](https://flexboxfroggy.com/#ru) — закрепление свойств игрой (пройди всю, это быстро).

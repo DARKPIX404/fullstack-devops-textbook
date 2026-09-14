@@ -15,8 +15,50 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Линтер глав учебника (scripts/lint-guide.mjs). Блокирующий:
+  # при ошибках сборка не запускается.
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint guide
+        run: npm run lint:guide
+
+  # Проверка внешних ссылок в главах через lychee.
+  # На старте не блокирует деплой (continue-on-error): внешние ресурсы
+  # периодически флапают. После стабилизации результатов убрать
+  # continue-on-error и добавить links в needs у build.
+  links:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --verbose
+            --no-progress
+            --accept 200,204,301,302,401,403,429
+            --exclude-mail
+            --exclude "darkpix\.dev"
+            --exclude "example\.com"
+            --exclude "localhost"
+            --exclude "registry-1\.docker\.io"
+            --exclude "oauth2\.googleapis\.com"
+            --exclude "aur\.archlinux\.org"
+            "src/content/docs/**/*.md"
+            "src/content/docs/**/*.mdx"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   build:
     runs-on: ubuntu-latest
+    needs: lint
     steps:
       - name: Checkout
         uses: actions/checkout@v4

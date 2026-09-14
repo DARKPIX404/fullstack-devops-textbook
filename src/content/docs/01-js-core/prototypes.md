@@ -46,8 +46,8 @@ cat.walk(); // «Мурка передвигается» — тот же мет�
 
 Метод **не копируется** в каждый объект — он хранится один раз в прототипе. Экономия памяти и возможность обновить поведение всех «наследников» правкой одного прототипа.
 
-:::tip[Дно цепочки)]
-У любого обычного объекта прототипная цепочка выглядит так: `obj → Object.prototype → null`. Поэтому у каждого объекта есть `toString`, `hasOwnProperty` и т.д. — они приходят из `Object.prototype`. [`Object.create(null)`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/create) создаёт объект без прототипа — чистый словарь, без `toString` и прочих сюрпризов.
+:::tip[Дно цепочки]
+У любого обычного объекта прототипная цепочка выглядит так: `obj → Object.prototype → null`. Поэтому у каждого объекта есть `toString`, `hasOwnProperty` и т.д. — они приходят из `Object.prototype`. [`Object.create(null)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create) создаёт объект без прототипа — чистый словарь, без `toString` и прочих сюрпризов.
 :::
 
 ## Как свойства создаются: присваивание vs определение
@@ -96,7 +96,7 @@ console.log(temperature.fahrenheit); // 212
 
 ## class в ES6: что под капотом
 
-Синтаксис [`class`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Classes) — надстройка над прототипами. Разберём эквивалентность:
+Синтаксис [`class`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) — надстройка над прототипами. Разберём эквивалентность:
 
 ```js
 class Animal {
@@ -163,7 +163,7 @@ console.log(Object.getPrototypeOf(rex) === Dog.prototype);              // true
 
 Метод с `super` — не стрелка: стрелки не имеют `[[HomeObject]]`, который нужен для поиска `super`-метода в прототипе.
 
-:::caution[Почему super() до this)]
+:::caution[Почему super() до this]
 До `super()` экземпляр ещё не инициализирован родительской частью. Доступ к `this` раньше `super()` в производном конструкторе — ReferenceError. В методах (не конструкторах) `super.method()` работает в любой позиции.
 :::
 
@@ -243,13 +243,13 @@ if (!Array.prototype.toSorted) {
 
 Цепочки наследования встроенных классов объясняют и экзотику: почему `typeof [] === 'object'`, почему `[] instanceof Object` — true, почему у функции есть `call`/`apply` (они в `Function.prototype`), а у функций-генераторов — `next` (в `GeneratorFunction.prototype`).
 
-:::note[Чтение спецификации через прототипы)]
+:::note[Чтение спецификации через прототипы]
 Разделы спеки «Properties of the Array Prototype Object» — это буквально список методов `Array.prototype`. Когда видишь «Let O be ? ToObject(this value)» — это перевод «создаём объект из this», тот самый this из прошлой главы. Прототипы, this и окружения — три кита, на которых стоит всё остальное.
 :::
 
 ## instanceof и constructor: как устроены проверки
 
-[`instanceof`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/instanceof) проверяет, есть ли `Constructor.prototype` в прототипной цепочке объекта — не более:
+[`instanceof`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof) проверяет, есть ли `Constructor.prototype` в прототипной цепочке объекта — не более:
 
 ```js
 class Animal {}
@@ -278,11 +278,11 @@ console.log(fake instanceof Dog && !(fake instanceof Animal)); // false — це
 
 Для надёжных проверок типов используй `Array.isArray`, `typeof`, `Object.prototype.toString.call` или флаг-поле, а не `instanceof` через границы реалмов.
 
-Ещё одна ловушка — [`Object.setPrototypeOf`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf): он **меняет скрытый класс объекта**, что в V8 приводит к деоптимизации всего кода, работающего с этим объектом. Правило: задавай прототип при создании (`Object.create`, `class extends`), а не переставляй его в горячем коде.
+Ещё одна ловушка — [`Object.setPrototypeOf`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf): он **меняет скрытый класс объекта**, что в V8 приводит к деоптимизации всего кода, работающего с этим объектом. Правило: задавай прототип при создании (`Object.create`, `class extends`), а не переставляй его в горячем коде.
 
 ## Приватные поля # и статика
 
-[Приватные поля](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Classes/Private_properties) — настоящая приватность на уровне языка, а не соглашения:
+[Приватные поля](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties) — настоящая приватность на уровне языка, а не соглашения:
 
 ```js
 class Wallet {
@@ -415,8 +415,8 @@ console.log(new Job('backup').createdAt instanceof Date); // true
 
 ## Что почитать
 
-- [MDN: Наследование и прототипы](https://developer.mozilla.org/ru/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain)
-- [MDN: Классы](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Classes)
-- [MDN: Приватные свойства](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Classes/Private_properties)
+- [MDN: Наследование и прототипы](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain)
+- [MDN: Классы](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes)
+- [MDN: Приватные свойства](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties)
 - [V8 Blog: JavaScript class fields](https://v8.dev/features/class-fields)
 - [Patterns.dev: Mixins](https://www.patterns.dev/posts/mixin-pattern/)

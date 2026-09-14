@@ -29,7 +29,7 @@ System Design — область, где «посмотрел туториал»
 
 | Язык | Назначение | Где пригодится в разделе |
 |------|-----------|--------------------------|
-| **JavaScript / TypeScript** | Фундамент: backend на Node.js, инфраструктура как код (CDK, Pulumi), Lambda-функции | Реализация circuit breaker, идемпотентности, Lambda-обработчики на Node.js 20 |
+| **JavaScript / TypeScript** | Фундамент: backend на Node.js, инфраструктура как код (CDK, Pulumi), Lambda-функции | Реализация circuit breaker, идемпотентности, Lambda-обработчики на Node.js 24 |
 | **SQL** | Реляционные базы, планы запросов, шардирование | RDS, read replicas, `ON CONFLICT` для идемпотентности, выбор ключа шардирования |
 | **Bash** | Автоматизация Linux, user-data скрипты, работа с aws-cli | Подготовка EC2, cron-бэкапы в S3, скрипты right-sizing |
 | **Python** | Утилиты анализа, boto3 для AWS API, скрипты оценки TCO | Разбор логов CloudWatch, расчёт стоимости архитектуры |

@@ -406,6 +406,10 @@ fragment UserBase on User {
 
 Это partial data: один резолвер упал — остальное отдалось. Клиент обязан проверять `errors`, а не только `data`. Для типизации `extensions.code` — машиночитаемый код ошибки, аналог твоего `type` из RFC 7807.
 
+:::caution[HTTP 200 с ошибками внутри]
+GraphQL-сервер отвечает `200 OK` почти на всё, включая ответы с заполненным массивом `errors`. Привычный мониторинг «доля 5xx» такой сбой не увидит, а клиентский код, проверяющий только `res.ok`, примет partial data за успех. Проверяй `errors` явно и строй алерты по `extensions.code`, а не по HTTP-статусу.
+:::
+
 В мульти-командных системах поверх схем возникает **федерация** (Apollo Federation) — каждый сервис владеет своими типами, gateway склеивает из них единый граф. Мощно, но это целая под-инфраструктура: начинай с одного GraphQL-сервера, федерацию подключай только когда граф реально разрезается по командам.
 
 ## gRPC в проде: ошибки, дедлайны, health-checks
@@ -430,11 +434,13 @@ if (!user) throw new RpcException({ code: status.NOT_FOUND, message: 'Польз
 ```ts
 import { Metadata } from '@grpc/grpc-js';
 
-const metadata = new Metadata();
-metadata.set('deadline', String(Date.now() + 2000)); // 2 секунды на вызов
+const metadata = new Metadata(); // auth-заголовки, trace-id — всё, кроме дедлайна
+const deadline = new Date(Date.now() + 2000); // абсолютное время, не длительность
 
-this.usersSvc.getUser({ id }, metadata).subscribe({ ... });
+this.usersSvc.getUser({ id }, metadata, { deadline }).subscribe({ ... });
 ```
+
+Дедлайн — это **не** metadata-ключ, а поле `CallOptions` (`{ deadline: Date | number }`), третий аргумент вызова. `metadata.set('deadline', ...)` молча игнорируется — вызов останется без таймаута. Можно передать и число (`deadline: Date.now() + 2000` — миллисекунды с epoch), но объект `Date` читается яснее.
 
 В распределённой цепочке (gateway → orders → users → payments) дедлайн **наследуется**: каждый хоп вычитает уже потраченное время. Это тот же таймаут, что мы обсуждали в interceptor-главе, только на уровне транспорта.
 
@@ -467,7 +473,7 @@ this.usersSvc.getUser({ id }, metadata).subscribe({ ... });
 2. Воспроизведи N+1: залогируй число SQL-запросов при 20 пользователях (будет 21), подключи DataLoader (станет 2). Скриншот логов — в репозиторий.
 3. Ограничь глубину запроса через `graphql-depth-limit` и сложность через `graphql-query-complexity`; докажи, что рекурсивный запрос отклоняется.
 4. Опиши `orders.proto` (unary `GetOrder` + server-streaming `WatchOrders`), сгенерируй TS-клиент, вызови метод из второго Nest-сервиса через `ClientsModule` и RxJS `Observable`.
-5. Реализуй идемпотентную мутацию `createOrder` в GraphQL (ключ в input) и gRPC-unary с дедлайном 2 секунды на клиенте (`metadata.set('deadline', ...)` через call options).
+5. Реализуй идемпотентную мутацию `createOrder` в GraphQL (ключ в input) и gRPC-unary с дедлайном 2 секунды на клиенте (через `{ deadline }` в call options — третий аргумент вызова).
 
 ## Что почитать
 

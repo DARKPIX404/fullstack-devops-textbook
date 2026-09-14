@@ -5,7 +5,7 @@ description: "Call Stack, очереди микро- и макрозадач, re
 
 import EventLoopViz from '../../../components/interactive/EventLoopViz.tsx';
 
-Почему `setTimeout(fn, 0)` выполняется ПОСЛЕ `console.log` на следующей строке? Почему `Promise.then` обгоняет таймер? Почему тяжёлый цикл «замерзает» кнопку, хотя обработчик уже повешен? Ответ на все три вопроса — один механизм: [**Event Loop**](https://developer.mozilla.org/ru/docs/Web/JavaScript/EventLoop). JS однопоточен, но браузер — нет. Асинхронные операции (таймеры, сеть, события) выполняет окружение, а JS получает результаты через очереди задач.
+Почему `setTimeout(fn, 0)` выполняется ПОСЛЕ `console.log` на следующей строке? Почему `Promise.then` обгоняет таймер? Почему тяжёлый цикл «замерзает» кнопку, хотя обработчик уже повешен? Ответ на все три вопроса — один механизм: [**Event Loop**](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop). JS однопоточен, но браузер — нет. Асинхронные операции (таймеры, сеть, события) выполняет окружение, а JS получает результаты через очереди задач.
 
 В краткой версии мы обозначили правило «микрозадачи раньше макрозадач». Здесь — полная модель: из чего состоит итерация цикла, где в ней живёт `requestAnimationFrame`, что такое рендеринг и почему код в Node.js ведёт себя похоже, но не одинаково.
 
@@ -31,7 +31,7 @@ import EventLoopViz from '../../../components/interactive/EventLoopViz.tsx';
 
 - **Call Stack** — синхронный код текущей задачи. Пока стек не пуст — Event Loop ждёт.
 - **Очередь макрозадач (task queue)** — `setTimeout`/`setInterval`, события DOM (`click`, `message`), `fetch`-колбэки на уровне задач, `<script>`.
-- **Очередь микрозадач (microtask queue)** — промисные реакции `.then/.catch/.finally`, продолжения после `await`, [`queueMicrotask`](https://developer.mozilla.org/en-US/docs/Web/API/queueMicrotask), [`MutationObserver`](https://developer.mozilla.org/ru/docs/Web/API/MutationObserver).
+- **Очередь микрозадач (microtask queue)** — промисные реакции `.then/.catch/.finally`, продолжения после `await`, [`queueMicrotask`](https://developer.mozilla.org/en-US/docs/Web/API/queueMicrotask), [`MutationObserver`](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver).
 
 Главное правило: **после каждой макрозадачи Event Loop опустошает микрозадачи полностью** — даже если во время их выполнения появились новые. Только потом идёт рендеринг и следующая макрозадача.
 
@@ -52,7 +52,7 @@ console.log('6: синхронно, конец скрипта');
 // Скрипт выполнился, затем ВСЕ микрозадачи, затем таймер.
 ```
 
-:::tip[Как запомнить)]
+:::tip[Как запомнить]
 «Макрозадача — комната, микрозадачи — её уборка». Вошли в комнату (задача), убрались до конца (все микрозадачи), только потом заходим в следующую комнату. Рендеринг — между комнатами.
 :::
 
@@ -130,13 +130,13 @@ for (let i = 0; i < 1e9; i++) { /* тяжёлый цикл на 2 секунды
 
 События DOM (`click`, `input`, `message` от Web Worker) тоже макрозадачи: обработчик выполнится целиком, потом микрозадачи, потом следующее событие. Два быстрых клика — две отдельные задачи, не переплетаются.
 
-:::caution[Блокировка главного потока)]
+:::caution[Блокировка главного потока]
 Пока стек занят тяжёлой синхронной работой, браузер не может ни обработать клик, ни отрисовать кадр, ни выполнить таймер. Симптомы: «замёрзший» UI, лагающый скролл, «long task» в DevTools Performance. Лечение — разбивка работы (`setTimeout`-чанки, `scheduler.postTask`, Web Workers).
 :::
 
 ## requestAnimationFrame и рендеринг
 
-[`requestAnimationFrame(cb)`](https://developer.mozilla.org/ru/docs/Web/API/Window/requestAnimationFrame) — просьба «вызови cb перед СЛЕДУЮЩИМ repaint». Порядок в итерации цикла: макрозадача → микрозадачи → **rAF-колбэки** → style/layout (reflow) → paint → composite. Поэтому чтение layout-свойств (offsetWidth и др.) внутри rAF-без надобности — лишний reflow не нужен, но и внутри микрозадач layout-чтение после записи принудительно делает синхронный reflow (layout thrashing).
+[`requestAnimationFrame(cb)`](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame) — просьба «вызови cb перед СЛЕДУЮЩИМ repaint». Порядок в итерации цикла: макрозадача → микрозадачи → **rAF-колбэки** → style/layout (reflow) → paint → composite. Поэтому чтение layout-свойств (offsetWidth и др.) внутри rAF-без надобности — лишний reflow не нужен, но и внутри микрозадач layout-чтение после записи принудительно делает синхронный reflow (layout thrashing).
 
 ```js
 function animate() {
@@ -182,7 +182,7 @@ document.addEventListener('mousemove', updateTooltip);
 
 Обратный паттерн — **debounce через Event Loop**: отложить выполнение до паузы в событиях (поисковая строка). Там уместнее `setTimeout`, потому что важна тишина, а не синхронизация с кадром.
 
-:::tip[Long Tasks API)]
+:::tip[Long Tasks API]
 Чтобы находить тяжёлые задачи в проде, используй PerformanceObserver с типом 'longtask' (>50 мс блокировки) — подробности в [гайде web.dev по оптимизации long tasks](https://web.dev/articles/optimize-long-tasks). Метрики отправляй в мониторинг реальных пользователей (RUM) — у пользователей на слабом железе проблемы видны раньше, чем у тебя на дев-машине.
 :::
 
@@ -335,7 +335,7 @@ Promise.resolve().then(() => console.log('promise'));
 
 ## Что почитать
 
-- [MDN: Concurrency model and Event Loop](https://developer.mozilla.org/ru/docs/Web/JavaScript/EventLoop)
+- [MDN: Concurrency model and Event Loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop)
 - [HTML Standard: Event Loops](https://html.spec.whatwg.org/multipage/webappapis.html#event-loops)
 - [Node.js Docs: The Event Loop](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick)
 - [JavaScript Visualized: Event Loop (Lydia Hallie)](https://dev.to/lydiahallie/javascript-visualized-event-loop-3dif)
