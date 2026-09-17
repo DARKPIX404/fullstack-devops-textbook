@@ -413,6 +413,6 @@ console.log(b.handleClick === c.handleClick); // false — каждому экз
 
 - [MDN: this](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this)
 - [MDN: Методы функций call/apply/bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call)
-- [You Don't Know JS Yet: this & Object Prototypes](https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/this-object-prototypes/README.md)
-- [JavaScript Visualized: this (Lydia Hallie)](https://dev.to/lydiahallie/javascript-visualized-7-cheatsheets-1hgj)
+- [You Don't Know JS Yet: Objects & Classes (this & прототипы)](https://github.com/getify/You-Dont-Know-JS/tree/2nd-ed/objects-classes)
+- [JavaScript Visualized: Prototypal Inheritance (Lydia Hallie)](https://dev.to/lydiahallie/javascript-visualized-prototypal-inheritance-47co)
 - [Web Dev Simplified: this за 100 секунд + разбор](https://www.youtube.com/watch?v=YOlr79NaAtQ)

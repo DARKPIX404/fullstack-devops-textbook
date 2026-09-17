@@ -352,7 +352,7 @@ enum — для битовых флагов и числовых протокол
 ## Что почитать
 
 - [TypeScript 4.9 Release Notes — satisfies](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html) — официальное введение оператора.
-- [TypeScript Handbook: Enums](https://www.typescriptlang.org/docs/handbook/enums.html) и [TypeScript ESLint: no-restricted-syntax](https://typescript-eslint.io/rules/no-restricted-syntax/) с селектором `TSEnumDeclaration` — аргументы за и против.
-- [Total TypeScript — Branded Types](https://www.totaltypescript.com/branded-types) — паттерн в деталях, включая вывод брендов из схем.
+- [TypeScript Handbook: Enums](https://www.typescriptlang.org/docs/handbook/enums.html) и [ESLint: no-restricted-syntax](https://eslint.org/docs/latest/rules/no-restricted-syntax) с селектором `TSEnumDeclaration` — аргументы за и против.
+- [Total TypeScript — Branded Types](https://www.totaltypescript.com/workshops/advanced-typescript-patterns/branded-types/what-is-a-branded-type) — паттерн в деталях, включая вывод брендов из схем.
 - [openapi-typescript](https://openapi-ts.dev/) — генерация типов из OpenAPI с примерами.
 - [Prisma Client — type safety](https://www.prisma.io/docs/orm/prisma-client/type-safety) — как устроен генератор типов Prisma.

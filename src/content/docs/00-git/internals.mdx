@@ -329,8 +329,8 @@ git update-ref refs/heads/main $COMMIT
 ## Что почитать
 
 - [Pro Git, глава 10: Git Internals](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain) — главный первоисточник по объектной модели, refs и index.
-- [Git Internals — демистификация структуры объектов (freeCodeCamp)](https://www.freecodecamp.org/news/git-internals-demystifying-the-structure-of-objects/) — короткий практический тур по `.git/objects` с примерами.
-- [The Git Object Model (GitHub Blog, старая но точная серия)](https://github.blog/2010-12-17-introducing-github-entropy/) — исторический контекст и ментальные модели.
+- [Pro Git: Git Objects](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects) — короткий практический тур по объектам blob/tree/commit с примерами.
+- [GitHub Blog: Commits are snapshots, not diffs](https://github.blog/2020-12-17-commits-are-snapshots-not-diffs/) — исторический контекст и ментальные модели объектной модели.
 - [gitrepository-layout(5) — man-страница](https://git-scm.com/docs/gitrepository-layout) — официальное описание каждого файла и папки в `.git/`.
 - [Git Revisions (документация)](https://git-scm.com/docs/gitrevisions) — полный синтаксис `HEAD~2^{tree}:path`, который использует `cat-file`.
 - [zlib RFC 1950](https://www.rfc-editor.org/rfc/rfc1950) — формат сжатия, в котором хранятся loose-объекты, если захочешь распаковывать без Git.

@@ -380,4 +380,4 @@ type T = `get${K}`; // просто string — растворился литер
 - [TypeScript Handbook: Conditional Types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html) — infer, дистрибутивность.
 - [TypeScript Handbook: Template Literal Types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html) — интерполяция и утилиты для строк.
 - [Type Challenges](https://github.com/type-challenges/type-challenges) — сотни задач на уровне типов, от easy до hell.
-- [TypeScript lib.d.ts на GitHub](https://github.com/microsoft/TypeScript/blob/main/lib/lib.es5.d.ts) — первоисточник всех встроенных утилит.
+- [TypeScript lib.es5.d.ts на GitHub](https://github.com/microsoft/TypeScript/blob/release-5.9/lib/lib.es5.d.ts) — первоисточник всех встроенных утилит.

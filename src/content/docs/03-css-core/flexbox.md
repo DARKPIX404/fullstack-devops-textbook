@@ -330,5 +330,5 @@ flex: none;     /* = 0 0 auto — жёсткий бокс: не расти и н
 - [MDN: Flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout/Basic_concepts_of_flexbox) — базовые концепции с интерактивными примерами.
 - [MDN: Контролирование соотношения элементов по главной оси](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout/Controlling_ratios_of_flex_items_along_the_main_axis) — глубокий разбор grow/shrink/basis с алгоритмами.
 - [CSS Tricks: A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/) — шпаргалка всех свойств с графиками.
-- [Every Layout: The Flexbox Layout](https://every-layout.dev/layouts/flexbox/) — философия «содержимое определяет раскладку» против фиксированных брейкпоинтов.
+- [Every Layout: The Switcher](https://every-layout.dev/layouts/switcher/) — философия «содержимое определяет раскладку» против фиксированных брейкпоинтов.
 - [web.dev: Flexbox froggy как тренажёр](https://flexboxfroggy.com/#ru) — закрепление свойств игрой (пройди всю, это быстро).

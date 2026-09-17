@@ -168,7 +168,7 @@ end
 
 ## Что почитать
 
-- [Hyprland Wiki: Decoration](https://wiki.hypr.land/Configuring/Variables/#decoration) — все параметры `blur` с описанием: size, passes, оптимизации.
+- [Hyprland Wiki: Decoration](https://wiki.hypr.land/configuring/core/config-options/#decoration) — все параметры `blur` с описанием: size, passes, оптимизации.
 - [foot.ini(5) — man-страница](https://man.archlinux.org/man/foot.ini.5) — секции конфига foot, включая `[colors-dark]` и семантику `alpha`.
 - [Neovim: :h highlight-guibg](https://neovim.io/doc/user/syntax.html#highlight-guibg) — что значит `NONE` для фона и как устроены highlight-группы.
 - [Omarchy Manual](https://learn.omacom.io/2/the-omarchy-manual) — как Omarchy линкует темы в приложения, включая механику прозрачности Neovim.

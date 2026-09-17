@@ -284,7 +284,7 @@ document.documentElement.style.setProperty('--brand', 'oklch(70% 0.20 255)');
 
 - [MDN: Cascade, specificity and inheritance](https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade) — авторитетный разбор всех уровней каскада с примерами.
 - [MDN: Специфичность](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity) — формальные правила подсчёта и псевдоклассы с аномалиями.
-- [Every Layout — Box-sizing](https://every-layout.dev/rudiments/box-model/) — ментальная модель бокса без магии.
+- [Every Layout — Boxes](https://every-layout.dev/rudiments/boxes/) — ментальная модель бокса без магии.
 - [CSS Tricks: A Complete Guide to Custom Properties](https://css-tricks.com/a-complete-guide-to-custom-properties/) — области видимости, fallback'и, JS-интеграция.
 - [OKLCH color picker](https://oklch.com/) — интерактивная демонстрация равномерности oklch против hsl.
-- [web.dev: Modern CSS colors](https://web.dev/articles/color-spaces) — color spaces, гамма и почему hsl — прошлый век для дизайн-токенов.
+- [Chrome for Developers: HD CSS Color Guide](https://developer.chrome.com/articles/high-definition-css-color-guide) — color spaces, гамма и почему hsl — прошлый век для дизайн-токенов.

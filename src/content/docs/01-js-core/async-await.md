@@ -401,5 +401,5 @@ for await (const user of streamUsers()) {
 - [MDN: async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)
 - [MDN: AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
 - [MDN: for await...of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of)
-- [V8 Blog: Async generators](https://v8.dev/blog/async-iteration)
+- [MDN: async function* (async generators)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function*)
 - [MDN: Top-level await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await#top_level_await)

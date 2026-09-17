@@ -445,5 +445,5 @@ export const sprinkles = createSprinkles(properties);
 - [Emotion: документация](https://emotion.sh/docs/introduction) — css prop, серверный рендеринг, производительность.
 - [Linaria: репозиторий](https://github.com/callstack/linaria) — механика zero-runtime, ограничения, интеграции.
 - [vanilla-extract: документация](https://vanilla-extract.style/) — темы, recipes, sprinkles.
-- [Why We're Breaking Up with CSS-in-JS (Sam Magura, 2022)](https://dev.to/srmagura/why-were-breaking-up-with-css-in-js-4h9n) — эссе-разбор проблем runtime-подхода с цифрами и контекстом.
+- [Why We're Breaking Up with CSS-in-JS (Sam Magura, 2022)](https://dev.to/srmagura/why-were-breaking-up-wiht-css-in-js-4g9b) — эссе-разбор проблем runtime-подхода с цифрами и контекстом.
 - [React docs: стилизация и Server Components](https://react.dev/reference/react-dom/server) — официальная позиция по совместимости подходов с RSC.

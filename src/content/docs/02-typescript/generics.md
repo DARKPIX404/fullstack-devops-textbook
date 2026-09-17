@@ -334,5 +334,5 @@ const repo = new UserRepository(); // если класс дженерик — T
 - [TypeScript Handbook: Generics](https://www.typescriptlang.org/docs/handbook/2/generics.html) — основы и типичные паттерны.
 - [TypeScript Handbook: Conditional Types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html) — `infer` и дистрибутивность.
 - [TypeScript Handbook: Classes](https://www.typescriptlang.org/docs/handbook/2/classes.html) — дженерики в классах, `this`-типы.
-- [Demystifying TypeScript Variance Annotations](https://lihautan.com/demystifying-typescript-variance-annotations/) — вариантность на пальцах.
+- [Understanding Variance in TypeScript (DEV)](https://dev.to/nyaomaru/understanding-variance-in-typescript-flow-covariant-contravariant-invariant-bivariant-4fbi) — вариантность на пальцах.
 - [Total TypeScript — использование satisfies и дженериков в UI-типах](https://www.totaltypescript.com/) — практика на реальных кейсах.

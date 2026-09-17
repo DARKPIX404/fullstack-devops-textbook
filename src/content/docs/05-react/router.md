@@ -471,4 +471,4 @@ Loader дёргает queryClient.ensureQueryData (prefetch в кэш), комп
 - [React Router: Data Loading](https://reactrouter.com/start/data/data-loading) и [Actions](https://reactrouter.com/start/data/actions) — официальные гайды по loader'ам и action'ам.
 - [React Router: Error Handling](https://reactrouter.com/how-to/error-boundary) — модель errorElement/ErrorBoundary.
 - [React Router: useNavigation](https://reactrouter.com/api/hooks/useNavigation) — состояния навигации.
-- [TkDodo's Blog: React Router + React Query](https://tkdodo.eu/blog/react-router-react-query) — эталонная статья об интеграции двух систем.
+- [TkDodo's Blog: React Query meets React Router](https://tkdodo.eu/blog/react-query-meets-react-router) — эталонная статья об интеграции двух систем.

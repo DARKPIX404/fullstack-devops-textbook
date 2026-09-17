@@ -448,5 +448,5 @@ function setupHandler(signal) {
 - [MDN: Замыкания](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures)
 - [ECMA-262: Closure определение](https://tc39.es/ecma262/#sec-lexical-environments)
 - [You Don't Know JS Yet: Closure (Kyle Simpson)](https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch7.md)
-- [JavaScript Visualized: Closures (Lydia Hallie)](https://dev.to/lydiahallie/javascript-visualized-scope-closure-3890)
+- [JavaScript Visualized: Scope (Chain) (Lydia Hallie)](https://dev.to/lydiahallie/javascript-visualized-scope-chain-13pd)
 - [Patterns.dev: Module Pattern](https://www.patterns.dev/posts/module-pattern/)

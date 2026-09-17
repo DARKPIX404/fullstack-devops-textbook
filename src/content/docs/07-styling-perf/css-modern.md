@@ -282,4 +282,4 @@ Subgrid не делает вложенную сетку «копией» род�
 - [MDN: :has() селектор](https://developer.mozilla.org/en-US/docs/Web/CSS/:has)
 - [MDN: Container Queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries)
 - [MDN: @property и типизированные custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/@property)
-- [web.dev: CSS Layers](https://web.dev/articles/css-cascade-layers)
+- [CSS-Tricks: CSS Cascade Layers](https://css-tricks.com/css-cascade-layers/)

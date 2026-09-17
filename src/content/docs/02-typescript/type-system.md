@@ -378,5 +378,5 @@ const value = JSON.parse(input) as User; // компилятор промолч�
 - [TypeScript Handbook: Narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html) — все способы сужения с примерами.
 - [TypeScript Handbook: Type Compatibility](https://www.typescriptlang.org/docs/handbook/type-compatibility.html) — формальные правила структурной совместимости.
 - [TypeScript Deep Dive: TypeScript's Type System](https://basarat.gitbook.io/typescript/type-system) — глубокий разбор системы типов.
-- [Marius Schulz: Typing Functions in TypeScript](https://mariusschulz.com/articles/typing-functions-in-typescript) — функциональные типы и контекстуальная типизация.
+- [Marius Schulz: Typing Functions in TypeScript](https://mariusschulz.com/blog/typing-functions-in-typescript.html) — функциональные типы и контекстуальная типизация.
 - [zod — TypeScript-first schema validation](https://zod.dev/) — как валидация рантайма даёт типы без предикатов руками.
