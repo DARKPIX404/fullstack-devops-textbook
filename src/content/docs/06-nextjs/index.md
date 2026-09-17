@@ -1,0 +1,29 @@
+---
+title: "Next.js: App Router, RSC и серверный рендеринг в деталях"
+description: "Карта раздела: стратегии рендеринга, файловая система App Router, React Server Components, кэширование данных, Server Actions и оптимизация на Edge."
+---
+
+Next.js — это фреймворк, который в 13-й версии поменял архитектуру мышления целиком (см. [официальный раздел App Router](https://nextjs.org/docs/app/building-your-application)). Если краткая версия учебника дала тебе обзорный снимок — Server Components, перехватывающие роуты, Server Actions, — то этот раздел разбирает механику под капотом: как именно Next.js решает, когда рендерить страницу, где лежат кэши, почему граница `'use client'` стоит дороже, чем кажется, и чем Full Route Cache отличается от Router Cache. Это раздел про то, чтобы ты не просто «использовал Next.js», а понимал его как систему.
+
+Почему это важно для DevOps-пути? Потому что Next.js — типичная точка, где фронтенд перестаёт быть статикой и становится серверным приложением с кэшами, ревалидацией и рантайм-ограничениями. Когда ты будешь деплоить его в Docker, масштабировать под нагрузкой и дебажить «почему пользователь видит старые данные», вся эта теория превратится в конкретные команды: сброс кэша, инвалидация тегов, выбор между `output: 'standalone'` и полным сервером.
+
+## Карта раздела
+
+Раздел построен от абстракции к практике, шесть глав:
+
+1. **[Стратегии рендеринга](/06-nextjs/rendering-strategies/)** — SSG, SSR, ISR и CSR: когда какая стратегия, как Next.js кэширует готовый HTML ([Full Route Cache](https://nextjs.org/docs/app/building-your-application/caching)), что такое Router Cache в браузере и как сравнивать стратегии по TTFB и персонализации. Фундамент, без которого остальные главы не складываются в картину.
+2. **[App Router](/06-nextjs/app-router/)** — файловые соглашения: `page`/`layout`/`loading`/`error`, группы маршрутов для разделения каркасов, динамические сегменты с `generateStaticParams` и `generateMetadata`, параллельные роуты со слотами и `default.tsx`, [перехватывающие роуты](https://nextjs.org/docs/app/building-your-application/routing/intercepting-routes) для модалок галерей. Плюс вечный вопрос: route handlers против страниц.
+3. **[React Server Components](/06-nextjs/server-components/)** — что реально выполняется на сервере, где проходит граница `'use client'`, почему в RSC нельзя хуки состояния и браузерные API, как данные передаются только через props и что это означает для сериализации. Гидратация и её стоимость, клиентские островки.
+4. **[Data fetching и кэширование](/06-nextjs/data-fetching/)** — `fetch` в RSC: поведение по умолчанию, `cache: 'no-store'` / `force-cache` / `revalidate`, `revalidatePath` и [`revalidateTag`](https://nextjs.org/docs/app/api-reference/functions/revalidateTag), `unstable_cache` для не-fetch данных. Подробная таблица уровней кэша Next.js — пять кэшей, которые надо держать в голове одновременно.
+5. **[Server Actions](/06-nextjs/server-actions/)** — [`'use server'`](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations), мутации и ревалидация, валидация через Zod строго на сервере, прогрессивное улучшение (форма работает без JS), `useActionState`/`useFormStatus`, обработка ошибок и безопасность: авторизация внутри экшена, rate limiting.
+6. **[Streaming, Middleware и Edge](/06-nextjs/streaming-edge/)** — [Suspense на сервере](https://nextjs.org/docs/app/building-your-application/routing/loading-ui-and-streaming) и гранулярный стриминг через `loading.tsx`, middleware: rewrite/redirect/headers и его ограничения, Edge Runtime и его задержки, оптимизация `next/image` с `remotePatterns` и `placeholder="blur"`, `next/font`.
+
+## Как работать с разделом
+
+Главы связаны: стратегии рендеринга опираются на знание кэшей, кэши — на понимание RSC, Server Actions — на ревалидацию из главы про data fetching. Если что-то не складывается — возвращайся на главу назад, это нормально: Next.js устроен кольцом, а не линейкой.
+
+Практика в каждой главе наслаивается на один pet-проект — условный блог с каталогом товаров и личным кабинетом. К концу раздела у тебя будет приложение с ISR-каталогом, серверными экшенами, модалками-перехватами, middleware-аутентификацией и оптимизированными картинками — готовое к упаковке в Docker в разделе про деплой.
+
+:::tip[Главный навык раздела]
+После этих шести глав ты должен уверенно отвечать на вопрос: «Пользователь видит устаревшие данные — где искать?» Среди пяти уровней кэша. Это и есть понимание системы.
+:::

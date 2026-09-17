@@ -247,12 +247,12 @@ queueMicrotask(() => console.log('microtask'));
 console.log('end');
 ```
 
-**Правильный ответ:** start → end → promise 1 → promise 2 → microtask → timeout 1 → promise внутри timeout → timeout 2 → timeout внутри promise.
+**Правильный ответ:** start → end → promise 1 → microtask → promise 2 → timeout 1 → promise внутри timeout → timeout 2 → timeout внутри promise.
 
 Разбор по итерациям:
 
 1. **Макрозадача — скрипт.** Выполняется: `start`, постановка `timeout 1` (в очередь макрозадач), реакция `promise 1` (в очередь микрозадач), постановка `timeout 2` (в очередь макрозадач), `microtask` (в микрозадачи), `end`. Стек пуст.
-2. **Микрозадачи.** `promise 1` печатается; внутри неё ставится `timeout внутри promise` в очередь макрозадач; возврат `undefined` → `.then` с `promise 2` добавляется в конец микроочереди. Затем `promise 2`, затем `microtask`. Микроочередь пуста.
+2. **Микрозадачи.** `promise 1` печатается; внутри неё ставится `timeout внутри promise` в очередь макрозадач; возврат `undefined` → `.then` с `promise 2` добавляется в конец микроочереди. Затем `microtask` (уже стоял в очереди), затем `promise 2` (добавлен позже). Микроочередь пуста.
 3. **Макрозадача `timeout 1`.** Печатает, ставит `promise внутри timeout` в микроочередь. Стек пуст → **немедленно** опустошаем микроочередь: `promise внутри timeout`.
 4. **Макрозадача `timeout 2`.** Печатается.
 5. **Макрозадача `timeout внутри promise`.** Печатается.

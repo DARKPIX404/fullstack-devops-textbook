@@ -52,7 +52,7 @@ description: "Итеративный план от фундамента до д�
 
 ## Месяц 10–12: DevOps и деплой
 
-- [ ] Переведи ежедневную работу в терминальный стек: [tmux глубоко](/10-linux-docker/tmux/) и [Neovim глубоко](/10-linux-docker/neovim/), сценарии использования — в [Рабочее место как у профи](/10-linux-docker/workflow/). К этому моменту ты уже знаешь язык и бэкенд — редактор и мультиплексор заходят на готовую почву.
+- [ ] Переведи ежедневную работу в терминальный стек: [tmux глубоко](/12-linux-docker/tmux/) и [Neovim глубоко](/12-linux-docker/neovim/), сценарии использования — в [Рабочее место как у профи](/12-linux-docker/workflow/). К этому моменту ты уже знаешь язык и бэкенд — редактор и мультиплексор заходят на готовую почву.
 - [ ] Упакуй приложение в Docker: многоступенчатые Dockerfile, `docker-compose.yml` (App + PostgreSQL + Redis + Nginx).
 - [ ] Настрой CI/CD в GitHub Actions: lint → test → build → deploy.
 - [ ] Арендуй VPS (Hetzner или DigitalOcean), настрой Ubuntu Server.

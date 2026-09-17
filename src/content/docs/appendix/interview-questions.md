@@ -48,7 +48,7 @@ description: "Карта повторения: 18 ключевых тем уче
 
 ### React: рендеринг, хуки, состояние
 
-Главы: [/03-react/rendering/](/03-react/rendering/) · [/03-react/advanced-hooks/](/03-react/advanced-hooks/)
+Главы: [/05-react/rendering/](/05-react/rendering/) · [/05-react/advanced-hooks/](/05-react/advanced-hooks/)
 
 - Что триггерит рендер компонента? Почему лишние рендеры — не всегда проблема?
 - Правила хуков: почему нельзя вызывать хуки в условиях и циклах?
@@ -59,7 +59,7 @@ description: "Карта повторения: 18 ключевых тем уче
 
 ### Next.js: App Router и стратегии рендеринга
 
-Главы: [/04-nextjs/app-router/](/04-nextjs/app-router/) · [/04-nextjs/rendering-strategies/](/04-nextjs/rendering-strategies/) · [/04-nextjs/server-components/](/04-nextjs/server-components/)
+Главы: [/06-nextjs/app-router/](/06-nextjs/app-router/) · [/06-nextjs/rendering-strategies/](/06-nextjs/rendering-strategies/) · [/06-nextjs/server-components/](/06-nextjs/server-components/)
 
 - Чем Server Components отличаются от Client Components? Где граница и кто решает?
 - Когда выполняется рендеринг: static, dynamic, ISR, streaming? Что выбираешь для каталога товаров?
@@ -72,7 +72,7 @@ description: "Карта повторения: 18 ключевых тем уче
 
 ### Node.js в продакшене
 
-Главы: [/06-nodejs/event-loop-node/](/06-nodejs/event-loop-node/) · [/06-nodejs/node-production/](/06-nodejs/node-production/)
+Главы: [/08-nodejs/event-loop-node/](/08-nodejs/event-loop-node/) · [/08-nodejs/node-production/](/08-nodejs/node-production/)
 
 - Фазы Event Loop в Node.js: таймеры, poll, check. Когда выполнится `setImmediate` vs `setTimeout(0)`?
 - Что должен делать сервис при SIGTERM и почему «просто выйти» — баг?
@@ -82,7 +82,7 @@ description: "Карта повторения: 18 ключевых тем уче
 
 ### Монорепозитории и developer experience
 
-Глава: [/06-nodejs/monorepos-dx/](/06-nodejs/monorepos-dx/)
+Глава: [/08-nodejs/monorepos-dx/](/08-nodejs/monorepos-dx/)
 
 - Когда монорепозиторий оправдан, а когда мультирепо — правильнее? Честные минусы обоих.
 - Чем отличаются pnpm workspaces, Turborepo и Nx? Что выбрать команде из пяти человек?
@@ -92,7 +92,7 @@ description: "Карта повторения: 18 ключевых тем уче
 
 ### Проектирование REST API
 
-Главы: [/07-nestjs-api/rest-design/](/07-nestjs-api/rest-design/) · [/07-nestjs-api/nestjs-foundation/](/07-nestjs-api/nestjs-foundation/)
+Главы: [/09-nestjs-api/rest-design/](/09-nestjs-api/rest-design/) · [/09-nestjs-api/nestjs-foundation/](/09-nestjs-api/nestjs-foundation/)
 
 - Принципы ресурсного моделирования: как спроектировать URL и методы для вложенных сущностей?
 - Версионирование API: путь, заголовок, поддомен — что выбрать и почему?
@@ -103,7 +103,7 @@ description: "Карта повторения: 18 ключевых тем уче
 
 ### Realtime API: WebSocket, SSE, масштабирование
 
-Глава: [/07-nestjs-api/async-realtime/](/07-nestjs-api/async-realtime/)
+Глава: [/09-nestjs-api/async-realtime/](/09-nestjs-api/async-realtime/)
 
 - WebSocket vs SSE vs long polling: когда достаточно «простого» SSE?
 - Как работает handshake WebSocket и чем соединение отличается от обычного HTTP?
@@ -114,9 +114,9 @@ description: "Карта повторения: 18 ключевых тем уче
 
 ### Очереди сообщений и outbox-паттерн
 
-Глава: [/07-nestjs-api/messaging-outbox/](/07-nestjs-api/messaging-outbox/)
+Глава: [/09-nestjs-api/messaging-outbox/](/09-nestjs-api/messaging-outbox/)
 
-- Зачем очередь между сервисами вместо прямого HTTP-вызова? Ат-least-once vs exactly-once?
+- Зачем очередь между сервисами вместо прямого HTTP-вызова? At-least-once vs exactly-once?
 - Что такое outbox-паттерн и какую проблему решает (потеря события при двойной записи)?
 - Почему consumer обязан быть идемпотентным и как это обеспечить (idempotency key, дедупликация)?
 - Dead letter queue: когда сообщение туда попадает и что с ним делать дальше?
@@ -125,7 +125,7 @@ description: "Карта повторения: 18 ключевых тем уче
 
 ### PostgreSQL: индексы и транзакции
 
-Главы: [/08-data/postgres-indexes/](/08-data/postgres-indexes/) · [/08-data/postgres-transactions/](/08-data/postgres-transactions/)
+Главы: [/10-data/postgres-indexes/](/10-data/postgres-indexes/) · [/10-data/postgres-transactions/](/10-data/postgres-transactions/)
 
 - B-tree vs GIN vs GiST: какой индекс под какие запросы и почему?
 - Как прочитать `EXPLAIN ANALYZE` и что такое Seq Scan, который «не страшно»?
@@ -136,7 +136,7 @@ description: "Карта повторения: 18 ключевых тем уче
 
 ### Бэкапы и аварийное восстановление (DR)
 
-Глава: [/08-data/postgres-backups/](/08-data/postgres-backups/)
+Глава: [/10-data/postgres-backups/](/10-data/postgres-backups/)
 
 - `pg_dump` vs WAL-архив vs физическая реплика: что и когда использовать?
 - Что такое RPO и RTO и как они определяют стратегию бэкапов?
@@ -147,7 +147,7 @@ description: "Карта повторения: 18 ключевых тем уче
 
 ### Redis: структуры и паттерны
 
-Главы: [/08-data/redis-patterns/](/08-data/redis-patterns/) · [/08-data/redis-structures/](/08-data/redis-structures/)
+Главы: [/10-data/redis-patterns/](/10-data/redis-patterns/) · [/10-data/redis-structures/](/10-data/redis-structures/)
 
 - Строки, хэши, сеты, sorted sets, streams: типичная задача под каждую структуру?
 - Cache-aside vs write-through vs write-behind: что выбираешь для кэша пользовательских сессий?
@@ -160,7 +160,7 @@ description: "Карта повторения: 18 ключевых тем уче
 
 ### Web-безопасность и аутентификация
 
-Главы: [/09-security-testing/web-security/](/09-security-testing/web-security/) · [/09-security-testing/auth-jwt-oauth/](/09-security-testing/auth-jwt-oauth/)
+Главы: [/11-security-testing/web-security/](/11-security-testing/web-security/) · [/11-security-testing/auth-jwt-oauth/](/11-security-testing/auth-jwt-oauth/)
 
 - Top-OWASP для твоего стека: XSS, CSRF, SQL-инъекции, SSRF — пример защиты каждого?
 - JWT: чем access отличается от refresh, где хранить, как отзывать?
@@ -171,7 +171,7 @@ description: "Карта повторения: 18 ключевых тем уче
 
 ### Docker в глубину
 
-Главы: [/10-linux-docker/docker-deep/](/10-linux-docker/docker-deep/) · [/10-linux-docker/docker-compose-prod/](/10-linux-docker/docker-compose-prod/)
+Главы: [/12-linux-docker/docker-deep/](/12-linux-docker/docker-deep/) · [/12-linux-docker/docker-compose-prod/](/12-linux-docker/docker-compose-prod/)
 
 - Слои образа и кэш сборки: почему порядок инструкций в Dockerfile критичен?
 - Многоступенчатая сборка: зачем builder-stage и что попадает в финальный образ?
@@ -182,7 +182,7 @@ description: "Карта повторения: 18 ключевых тем уче
 
 ### Supply-chain security
 
-Глава: [/10-linux-docker/supply-chain-security/](/10-linux-docker/supply-chain-security/)
+Глава: [/12-linux-docker/supply-chain-security/](/12-linux-docker/supply-chain-security/)
 
 - Почему `npm install` — это выполнение чужого кода и как этим управлять?
 - Lock-файлы: зачем `package-lock.json`/`pnpm-lock.yaml` в репозитории и что ломается без него?
@@ -193,7 +193,7 @@ description: "Карта повторения: 18 ключевых тем уче
 
 ### Управление секретами
 
-Глава: [/12-iac-deploy-obs/secrets-management/](/12-iac-deploy-obs/secrets-management/)
+Глава: [/14-iac-deploy-obs/secrets-management/](/14-iac-deploy-obs/secrets-management/)
 
 - Почему секреты нельзя хранить в Git и как работает `.env` + `.env.example` на практике?
 - Vault / SOPS / sealed-secrets: какой инструмент когда оправдан и что выбрать для маленькой команды?
@@ -204,7 +204,7 @@ description: "Карта повторения: 18 ключевых тем уче
 
 ### Инцидент-менеджмент и observability
 
-Главы: [/12-iac-deploy-obs/incident-management/](/12-iac-deploy-obs/incident-management/) · [/12-iac-deploy-obs/tracing-alerting/](/12-iac-deploy-obs/tracing-alerting/)
+Главы: [/14-iac-deploy-obs/incident-management/](/14-iac-deploy-obs/incident-management/) · [/14-iac-deploy-obs/tracing-alerting/](/14-iac-deploy-obs/tracing-alerting/)
 
 - Metrics, logs, traces: чем каждый инструмент отвечает на свой вопрос и почему нужны все три?
 - SLI, SLO, SLA: как выбрать SLI для API и зачем error budget?

@@ -291,8 +291,11 @@ interface State {
 }
 
 const draft: Partial<State> = {};
-// draft.user?.name = 'x'; — нельзя: Partial только верхний уровень,
-// user остался { name: string }, просто опциональным
+// draft.user?.name = 'x'; — синтаксическая ошибка: в optional chain нельзя присваивать
+if (draft.user) {
+  draft.user.name = 'x'; // ок — вложенный объект не Partial, поле обязательное
+}
+draft.user = undefined; // ок — опционален именно верхний уровень
 ```
 
 Решение — `DeepPartial<T>` через рекурсию (практика).
@@ -313,7 +316,7 @@ type A = Wrap<string | number>; // [string] | [number]
 **4. Omit с опечаткой в ключе.**
 
 ```ts
-type X = Omit<User, 'pasword'>; // ошибка? Нет — Omit принимает любой keyof T...
+type X = Omit<User, 'pasword'>; // ошибка? Да — K extends keyof T...
 ```
 
 Ой. В точном определении `Omit<T, K extends keyof T>` — опечатка `'pasword'` действительно ошибка. Но если обернуть в свой алиас без ограничения — нет. Проверяй, что в проекте используется настоящий `Omit`.

@@ -21,7 +21,7 @@ npm run build    # сборка в dist/
 npm run preview  # предпросмотр собранного сайта
 ```
 
-Важно: сайт публикуется на корень кастомного домена `https://book.darkpix.ru` — base-путь в `astro.config.mjs` не задаётся. Внутренние ссылки в контенте ведут от корня: `/07-nestjs-api/rest-design/`.
+Важно: сайт публикуется на корень кастомного домена `https://book.darkpix.ru` — base-путь в `astro.config.mjs` не задаётся. Внутренние ссылки в контенте ведут от корня: `/09-nestjs-api/rest-design/`.
 
 ## Структура контента
 
@@ -35,31 +35,31 @@ src/content/docs/
 │                              #   Event Loop, Promise, async/await, память
 ├── 02-typescript/             # 4 главы: система типов, дженерики, mapped-типы,
 │                              #   satisfies/const/branded
-├── 02-css-core/               # 5 глав: каскад, специфичность, бокс-модель,
+├── 03-css-core/               # 5 глав: каскад, специфичность, бокс-модель,
 │                              #   Flexbox, Grid, адаптив
-├── 02-css-frameworks/         # 5 глав: Sass/PostCSS, Bootstrap, UnoCSS/daisyUI,
+├── 04-css-frameworks/         # 5 глав: Sass/PostCSS, Bootstrap, UnoCSS/daisyUI,
 │                              #   CSS-in-JS, MUI/Chakra/Mantine
-├── 03-react/                  # 8 глав: рендеринг, хуки, состояние, формы,
+├── 05-react/                  # 8 глав: рендеринг, хуки, состояние, формы,
 │                              #   роутер, тестирование
-├── 04-nextjs/                 # 6 глав: SSG/SSR/ISR, App Router, RSC, кэш,
+├── 06-nextjs/                 # 6 глав: SSG/SSR/ISR, App Router, RSC, кэш,
 │                              #   Server Actions, streaming/edge
-├── 05-styling-perf/           # 5 глав: Tailwind, Radix/Shadcn, CSS Modules,
+├── 07-styling-perf/           # 5 глав: Tailwind, Radix/Shadcn, CSS Modules,
 │                              #   a11y, Core Web Vitals
-├── 06-nodejs/                 # 6 глав: libuv, стримы, worker_threads, ESM,
+├── 08-nodejs/                 # 6 глав: libuv, стримы, worker_threads, ESM,
 │                              #   монорепозитории и DX, продакшен
-├── 07-nestjs-api/             # 6 глав: DI, жизненный цикл запроса, REST,
+├── 09-nestjs-api/             # 6 глав: DI, жизненный цикл запроса, REST,
 │                              #   realtime WebSocket/SSE, GraphQL/gRPC, очереди/outbox
-├── 08-data/                   # 7 глав: PostgreSQL (модель/индексы/транзакции/бэкапы),
+├── 10-data/                   # 7 глав: PostgreSQL (модель/индексы/транзакции/бэкапы),
 │                              #   ORM, Redis
-├── 09-security-testing/       # 4 главы: JWT/OAuth, веб-безопасность,
+├── 11-security-testing/       # 4 главы: JWT/OAuth, веб-безопасность,
 │                              #   unit/integration, E2E
-├── 10-linux-docker/           # 6 глав: bash, systemd/сети, Docker под капотом,
+├── 12-linux-docker/           # 6 глав: bash, systemd/сети, Docker под капотом,
 │                              #   Compose, реестр/безопасность, supply-chain
-├── 11-k8s-cicd/               # 5 глав: K8s фундамент/продвинутое/observability,
+├── 13-k8s-cicd/               # 5 глав: K8s фундамент/продвинутое/observability,
 │                              #   GitHub Actions, GitLab CI/GitOps
-├── 12-iac-deploy-obs/         # 7 глав: Terraform, Ansible/Pulumi, секреты,
+├── 14-iac-deploy-obs/         # 7 глав: Terraform, Ansible/Pulumi, секреты,
 │                              #   Nginx/TLS, логи/метрики, трейсинг/SLO, инциденты
-├── 13-cloud-design-ai/        # 5 глав: AWS, cost, System Design, паттерны, AI
+├── 15-cloud-design-ai/        # 5 глав: AWS, cost, System Design, паттерны, AI
 └── appendix/                  # инструментарий Arch Linux, литература и ресурсы,
                                #   углубление, глоссарий, вопросы на собеседование
 ```

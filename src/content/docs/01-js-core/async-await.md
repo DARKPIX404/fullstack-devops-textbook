@@ -229,7 +229,7 @@ import { apiUrl } from './config';
 
 - Инициализация перед экспортом (конфиг, подключение к БД, feature-flags).
 - Динамический импорт с условием: `const mod = await import(cond ? './a' : './b')`.
-- Fallback-цепочки: `let adapter; try { adapter = await import(' sharp'); } catch { adapter = await import('jimp'); }`.
+- Fallback-цепочки: `let adapter; try { adapter = await import('sharp'); } catch { adapter = await import('jimp'); }`.
 
 Ограничения:
 

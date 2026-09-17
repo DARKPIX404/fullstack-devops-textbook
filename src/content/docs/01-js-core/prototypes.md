@@ -268,7 +268,7 @@ console.log(Dog.prototype.isPrototypeOf(rex));             // true — тот ж
 Под капотом: `rex instanceof Dog` ≈ `Dog.prototype.isPrototypeOf(rex)`. Отсюда ограничения:
 
 - `instanceof` ломается при смене прототипа (`Object.setPrototypeOf`) и при работе с объектами из других iframe/Realm (у них свой `Array.prototype` — `[] instanceof Array` вернёт false для чужого массива).
-- Проверка «планого объекта» через `obj.constructor === Object` ненадёжна: `constructor` — обычное свойство прототипа, которое легко перезаписать или потерять при `Object.create(null)`.
+- Проверка «плоского объекта» через `obj.constructor === Object` ненадёжна: `constructor` — обычное свойство прототипа, которое легко перезаписать или потерять при `Object.create(null)`.
 
 ```js
 const fake = Object.create(Dog.prototype);

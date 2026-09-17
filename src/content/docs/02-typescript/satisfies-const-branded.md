@@ -18,7 +18,7 @@ const config = {
 } satisfies Record<string, string | number>;
 
 // config.mode: 'production' — литеральный тип сохранился!
-// А опечатка в значении поймана: satisfies сравнивает с Record<string, string | number>
+// А вот опечатка в значении здесь не поймана: satisfies сравнивает с Record<string, string | number>
 // и режим 'production' туда входит, а 'produciton' — тоже, оба string.
 // Но union из допустимых режимов — уже другая история:
 
@@ -129,7 +129,7 @@ enum Status {
 }
 
 // В рантайме Status — объект: { 0: 'Active', 1: 'Banned', Active: 0, Banned: 1 }
-const s = JSON.stringify(Status.Active); // "0" — число, не строка!
+const s = JSON.stringify(Status.Active); // сериализуется как число 0 (строка "0"), а не как имя "Active"
 ```
 
 С `as const` поведение предсказуемее: чистые литеральные типы, нулевой рантайм-код, сериализация — строки:
@@ -271,7 +271,7 @@ const user = await prisma.user.findUnique({
 // включая include-ассоциации; изменение схемы → ошибки компиляции в запросах
 ```
 
-Миграция, добавившая поле в `User`, немедленно ломает все места, где это поле не обрабатывается. Это и есть типобезопасность на границе с данными.
+Миграция, добавившая обязательное поле в `User`, немедленно ломает все `create`/`update` без нового поля и места, завязанные на include-выборку. Это и есть типобезопасность на границе с данными.
 
 ## Типичные ошибки и грабли
 
@@ -329,7 +329,7 @@ enum — для битовых флагов и числовых протокол
 
 **5. Что ловит `noUncheckedIndexedAccess`?**
 
-Индексный доступ (`arr[i]`, `obj[key]`, `Map.get`) даёт `T | undefined` вместо `T`, заставляя проверять наличие перед использованием. Ловит выход за границы массива, отсутствие ключей в словарях, пустые результаты Map — целый класс рантайм-ошибок.
+Индексный доступ (`arr[i]`, `obj[key]`) даёт `T | undefined` вместо `T`, заставляя проверять наличие перед использованием. Ловит выход за границы массива и отсутствие ключей в словарях — целый класс рантайм-ошибок. (`Map.get` и так возвращает `V | undefined` по типам lib, с флагом это не связано.)
 
 **6. Как типизировать API-клиент без дублирования контракта?**
 
@@ -352,7 +352,7 @@ enum — для битовых флагов и числовых протокол
 ## Что почитать
 
 - [TypeScript 4.9 Release Notes — satisfies](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html) — официальное введение оператора.
-- [TypeScript Handbook: Enums](https://www.typescriptlang.org/docs/handbook/enums.html) и [TypeScript ESLint: no-enum](https://typescript-eslint.io/rules/no-enum/) — аргументы за и против.
+- [TypeScript Handbook: Enums](https://www.typescriptlang.org/docs/handbook/enums.html) и [TypeScript ESLint: no-restricted-syntax](https://typescript-eslint.io/rules/no-restricted-syntax/) с селектором `TSEnumDeclaration` — аргументы за и против.
 - [Total TypeScript — Branded Types](https://www.totaltypescript.com/branded-types) — паттерн в деталях, включая вывод брендов из схем.
 - [openapi-typescript](https://openapi-ts.dev/) — генерация типов из OpenAPI с примерами.
 - [Prisma Client — type safety](https://www.prisma.io/docs/orm/prisma-client/type-safety) — как устроен генератор типов Prisma.

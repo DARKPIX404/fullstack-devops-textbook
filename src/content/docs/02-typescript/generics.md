@@ -48,8 +48,8 @@ const y = create<string>(); // string — только явная аннотац
 `T extends U` — не наследование, а **ограничение множества допустимых значений параметра**. Плюс два бонуса: внутри функции/типа `T` знает свойства `U`, а при инстанциации с нарушением — ошибка.
 
 ```ts
-// T должен быть объектом с числовым полем length
-function first<T extends { length: number }>(collection: T): T[number] {
+// T должен поддерживать доступ по числовому индексу (интерфейс ArrayLike)
+function first<T extends ArrayLike<unknown>>(collection: T): T[number] {
   // T[number] — индексный доступ: тип элемента по числовому ключу
   if (collection.length === 0) {
     throw new Error('Пусто');
@@ -57,9 +57,9 @@ function first<T extends { length: number }>(collection: T): T[number] {
   return collection[0];
 }
 
-first('hello'); // 'h' — string подходит: у неё есть length
+first('hello'); // 'h' в рантайме, тип вывода — string
 first([1, 2, 3]); // 1
-first({ length: 1 }); // ошибка типизации элемента, но сам объект подходит
+first({ length: 1 }); // подходит под ограничение, но элемент — unknown
 first(42); // ошибка: у number нет length
 ```
 
@@ -201,7 +201,8 @@ type P = ArgsOf<typeof handler>; // [event: 'click', x: number]
 Вариантность (variance) определяет, как совместимость типов `A` и `B` переносится на конструкции из них. Ключевые случаи:
 
 - **ковариантность**: `Cat extends Animal` ⇒ `Cat[]` совместим с `Animal[]` (массивы ковариантны в TS);
-- **контравариантность**: `() => Cat` совместим с `() => Animal` наоборот — в позиции аргумента подтип и супертип меняются местами;
+- **ковариантность** (в позиции возврата): `() => Cat` совместим с `() => Animal` — подтип в позиции возврата сохраняет направление совместимости;
+- **контравариантность** (в позиции аргумента): `(x: Animal) => void` совместим с `(x: Cat) => void` — подтип и супертип меняются местами;
 - **инвариантность**: только точное совпадение.
 
 ```ts
@@ -320,7 +321,7 @@ const repo = new UserRepository(); // если класс дженерик — T
 
 ## Практика
 
-1. Реализуй `head<T extends readonly unknown[]>(arr: T): T[0] | undefined` для кортежей и массивов так, чтобы `head([1, 'a'] as const)` вернул `1 | 'a' | undefined`, а обращение к `T[0]` не требовало non-null assertion.
+1. Реализуй `head<T extends readonly unknown[]>(arr: T): T[0] | undefined` для кортежей и массивов так, чтобы `head([1, 'a'] as const)` вернул `1 | undefined` (первый элемент кортежа), а обращение к `T[0]` не требовало non-null assertion.
 2. Напиши класс `ResultBox<T, E = Error>` с методами `map<U>(fn: (v: T) => U): ResultBox<U, E>` и `flatMap<U>(fn: (v: T) => ResultBox<U, E>): ResultBox<U, E>`, где `flatMap` убирает вложенность без кастов.
 3. Напиши тип `First<T extends readonly unknown[]>`, извлекающий первый элемент кортежа через `infer`, и `DropFirst<T>`, отбрасывающий его. Проверь на `['a', 1, true]`.
 4. Реализуй функцию `groupBy<T, K extends string>(items: readonly T[], keyFn: (item: T) => K): Record<K, T[]>`, где вызов `groupBy(users, (u) => u.role)` даёт ключи ровно из литерального union ролей, а не `string`.

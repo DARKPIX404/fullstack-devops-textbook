@@ -112,8 +112,8 @@ refs/heads/main (файл со строкой)
 Смотреть объекты можно без «волшебства», команда `git cat-file` (см. [git-cat-file(1)](https://git-scm.com/docs/git-cat-file)):
 
 ```bash
-git cat-file -t ce01362          # узнать ТИП объекта: blob
-git cat-file -p ce01362          # напечатать СОДЕРЖИМОЕ: "hello"
+git cat-file -t b6fc4c62          # узнать ТИП объекта: blob
+git cat-file -p b6fc4c62          # напечатать СОДЕРЖИМОЕ: "hello"
 git cat-file -p HEAD             # посмотреть текущий коммит
 git cat-file -p HEAD^{tree}      # дерево этого коммита
 git cat-file -p HEAD:src/index.js  # blob файла из коммита

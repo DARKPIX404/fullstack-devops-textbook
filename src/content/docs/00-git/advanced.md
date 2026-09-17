@@ -247,7 +247,7 @@ git commit -m "chore: track binaries with LFS"
 # .git/hooks/pre-commit (chmod +x обязателен!)
 
 # не дать закоммитить отладочные маркеры
-if git diff --cached | grep -E '^\+.*(console\.log|debugger|TODO:HACK)'; then
+if git diff --cached | grep -E '^\+.*(console\.log|debugger|TODO|HACK)'; then
   echo "❌ Найден console.log/debugger в staged-изменениях" >&2
   exit 1   # ненулевой код = отмена коммита
 fi

@@ -42,7 +42,7 @@ sudo pacman -S \
 yay -S \
   visual-studio-code-bin \
   bruno-bin \
-  jetbrains-mono-nerd-fonts ttf-fira-code-nerd \
+  ttf-jetbrains-mono-nerd ttf-fira-code-nerd \
   postman-bin insomnia-bin
 ```
 
@@ -208,7 +208,7 @@ nix-shell '<home-manager>' -A install
 
 ## Что почитать
 
-- Глава [«Omarchy: система для разработчика»](/intro/omarchy/) — opinionated-десктоп на базе Arch и Hyprland; а в разделе «Linux и Docker» — глубокие главы по [tmux](/10-linux-docker/tmux/) и [Neovim](/10-linux-docker/neovim/): здесь — что поставить, там — как этим владеть.
+- Глава [«Omarchy: система для разработчика»](/intro/omarchy/) — opinionated-десктоп на базе Arch и Hyprland; а в разделе «Linux и Docker» — глубокие главы по [tmux](/12-linux-docker/tmux/) и [Neovim](/12-linux-docker/neovim/): здесь — что поставить, там — как этим владеть.
 - [Arch Wiki](https://wiki.archlinux.org) — лучшая документация по Linux вообще; каждая утилита из списка там разобрана.
 - [Yazi docs](https://yazi-rs.github.io/docs/quick-start) — ключи и конфигурация файлового менеджера.
 - [Dev Containers specification](https://containers.dev/) — формат `.devcontainer.json`.

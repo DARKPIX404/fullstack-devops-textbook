@@ -162,7 +162,7 @@ git restore --source=HEAD~1 app.ts  # перезаписать из конкре
 ```bash
 git switch -c feature/login       # создать от текущего HEAD и переключиться
 git branch feature/login          # создать, остаться где был
-git branch -m old-name new-name   # переименовать текущую ветку
+git branch -m old-name new-name   # переименовать ветку old-name в new-name
 git branch -m new-name            # переименовать, находясь в ней
 git branch -d feature/login       # удалить (безопасно: только если влита)
 git branch -D feature/login       # принудительно удалить (есть невлитые коммиты)
@@ -183,7 +183,7 @@ git branch -d feature
 решения:
   1) git merge feature   ← влить сначала (правильный путь)
   2) git branch -D feature   ← «да, я знаю, что теряю D и E»
-     (объекты ещё живут в reflog ~90 дней, но без имени)
+     (объекты ещё живут в reflog ~30 дней, но без имени)
 ```
 
 Переименование — тоже просто файл: `git branch -m` фактически делает `mv .git/refs/heads/old .git/refs/heads/new`. Если ветка была текущей, Git дополнительно правит `.git/HEAD` (`ref: refs/heads/old` → `ref: refs/heads/new`).
