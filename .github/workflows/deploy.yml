@@ -44,7 +44,6 @@ jobs:
             --verbose
             --no-progress
             --accept 200,204,301,302,401,403,429
-            --exclude-mail
             --exclude "darkpix\.dev"
             --exclude "example\.com"
             --exclude "localhost"
