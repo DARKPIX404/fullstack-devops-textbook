@@ -10,8 +10,8 @@ export default defineConfig({
 	trailingSlash: 'always',
 	integrations: [
 		starlight({
-			title: 'Fullstack DevOps — Учебник v2',
-			description: 'Глубокое издание: путь от JavaScript к Fullstack-разработчику и DevOps-инженеру. Разбор под капотом, продакшен-практики, собеседования.',
+			title: 'DevOps — фундамент и практика',
+			description: 'Долгоживущий DevOps-стек: Linux, сети, Python, SQL, контейнеры, CI/CD, IaC, Kubernetes и SRE.',
 			locales: {
 				root: {
 					label: 'Русский',
@@ -52,6 +52,7 @@ export default defineConfig({
 						{ label: 'Главная', slug: 'index' },
 						{ label: 'Введение и философия', slug: 'intro/philosophy' },
 						{ label: 'План действий', slug: 'intro/action-plan' },
+						{ label: 'Стабильный стек DevOps', slug: 'intro/stable-stack' },
 						{ label: 'Omarchy: система для разработчика', slug: 'intro/omarchy' },
 					],
 				},
@@ -69,7 +70,7 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'JS Core',
+					label: 'JavaScript Core (прикладной слой)',
 					items: [
 						{ label: 'Обзор раздела', slug: '01-js-core' },
 						{ label: 'Контекст выполнения и Lexical Environment', slug: '01-js-core/execution-context' },
@@ -83,7 +84,7 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'TypeScript',
+					label: 'TypeScript (прикладной слой)',
 					items: [
 						{ label: 'Обзор раздела', slug: '02-typescript' },
 						{ label: 'Система типов и сужение', slug: '02-typescript/type-system' },
@@ -93,7 +94,7 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'CSS Core',
+					label: 'CSS Core (прикладной слой)',
 					items: [
 						{ label: 'Обзор раздела', slug: '03-css-core' },
 						{ label: 'Каскад, специфичность, бокс-модель', slug: '03-css-core/fundamentals' },
@@ -104,7 +105,7 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'CSS-фреймворки и инструменты',
+					label: 'CSS-фреймворки (прикладной слой)',
 					items: [
 						{ label: 'Обзор раздела', slug: '04-css-frameworks' },
 						{ label: 'Препроцессоры: Sass и PostCSS', slug: '04-css-frameworks/preprocessors' },
@@ -115,7 +116,7 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'React',
+					label: 'React (прикладной слой)',
 					items: [
 						{ label: 'Обзор раздела', slug: '05-react' },
 						{ label: 'Рендеринг и reconciliation', slug: '05-react/rendering' },
@@ -129,7 +130,7 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'Next.js',
+					label: 'Next.js (прикладной слой)',
 					items: [
 						{ label: 'Обзор раздела', slug: '06-nextjs' },
 						{ label: 'Стратегии рендеринга: SSG, SSR, ISR', slug: '06-nextjs/rendering-strategies' },
@@ -141,7 +142,7 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'Стили, a11y, Performance',
+					label: 'Стили и Web Performance (прикладной слой)',
 					items: [
 						{ label: 'Обзор раздела', slug: '07-styling-perf' },
 						{ label: 'Tailwind CSS глубоко', slug: '07-styling-perf/tailwind-deep' },
@@ -152,7 +153,7 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'Node.js',
+					label: 'Node.js (прикладной слой)',
 					items: [
 						{ label: 'Обзор раздела', slug: '08-nodejs' },
 						{ label: 'Event Loop Node.js и libuv', slug: '08-nodejs/event-loop-node' },
@@ -164,7 +165,7 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'NestJS и API',
+					label: 'NestJS и API (прикладной слой)',
 					items: [
 						{ label: 'Обзор раздела', slug: '09-nestjs-api' },
 						{ label: 'NestJS: модули, провайдеры, DI', slug: '09-nestjs-api/nestjs-foundation' },
